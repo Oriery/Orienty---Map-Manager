@@ -56,8 +56,7 @@ namespace Orienty_MapManager
             }
             point = new PointF(x - rOfVertex + 2, y - font.Height / 2);
 
-            // TODO получать имя ноды по id
-            // graphics.DrawString(vertex.name, font, brush, point); 
+            graphics.DrawString(Program.form.graph.GetNameOfVertexById(vertex.id), font, brush, point); 
         }
 
         public void drawEdge(Vertex V1, Vertex V2, Edge E, string nameOfEdge)

@@ -33,11 +33,13 @@ namespace Orienty_MapManager
     {
         public List<Vertex> V;
         public List<Edge> E;
+        public Dictionary<int, string> idNamePairs;
 
         public Graph()
         {
             V = new List<Vertex>();
             E = new List<Edge>();
+            idNamePairs = new Dictionary<int, string>();
         }
 
         public int GetFreeIdOfVertex()
@@ -62,6 +64,16 @@ namespace Orienty_MapManager
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Возвращает имя вершины, если она есть в списке. Иначе возвращает само число id в виде строки
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetNameOfVertexById(int id)
+        {
+            return idNamePairs.TryGetValue(id, out string name) ? name : id.ToString();
         }
 
         public void Clear()

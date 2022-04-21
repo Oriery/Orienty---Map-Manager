@@ -123,6 +123,7 @@ namespace Orienty_MapManager
             if (drawVertexButton.Enabled == false)
             {
                 Vertex vertex = new Vertex(e.X, e.Y);
+                graph.idNamePairs.Add(vertex.id, "abc"); // TODO название павильона надо спрашивать сразу при создании ноды. Либо давать возможность потом изменить название
                 graph.V.Add(vertex);
                 canvas.drawVertex(vertex);
                 sheet.Image = canvas.GetBitmap();
