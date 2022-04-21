@@ -83,7 +83,7 @@ namespace SystAnalys_lr1
             {
                 graphics.DrawEllipse(penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
             }
-            point = new PointF(x - 9, y - 9);
+            point = new PointF(x - rOfVertex + 2, y - font.Height / 2);
 
             // TODO получать имя ноды по id
             // graphics.DrawString(vertex.name, font, brush, point); 
