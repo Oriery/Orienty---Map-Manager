@@ -120,7 +120,7 @@ namespace SystAnalys_lr1
             {
                 for (int i = 0; i < V.Count; i++)
                 {
-                    if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.R * G.R)
+                    if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex)
                     {
                         if (selected1 != -1)
                         {
@@ -159,7 +159,7 @@ namespace SystAnalys_lr1
                 {
                     for (int i = 0; i < V.Count; i++)
                     {
-                        if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.R * G.R)
+                        if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex)
                         {
                             if (selected1 == -1)
                             {
@@ -173,7 +173,7 @@ namespace SystAnalys_lr1
                                 G.drawSelectedVertex(V[i].x, V[i].y);
                                 selected2 = i;
                                 E.Add(new Edge(selected1, selected2));
-                                G.drawEdge(V[selected1], V[selected2], E[E.Count - 1], E.Count - 1);
+                                G.drawEdge(V[selected1], V[selected2], E[E.Count - 1], ((char)('a' + E.Count - 1)).ToString());
                                 selected1 = -1;
                                 selected2 = -1;
                                 sheet.Image = G.GetBitmap();
@@ -185,7 +185,7 @@ namespace SystAnalys_lr1
                 if (e.Button == MouseButtons.Right)
                 {
                     if ((selected1 != -1) &&
-                        (Math.Pow((V[selected1].x - e.X), 2) + Math.Pow((V[selected1].y - e.Y), 2) <= G.R * G.R))
+                        (Math.Pow((V[selected1].x - e.X), 2) + Math.Pow((V[selected1].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex))
                     {
                         G.drawVertex(V[selected1].x, V[selected1].y, (selected1 + 1).ToString());
                         selected1 = -1;
@@ -200,7 +200,7 @@ namespace SystAnalys_lr1
                 //ищем, возможно была нажата вершина
                 for (int i = 0; i < V.Count; i++)
                 {
-                    if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.R * G.R)
+                    if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex)
                     {
                         for (int j = 0; j < E.Count; j++)
                         {
@@ -227,8 +227,8 @@ namespace SystAnalys_lr1
                     {
                         if (E[i].v1 == E[i].v2) //если это петля
                         {
-                            if ((Math.Pow((V[E[i].v1].x - G.R - e.X), 2) + Math.Pow((V[E[i].v1].y - G.R - e.Y), 2) <= ((G.R + 2) * (G.R + 2))) &&
-                                (Math.Pow((V[E[i].v1].x - G.R - e.X), 2) + Math.Pow((V[E[i].v1].y - G.R - e.Y), 2) >= ((G.R - 2) * (G.R - 2))))
+                            if ((Math.Pow((V[E[i].v1].x - G.rOfVertex - e.X), 2) + Math.Pow((V[E[i].v1].y - G.rOfVertex - e.Y), 2) <= ((G.rOfVertex + 2) * (G.rOfVertex + 2))) &&
+                                (Math.Pow((V[E[i].v1].x - G.rOfVertex - e.X), 2) + Math.Pow((V[E[i].v1].y - G.rOfVertex - e.Y), 2) >= ((G.rOfVertex - 2) * (G.rOfVertex - 2))))
                             {
                                 E.RemoveAt(i);
                                 flag = true;

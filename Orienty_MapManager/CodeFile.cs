@@ -35,28 +35,28 @@ namespace SystAnalys_lr1
     class DrawGraph
     {
         Bitmap bitmap;
-        Pen blackPen;
-        Pen redPen;
-        Pen darkGoldPen;
-        Graphics gr;
-        Font fo;
-        Brush br;
+        Pen penVertex;
+        Pen penVertexSelected;
+        Pen penEdge;
+        Graphics graphics;
+        Font font;
+        Brush brush;
         PointF point;
-        public int R = 20; //радиус окружности вершины
+        public int rOfVertex = 20; //радиус окружности вершины
 
         public DrawGraph(int width, int height)
         {
             bitmap = new Bitmap(width, height);
-            gr = Graphics.FromImage(bitmap);
+            graphics = Graphics.FromImage(bitmap);
             clearSheet();
-            blackPen = new Pen(Color.Black);
-            blackPen.Width = 2;
-            redPen = new Pen(Color.Red);
-            redPen.Width = 2;
-            darkGoldPen = new Pen(Color.DarkGoldenrod);
-            darkGoldPen.Width = 2;
-            fo = new Font("Arial", 15);
-            br = Brushes.Black;
+            penVertex = new Pen(Color.Black);
+            penVertex.Width = 2;
+            penVertexSelected = new Pen(Color.Red);
+            penVertexSelected.Width = 2;
+            penEdge = new Pen(Color.DarkGoldenrod);
+            penEdge.Width = 2;
+            font = new Font("Arial", 15);
+            brush = Brushes.Black;
         }
 
         public Bitmap GetBitmap()
@@ -66,36 +66,36 @@ namespace SystAnalys_lr1
 
         public void clearSheet()
         {
-            gr.Clear(Color.White);
+            graphics.Clear(Color.White);
         }
 
-        public void drawVertex(int x, int y, string number)
+        public void drawVertex(int x, int y, string nameOfVertex)
         {
-            gr.FillEllipse(Brushes.White, (x - R), (y - R), 2 * R, 2 * R);
-            gr.DrawEllipse(blackPen, (x - R), (y - R), 2 * R, 2 * R);
+            graphics.FillEllipse(Brushes.White, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+            graphics.DrawEllipse(penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
             point = new PointF(x - 9, y - 9);
-            gr.DrawString(number, fo, br, point);
+            graphics.DrawString(nameOfVertex, font, brush, point);
         }
 
         public void drawSelectedVertex(int x, int y)
         {
-            gr.DrawEllipse(redPen, (x - R), (y - R), 2 * R, 2 * R);
+            graphics.DrawEllipse(penVertexSelected, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
         }
 
-        public void drawEdge(Vertex V1, Vertex V2, Edge E, int numberE)
+        public void drawEdge(Vertex V1, Vertex V2, Edge E, string nameOfEdge)
         {
             if (E.v1 == E.v2)
             {
-                gr.DrawArc(darkGoldPen, (V1.x - 2 * R), (V1.y - 2 * R), 2 * R, 2 * R, 90, 270);
-                point = new PointF(V1.x - (int)(2.75 * R), V1.y - (int)(2.75 * R));
-                gr.DrawString(((char)('a' + numberE)).ToString(), fo, br, point);
+                graphics.DrawArc(penEdge, (V1.x - 2 * rOfVertex), (V1.y - 2 * rOfVertex), 2 * rOfVertex, 2 * rOfVertex, 90, 270);
+                point = new PointF(V1.x - (int)(2.75 * rOfVertex), V1.y - (int)(2.75 * rOfVertex));
+                graphics.DrawString(nameOfEdge, font, brush, point);
                 drawVertex(V1.x, V1.y, (E.v1 + 1).ToString());
             }
             else
             {
-                gr.DrawLine(darkGoldPen, V1.x, V1.y, V2.x, V2.y);
+                graphics.DrawLine(penEdge, V1.x, V1.y, V2.x, V2.y);
                 point = new PointF((V1.x + V2.x) / 2, (V1.y + V2.y) / 2);
-                gr.DrawString(((char)('a' + numberE)).ToString(), fo, br, point);
+                graphics.DrawString(nameOfEdge, font, brush, point);
                 drawVertex(V1.x, V1.y, (E.v1 + 1).ToString());
                 drawVertex(V2.x, V2.y, (E.v2 + 1).ToString());
             }
@@ -108,15 +108,15 @@ namespace SystAnalys_lr1
             {
                 if (E[i].v1 == E[i].v2)
                 {
-                    gr.DrawArc(darkGoldPen, (V[E[i].v1].x - 2 * R), (V[E[i].v1].y - 2 * R), 2 * R, 2 * R, 90, 270);
-                    point = new PointF(V[E[i].v1].x - (int)(2.75 * R), V[E[i].v1].y - (int)(2.75 * R));
-                    gr.DrawString(((char)('a' + i)).ToString(), fo, br, point);
+                    graphics.DrawArc(penEdge, (V[E[i].v1].x - 2 * rOfVertex), (V[E[i].v1].y - 2 * rOfVertex), 2 * rOfVertex, 2 * rOfVertex, 90, 270);
+                    point = new PointF(V[E[i].v1].x - (int)(2.75 * rOfVertex), V[E[i].v1].y - (int)(2.75 * rOfVertex));
+                    graphics.DrawString(((char)('a' + i)).ToString(), font, brush, point);
                 }
                 else
                 {
-                    gr.DrawLine(darkGoldPen, V[E[i].v1].x, V[E[i].v1].y, V[E[i].v2].x, V[E[i].v2].y);
+                    graphics.DrawLine(penEdge, V[E[i].v1].x, V[E[i].v1].y, V[E[i].v2].x, V[E[i].v2].y);
                     point = new PointF((V[E[i].v1].x + V[E[i].v2].x) / 2, (V[E[i].v1].y + V[E[i].v2].y) / 2);
-                    gr.DrawString(((char)('a' + i)).ToString(), fo, br, point);
+                    graphics.DrawString(((char)('a' + i)).ToString(), font, brush, point);
                 }
             }
             //рисуем вершины
