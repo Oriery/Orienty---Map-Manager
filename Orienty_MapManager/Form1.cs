@@ -8,7 +8,6 @@ namespace Orienty_MapManager
     {
         public GraphCanvas canvas;
         public Graph graph;
-        List<Edge> E;
 
         int selected1; //выбранные вершины, для соединения линиями
         int selected2;
@@ -18,7 +17,6 @@ namespace Orienty_MapManager
             InitializeComponent();
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
             graph = new Graph();
-            E = new List<Edge>();
             sheet.Image = canvas.GetBitmap();
         }
 
@@ -30,7 +28,7 @@ namespace Orienty_MapManager
             drawEdgeButton.Enabled = true;
             deleteButton.Enabled = true;
             canvas.clearSheet();
-            canvas.drawALLGraph(graph.V, E);
+            canvas.drawALLGraph(graph);
             sheet.Image = canvas.GetBitmap();
             selected1 = -1;
         }
@@ -43,7 +41,7 @@ namespace Orienty_MapManager
             drawEdgeButton.Enabled = true;
             deleteButton.Enabled = true;
             canvas.clearSheet();
-            canvas.drawALLGraph(graph.V, E);
+            canvas.drawALLGraph(graph);
             sheet.Image = canvas.GetBitmap();
         }
 
@@ -55,7 +53,7 @@ namespace Orienty_MapManager
             drawVertexButton.Enabled = true;
             deleteButton.Enabled = true;
             canvas.clearSheet();
-            canvas.drawALLGraph(graph.V, E);
+            canvas.drawALLGraph(graph);
             sheet.Image = canvas.GetBitmap();
             selected1 = -1;
             selected2 = -1;
@@ -69,7 +67,7 @@ namespace Orienty_MapManager
             drawVertexButton.Enabled = true;
             drawEdgeButton.Enabled = true;
             canvas.clearSheet();
-            canvas.drawALLGraph(graph.V, E);
+            canvas.drawALLGraph(graph);
             sheet.Image = canvas.GetBitmap();
         }
 
@@ -85,8 +83,7 @@ namespace Orienty_MapManager
             var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (MBSave == DialogResult.Yes)
             {
-                graph.V.Clear();
-                E.Clear();
+                graph.Clear();
                 canvas.clearSheet();
                 sheet.Image = canvas.GetBitmap();
             }
@@ -105,7 +102,7 @@ namespace Orienty_MapManager
                         {
                             selected1 = -1;
                             canvas.clearSheet();
-                            canvas.drawALLGraph(graph.V, E);
+                            canvas.drawALLGraph(graph);
                             sheet.Image = canvas.GetBitmap();
                         }
                         if (selected1 == -1)
@@ -150,8 +147,8 @@ namespace Orienty_MapManager
                             {
                                 canvas.drawVertex(graph.V[i], true);
                                 selected2 = i;
-                                E.Add(new Edge(selected1, selected2));
-                                canvas.drawEdge(graph.V[selected1], graph.V[selected2], E[E.Count - 1], ((char)('a' + E.Count - 1)).ToString());
+                                graph.E.Add(new Edge(selected1, selected2));
+                                canvas.drawEdge(graph.V[selected1], graph.V[selected2], graph.E[graph.E.Count - 1], ((char)('a' + graph.E.Count - 1)).ToString());
                                 selected1 = -1;
                                 selected2 = -1;
                                 sheet.Image = canvas.GetBitmap();
@@ -174,55 +171,56 @@ namespace Orienty_MapManager
             //нажата кнопка "удалить элемент"
             if (deleteButton.Enabled == false)
             {
-                bool flag = false; //удалили ли что-нибудь по ЭТОМУ клику
+                bool haveDeleted = false; //удалили ли что-нибудь по ЭТОМУ клику
+
                 //ищем, возможно была нажата вершина
                 for (int i = 0; i < graph.V.Count; i++)
                 {
                     if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex)
                     {
-                        for (int j = 0; j < E.Count; j++)
+                        for (int j = 0; j < graph.E.Count; j++)
                         {
-                            if ((E[j].v1 == i) || (E[j].v2 == i))
+                            if ((graph.E[j].v1 == i) || (graph.E[j].v2 == i))
                             {
-                                E.RemoveAt(j);
+                                graph.E.RemoveAt(j);
                                 j--;
                             }
                             else
                             {
-                                if (E[j].v1 > i) E[j].v1--;
-                                if (E[j].v2 > i) E[j].v2--;
+                                if (graph.E[j].v1 > i) graph.E[j].v1--;
+                                if (graph.E[j].v2 > i) graph.E[j].v2--;
                             }
                         }
                         graph.V.RemoveAt(i);
-                        flag = true;
+                        haveDeleted = true;
                         break;
                     }
                 }
                 //ищем, возможно было нажато ребро
-                if (!flag)
+                if (!haveDeleted)
                 {
-                    for (int i = 0; i < E.Count; i++)
+                    for (int i = 0; i < graph.E.Count; i++)
                     {
-                        if (E[i].v1 == E[i].v2) //если это петля
+                        if (graph.E[i].v1 == graph.E[i].v2) //если это петля
                         {
-                            if ((Math.Pow((graph.V[E[i].v1].x - canvas.rOfVertex - e.X), 2) + Math.Pow((graph.V[E[i].v1].y - canvas.rOfVertex - e.Y), 2) <= ((canvas.rOfVertex + 2) * (canvas.rOfVertex + 2))) &&
-                                (Math.Pow((graph.V[E[i].v1].x - canvas.rOfVertex - e.X), 2) + Math.Pow((graph.V[E[i].v1].y - canvas.rOfVertex - e.Y), 2) >= ((canvas.rOfVertex - 2) * (canvas.rOfVertex - 2))))
+                            if ((Math.Pow((graph.V[graph.E[i].v1].x - canvas.rOfVertex - e.X), 2) + Math.Pow((graph.V[graph.E[i].v1].y - canvas.rOfVertex - e.Y), 2) <= ((canvas.rOfVertex + 2) * (canvas.rOfVertex + 2))) &&
+                                (Math.Pow((graph.V[graph.E[i].v1].x - canvas.rOfVertex - e.X), 2) + Math.Pow((graph.V[graph.E[i].v1].y - canvas.rOfVertex - e.Y), 2) >= ((canvas.rOfVertex - 2) * (canvas.rOfVertex - 2))))
                             {
-                                E.RemoveAt(i);
-                                flag = true;
+                                graph.E.RemoveAt(i);
+                                haveDeleted = true;
                                 break;
                             }
                         }
                         else //не петля
                         {
-                            if (((e.X - graph.V[E[i].v1].x) * (graph.V[E[i].v2].y - graph.V[E[i].v1].y) / (graph.V[E[i].v2].x - graph.V[E[i].v1].x) + graph.V[E[i].v1].y) <= (e.Y + 4) &&
-                                ((e.X - graph.V[E[i].v1].x) * (graph.V[E[i].v2].y - graph.V[E[i].v1].y) / (graph.V[E[i].v2].x - graph.V[E[i].v1].x) + graph.V[E[i].v1].y) >= (e.Y - 4))
+                            if (((e.X - graph.V[graph.E[i].v1].x) * (graph.V[graph.E[i].v2].y - graph.V[graph.E[i].v1].y) / (graph.V[graph.E[i].v2].x - graph.V[graph.E[i].v1].x) + graph.V[graph.E[i].v1].y) <= (e.Y + 4) &&
+                                ((e.X - graph.V[graph.E[i].v1].x) * (graph.V[graph.E[i].v2].y - graph.V[graph.E[i].v1].y) / (graph.V[graph.E[i].v2].x - graph.V[graph.E[i].v1].x) + graph.V[graph.E[i].v1].y) >= (e.Y - 4))
                             {
-                                if ((graph.V[E[i].v1].x <= graph.V[E[i].v2].x && graph.V[E[i].v1].x <= e.X && e.X <= graph.V[E[i].v2].x) ||
-                                    (graph.V[E[i].v1].x >= graph.V[E[i].v2].x && graph.V[E[i].v1].x >= e.X && e.X >= graph.V[E[i].v2].x))
+                                if ((graph.V[graph.E[i].v1].x <= graph.V[graph.E[i].v2].x && graph.V[graph.E[i].v1].x <= e.X && e.X <= graph.V[graph.E[i].v2].x) ||
+                                    (graph.V[graph.E[i].v1].x >= graph.V[graph.E[i].v2].x && graph.V[graph.E[i].v1].x >= e.X && e.X >= graph.V[graph.E[i].v2].x))
                                 {
-                                    E.RemoveAt(i);
-                                    flag = true;
+                                    graph.E.RemoveAt(i);
+                                    haveDeleted = true;
                                     break;
                                 }
                             }
@@ -230,10 +228,10 @@ namespace Orienty_MapManager
                     }
                 }
                 //если что-то было удалено, то обновляем граф на экране
-                if (flag)
+                if (haveDeleted)
                 {
                     canvas.clearSheet();
-                    canvas.drawALLGraph(graph.V, E);
+                    canvas.drawALLGraph(graph);
                     sheet.Image = canvas.GetBitmap();
                 }
             }

@@ -79,8 +79,11 @@ namespace Orienty_MapManager
             }
         }
 
-        public void drawALLGraph(List<Vertex> V, List<Edge> E)
-        {
+        public void drawALLGraph(Graph graph)
+        { 
+            List<Vertex> V = graph.V;
+            List<Edge> E = graph.E;
+
             //рисуем ребра
             for (int i = 0; i < E.Count; i++)
             {
