@@ -117,7 +117,7 @@ namespace SystAnalys_lr1
                         }
                         if (selected1 == -1)
                         {
-                            G.drawSelectedVertex(V[i].x, V[i].y);
+                            G.drawVertex(V[i], true);
                             selected1 = i;
                             sheet.Image = G.GetBitmap();
                             listBoxMatrix.Items.Clear();
@@ -132,8 +132,9 @@ namespace SystAnalys_lr1
             //нажата кнопка "рисовать вершину"
             if (drawVertexButton.Enabled == false)
             {
-                V.Add(new Vertex(e.X, e.Y));
-                G.drawVertex(e.X, e.Y, V.Count.ToString());
+                Vertex vertex = new Vertex(e.X, e.Y);
+                V.Add(vertex);
+                G.drawVertex(vertex);
                 sheet.Image = G.GetBitmap();
             }
             //нажата кнопка "рисовать ребро"
@@ -147,14 +148,14 @@ namespace SystAnalys_lr1
                         {
                             if (selected1 == -1)
                             {
-                                G.drawSelectedVertex(V[i].x, V[i].y);
+                                G.drawVertex(V[i], true);
                                 selected1 = i;
                                 sheet.Image = G.GetBitmap();
                                 break;
                             }
                             if (selected2 == -1)
                             {
-                                G.drawSelectedVertex(V[i].x, V[i].y);
+                                G.drawVertex(V[i], true);
                                 selected2 = i;
                                 E.Add(new Edge(selected1, selected2));
                                 G.drawEdge(V[selected1], V[selected2], E[E.Count - 1], ((char)('a' + E.Count - 1)).ToString());
@@ -171,7 +172,7 @@ namespace SystAnalys_lr1
                     if ((selected1 != -1) &&
                         (Math.Pow((V[selected1].x - e.X), 2) + Math.Pow((V[selected1].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex))
                     {
-                        G.drawVertex(V[selected1].x, V[selected1].y, (selected1 + 1).ToString());
+                        G.drawVertex(V[selected1]);
                         selected1 = -1;
                         sheet.Image = G.GetBitmap();
                     }

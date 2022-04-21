@@ -69,17 +69,24 @@ namespace SystAnalys_lr1
             graphics.Clear(Color.White);
         }
 
-        public void drawVertex(int x, int y, string nameOfVertex)
+        public void drawVertex(Vertex vertex, bool isSelected = false)
         {
-            graphics.FillEllipse(Brushes.White, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
-            graphics.DrawEllipse(penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
-            point = new PointF(x - 9, y - 9);
-            graphics.DrawString(nameOfVertex, font, brush, point);
-        }
+            int x = vertex.x;
+            int y = vertex.y;
 
-        public void drawSelectedVertex(int x, int y)
-        {
-            graphics.DrawEllipse(penVertexSelected, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+            graphics.FillEllipse(Brushes.White, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+            if (isSelected)
+            {
+                graphics.DrawEllipse(penVertexSelected, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+            }
+            else
+            {
+                graphics.DrawEllipse(penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+            }
+            point = new PointF(x - 9, y - 9);
+
+            // TODO получать имя ноды по id
+            // graphics.DrawString(vertex.name, font, brush, point); 
         }
 
         public void drawEdge(Vertex V1, Vertex V2, Edge E, string nameOfEdge)
@@ -89,15 +96,15 @@ namespace SystAnalys_lr1
                 graphics.DrawArc(penEdge, (V1.x - 2 * rOfVertex), (V1.y - 2 * rOfVertex), 2 * rOfVertex, 2 * rOfVertex, 90, 270);
                 point = new PointF(V1.x - (int)(2.75 * rOfVertex), V1.y - (int)(2.75 * rOfVertex));
                 graphics.DrawString(nameOfEdge, font, brush, point);
-                drawVertex(V1.x, V1.y, (E.v1 + 1).ToString());
+                drawVertex(V1);
             }
             else
             {
                 graphics.DrawLine(penEdge, V1.x, V1.y, V2.x, V2.y);
                 point = new PointF((V1.x + V2.x) / 2, (V1.y + V2.y) / 2);
                 graphics.DrawString(nameOfEdge, font, brush, point);
-                drawVertex(V1.x, V1.y, (E.v1 + 1).ToString());
-                drawVertex(V2.x, V2.y, (E.v2 + 1).ToString());
+                drawVertex(V1);
+                drawVertex(V2);
             }
         }
 
@@ -122,7 +129,7 @@ namespace SystAnalys_lr1
             //рисуем вершины
             for (int i = 0; i < V.Count; i++)
             {
-                drawVertex(V[i].x, V[i].y, (i + 1).ToString());
+                drawVertex(V[i]);
             }
         }      
     }
