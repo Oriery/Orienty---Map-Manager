@@ -137,21 +137,6 @@ namespace SystAnalys_lr1
                 matrix[E[i].v1, E[i].v2] = 1;
                 matrix[E[i].v2, E[i].v1] = 1;
             }
-        }
-
-        //заполняет матрицу инцидентности
-        public void fillIncidenceMatrix(int numberV, List<Edge> E, int[,] matrix)
-        {
-            for (int i = 0; i < numberV; i++)
-                for (int j = 0; j < E.Count; j++)
-                    matrix[i, j] = 0;
-            for (int i = 0; i < E.Count; i++)
-            {
-                matrix[E[i].v1, i] = 1;
-                matrix[E[i].v2, i] = 1;
-            }
-        }
-
-        
+        }        
     }
 }

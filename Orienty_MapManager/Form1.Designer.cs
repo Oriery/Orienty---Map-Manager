@@ -34,7 +34,6 @@
             this.cycleButton = new System.Windows.Forms.Button();
             this.chainButton = new System.Windows.Forms.Button();
             this.selectButton = new System.Windows.Forms.Button();
-            this.buttonInc = new System.Windows.Forms.Button();
             this.buttonAdj = new System.Windows.Forms.Button();
             this.deleteALLButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
@@ -101,16 +100,6 @@
             this.selectButton.TabIndex = 9;
             this.selectButton.UseVisualStyleBackColor = true;
             this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
-            // 
-            // buttonInc
-            // 
-            this.buttonInc.Image = global::SystAnalys_lr1.Properties.Resources.inc;
-            this.buttonInc.Location = new System.Drawing.Point(858, 39);
-            this.buttonInc.Name = "buttonInc";
-            this.buttonInc.Size = new System.Drawing.Size(92, 52);
-            this.buttonInc.TabIndex = 8;
-            this.buttonInc.UseVisualStyleBackColor = true;
-            this.buttonInc.Click += new System.EventHandler(this.buttonInc_Click);
             // 
             // buttonAdj
             // 
@@ -191,7 +180,6 @@
             this.Controls.Add(this.cycleButton);
             this.Controls.Add(this.chainButton);
             this.Controls.Add(this.selectButton);
-            this.Controls.Add(this.buttonInc);
             this.Controls.Add(this.buttonAdj);
             this.Controls.Add(this.listBoxMatrix);
             this.Controls.Add(this.deleteALLButton);

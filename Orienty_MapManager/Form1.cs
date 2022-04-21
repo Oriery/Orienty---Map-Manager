@@ -107,12 +107,6 @@ namespace SystAnalys_lr1
             createAdjAndOut();
         }
 
-        //кнопка - матрица инцидентности 
-        private void buttonInc_Click(object sender, EventArgs e)
-        {
-            createIncAndOut();
-        }
-
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
             //нажата кнопка "выбрать вершину", ищем степень вершины
@@ -278,30 +272,6 @@ namespace SystAnalys_lr1
                     sOut += AMatrix[i, j] + " ";
                 listBoxMatrix.Items.Add(sOut);
             }
-        }
-
-        //создание матрицы инцидентности и вывод в листбокс
-        private void createIncAndOut()
-        {
-            if (E.Count > 0)
-            {
-                IMatrix = new int[V.Count, E.Count];
-                G.fillIncidenceMatrix(V.Count, E, IMatrix);
-                listBoxMatrix.Items.Clear();
-                string sOut = "    ";
-                for (int i = 0; i < E.Count; i++)
-                    sOut += (char)('a' + i) + " ";
-                listBoxMatrix.Items.Add(sOut);
-                for (int i = 0; i < V.Count; i++)
-                {
-                    sOut = (i + 1) + " | ";
-                    for (int j = 0; j < E.Count; j++)
-                        sOut += IMatrix[i, j] + " ";
-                    listBoxMatrix.Items.Add(sOut);
-                }
-            }
-            else
-                listBoxMatrix.Items.Clear();
         }
 
         //поиск элементарных цепей
