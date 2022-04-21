@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-namespace SystAnalys_lr1
+namespace Orienty_MapManager
 {
     public partial class Form1 : Form
     {
-        DrawGraph G;
-        List<Vertex> V;
+        public GraphCanvas canvas;
+        public Graph graph;
         List<Edge> E;
 
         int selected1; //выбранные вершины, для соединения линиями
@@ -23,10 +23,9 @@ namespace SystAnalys_lr1
         public Form1()
         {
             InitializeComponent();
-            V = new List<Vertex>();
-            G = new DrawGraph(sheet.Width, sheet.Height);
+            canvas = new GraphCanvas(sheet.Width, sheet.Height);
             E = new List<Edge>();
-            sheet.Image = G.GetBitmap();
+            sheet.Image = canvas.GetBitmap();
         }
 
         //кнопка - выбрать вершину
@@ -36,9 +35,9 @@ namespace SystAnalys_lr1
             drawVertexButton.Enabled = true;
             drawEdgeButton.Enabled = true;
             deleteButton.Enabled = true;
-            G.clearSheet();
-            G.drawALLGraph(V, E);
-            sheet.Image = G.GetBitmap();
+            canvas.clearSheet();
+            canvas.drawALLGraph(graph.V, E);
+            sheet.Image = canvas.GetBitmap();
             selected1 = -1;
         }
 
@@ -49,9 +48,9 @@ namespace SystAnalys_lr1
             selectButton.Enabled = true;
             drawEdgeButton.Enabled = true;
             deleteButton.Enabled = true;
-            G.clearSheet();
-            G.drawALLGraph(V, E);
-            sheet.Image = G.GetBitmap();
+            canvas.clearSheet();
+            canvas.drawALLGraph(graph.V, E);
+            sheet.Image = canvas.GetBitmap();
         }
 
         //кнопка - рисовать ребро
@@ -61,9 +60,9 @@ namespace SystAnalys_lr1
             selectButton.Enabled = true;
             drawVertexButton.Enabled = true;
             deleteButton.Enabled = true;
-            G.clearSheet();
-            G.drawALLGraph(V, E);
-            sheet.Image = G.GetBitmap();
+            canvas.clearSheet();
+            canvas.drawALLGraph(graph.V, E);
+            sheet.Image = canvas.GetBitmap();
             selected1 = -1;
             selected2 = -1;
         }
@@ -75,9 +74,9 @@ namespace SystAnalys_lr1
             selectButton.Enabled = true;
             drawVertexButton.Enabled = true;
             drawEdgeButton.Enabled = true;
-            G.clearSheet();
-            G.drawALLGraph(V, E);
-            sheet.Image = G.GetBitmap();
+            canvas.clearSheet();
+            canvas.drawALLGraph(graph.V, E);
+            sheet.Image = canvas.GetBitmap();
         }
 
         //кнопка - удалить граф
@@ -92,10 +91,10 @@ namespace SystAnalys_lr1
             var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (MBSave == DialogResult.Yes)
             {
-                V.Clear();
+                graph.V.Clear();
                 E.Clear();
-                G.clearSheet();
-                sheet.Image = G.GetBitmap();
+                canvas.clearSheet();
+                sheet.Image = canvas.GetBitmap();
             }
         }
 
@@ -104,22 +103,22 @@ namespace SystAnalys_lr1
             //нажата кнопка "выбрать вершину", ищем степень вершины
             if (selectButton.Enabled == false)
             {
-                for (int i = 0; i < V.Count; i++)
+                for (int i = 0; i < graph.V.Count; i++)
                 {
-                    if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex)
+                    if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex)
                     {
                         if (selected1 != -1)
                         {
                             selected1 = -1;
-                            G.clearSheet();
-                            G.drawALLGraph(V, E);
-                            sheet.Image = G.GetBitmap();
+                            canvas.clearSheet();
+                            canvas.drawALLGraph(graph.V, E);
+                            sheet.Image = canvas.GetBitmap();
                         }
                         if (selected1 == -1)
                         {
-                            G.drawVertex(V[i], true);
+                            canvas.drawVertex(graph.V[i], true);
                             selected1 = i;
-                            sheet.Image = G.GetBitmap();
+                            sheet.Image = canvas.GetBitmap();
                             listBoxMatrix.Items.Clear();
                             int degree = 0;
                             // Здесь был подсчёт степени вершины
@@ -133,35 +132,35 @@ namespace SystAnalys_lr1
             if (drawVertexButton.Enabled == false)
             {
                 Vertex vertex = new Vertex(e.X, e.Y);
-                V.Add(vertex);
-                G.drawVertex(vertex);
-                sheet.Image = G.GetBitmap();
+                graph.V.Add(vertex);
+                canvas.drawVertex(vertex);
+                sheet.Image = canvas.GetBitmap();
             }
             //нажата кнопка "рисовать ребро"
             if (drawEdgeButton.Enabled == false)
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    for (int i = 0; i < V.Count; i++)
+                    for (int i = 0; i < graph.V.Count; i++)
                     {
-                        if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex)
+                        if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex)
                         {
                             if (selected1 == -1)
                             {
-                                G.drawVertex(V[i], true);
+                                canvas.drawVertex(graph.V[i], true);
                                 selected1 = i;
-                                sheet.Image = G.GetBitmap();
+                                sheet.Image = canvas.GetBitmap();
                                 break;
                             }
                             if (selected2 == -1)
                             {
-                                G.drawVertex(V[i], true);
+                                canvas.drawVertex(graph.V[i], true);
                                 selected2 = i;
                                 E.Add(new Edge(selected1, selected2));
-                                G.drawEdge(V[selected1], V[selected2], E[E.Count - 1], ((char)('a' + E.Count - 1)).ToString());
+                                canvas.drawEdge(graph.V[selected1], graph.V[selected2], E[E.Count - 1], ((char)('a' + E.Count - 1)).ToString());
                                 selected1 = -1;
                                 selected2 = -1;
-                                sheet.Image = G.GetBitmap();
+                                sheet.Image = canvas.GetBitmap();
                                 break;
                             }
                         }
@@ -170,11 +169,11 @@ namespace SystAnalys_lr1
                 if (e.Button == MouseButtons.Right)
                 {
                     if ((selected1 != -1) &&
-                        (Math.Pow((V[selected1].x - e.X), 2) + Math.Pow((V[selected1].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex))
+                        (Math.Pow((graph.V[selected1].x - e.X), 2) + Math.Pow((graph.V[selected1].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex))
                     {
-                        G.drawVertex(V[selected1]);
+                        canvas.drawVertex(graph.V[selected1]);
                         selected1 = -1;
-                        sheet.Image = G.GetBitmap();
+                        sheet.Image = canvas.GetBitmap();
                     }
                 }
             }
@@ -183,9 +182,9 @@ namespace SystAnalys_lr1
             {
                 bool flag = false; //удалили ли что-нибудь по ЭТОМУ клику
                 //ищем, возможно была нажата вершина
-                for (int i = 0; i < V.Count; i++)
+                for (int i = 0; i < graph.V.Count; i++)
                 {
-                    if (Math.Pow((V[i].x - e.X), 2) + Math.Pow((V[i].y - e.Y), 2) <= G.rOfVertex * G.rOfVertex)
+                    if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex)
                     {
                         for (int j = 0; j < E.Count; j++)
                         {
@@ -200,7 +199,7 @@ namespace SystAnalys_lr1
                                 if (E[j].v2 > i) E[j].v2--;
                             }
                         }
-                        V.RemoveAt(i);
+                        graph.V.RemoveAt(i);
                         flag = true;
                         break;
                     }
@@ -212,8 +211,8 @@ namespace SystAnalys_lr1
                     {
                         if (E[i].v1 == E[i].v2) //если это петля
                         {
-                            if ((Math.Pow((V[E[i].v1].x - G.rOfVertex - e.X), 2) + Math.Pow((V[E[i].v1].y - G.rOfVertex - e.Y), 2) <= ((G.rOfVertex + 2) * (G.rOfVertex + 2))) &&
-                                (Math.Pow((V[E[i].v1].x - G.rOfVertex - e.X), 2) + Math.Pow((V[E[i].v1].y - G.rOfVertex - e.Y), 2) >= ((G.rOfVertex - 2) * (G.rOfVertex - 2))))
+                            if ((Math.Pow((graph.V[E[i].v1].x - canvas.rOfVertex - e.X), 2) + Math.Pow((graph.V[E[i].v1].y - canvas.rOfVertex - e.Y), 2) <= ((canvas.rOfVertex + 2) * (canvas.rOfVertex + 2))) &&
+                                (Math.Pow((graph.V[E[i].v1].x - canvas.rOfVertex - e.X), 2) + Math.Pow((graph.V[E[i].v1].y - canvas.rOfVertex - e.Y), 2) >= ((canvas.rOfVertex - 2) * (canvas.rOfVertex - 2))))
                             {
                                 E.RemoveAt(i);
                                 flag = true;
@@ -222,11 +221,11 @@ namespace SystAnalys_lr1
                         }
                         else //не петля
                         {
-                            if (((e.X - V[E[i].v1].x) * (V[E[i].v2].y - V[E[i].v1].y) / (V[E[i].v2].x - V[E[i].v1].x) + V[E[i].v1].y) <= (e.Y + 4) &&
-                                ((e.X - V[E[i].v1].x) * (V[E[i].v2].y - V[E[i].v1].y) / (V[E[i].v2].x - V[E[i].v1].x) + V[E[i].v1].y) >= (e.Y - 4))
+                            if (((e.X - graph.V[E[i].v1].x) * (graph.V[E[i].v2].y - graph.V[E[i].v1].y) / (graph.V[E[i].v2].x - graph.V[E[i].v1].x) + graph.V[E[i].v1].y) <= (e.Y + 4) &&
+                                ((e.X - graph.V[E[i].v1].x) * (graph.V[E[i].v2].y - graph.V[E[i].v1].y) / (graph.V[E[i].v2].x - graph.V[E[i].v1].x) + graph.V[E[i].v1].y) >= (e.Y - 4))
                             {
-                                if ((V[E[i].v1].x <= V[E[i].v2].x && V[E[i].v1].x <= e.X && e.X <= V[E[i].v2].x) ||
-                                    (V[E[i].v1].x >= V[E[i].v2].x && V[E[i].v1].x >= e.X && e.X >= V[E[i].v2].x))
+                                if ((graph.V[E[i].v1].x <= graph.V[E[i].v2].x && graph.V[E[i].v1].x <= e.X && e.X <= graph.V[E[i].v2].x) ||
+                                    (graph.V[E[i].v1].x >= graph.V[E[i].v2].x && graph.V[E[i].v1].x >= e.X && e.X >= graph.V[E[i].v2].x))
                                 {
                                     E.RemoveAt(i);
                                     flag = true;
@@ -239,18 +238,11 @@ namespace SystAnalys_lr1
                 //если что-то было удалено, то обновляем граф на экране
                 if (flag)
                 {
-                    G.clearSheet();
-                    G.drawALLGraph(V, E);
-                    sheet.Image = G.GetBitmap();
+                    canvas.clearSheet();
+                    canvas.drawALLGraph(graph.V, E);
+                    sheet.Image = canvas.GetBitmap();
                 }
             }
-        }
-
-        //О программе
-        private void about_Click(object sender, EventArgs e)
-        {
-            aboutForm FormAbout = new aboutForm();
-            FormAbout.ShowDialog();
         }
 
         private void saveButton_Click(object sender, EventArgs e)

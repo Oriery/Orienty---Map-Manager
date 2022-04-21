@@ -1,4 +1,4 @@
-﻿namespace SystAnalys_lr1
+﻿namespace Orienty_MapManager
 {
     partial class Form1
     {
@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.listBoxMatrix = new System.Windows.Forms.ListBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.about = new System.Windows.Forms.ToolStripMenuItem();
             this.selectButton = new System.Windows.Forms.Button();
             this.deleteALLButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
@@ -38,8 +36,6 @@
             this.drawVertexButton = new System.Windows.Forms.Button();
             this.sheet = new System.Windows.Forms.PictureBox();
             this.saveButton = new System.Windows.Forms.Button();
-            this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
             this.SuspendLayout();
             // 
             // listBoxMatrix
@@ -49,24 +45,6 @@
             this.listBoxMatrix.Name = "listBoxMatrix";
             this.listBoxMatrix.Size = new System.Drawing.Size(217, 251);
             this.listBoxMatrix.TabIndex = 6;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.about});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(969, 24);
-            this.menuStrip1.TabIndex = 12;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // about
-            // 
-            this.about.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.about.Name = "about";
-            this.about.Size = new System.Drawing.Size(94, 20);
-            this.about.Text = "О программе";
-            this.about.Click += new System.EventHandler(this.about_Click);
             // 
             // selectButton
             // 
@@ -151,12 +129,8 @@
             this.Controls.Add(this.drawEdgeButton);
             this.Controls.Add(this.drawVertexButton);
             this.Controls.Add(this.sheet);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "vscode.ru";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -8,20 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SystAnalys_lr1
+namespace Orienty_MapManager
 {
-    class Vertex
+    public class Vertex
     {
+        private int _id;
+        public int id { get => _id; }
+
         public int x, y;
 
         public Vertex(int x, int y)
         {
             this.x = x;
             this.y = y;
+            _id = Program.form.graph.getFreeIdOfVertex();
         }
     }
 
-    class Edge
+    public class Edge
     {
         public int v1, v2;
 
@@ -32,7 +36,7 @@ namespace SystAnalys_lr1
         }
     }
 
-    class DrawGraph
+    public class GraphCanvas
     {
         Bitmap bitmap;
         Pen penVertex;
@@ -42,9 +46,9 @@ namespace SystAnalys_lr1
         Font font;
         Brush brush;
         PointF point;
-        public int rOfVertex = 20; 
+        public int rOfVertex = 20;
 
-        public DrawGraph(int width, int height)
+        public GraphCanvas(int width, int height)
         {
             bitmap = new Bitmap(width, height);
             graphics = Graphics.FromImage(bitmap);
@@ -131,6 +135,27 @@ namespace SystAnalys_lr1
             {
                 drawVertex(V[i]);
             }
-        }      
+        }
+    }
+
+    public class Graph
+    {
+        public List<Vertex> V;
+
+        public Graph()
+        {
+            V = new List<Vertex>();
+        }
+
+        public int getFreeIdOfVertex()
+        {
+            int maxId = -1;
+            foreach (var v in V)
+            {
+                maxId = Math.Max(maxId, v.id);
+            }
+
+            return maxId + 1;
+        }
     }
 }

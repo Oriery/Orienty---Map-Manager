@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SystAnalys_lr1
+namespace Orienty_MapManager
 {
     static class Program
     {
+        public static Form1 form;
+
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -16,7 +18,8 @@ namespace SystAnalys_lr1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            form = new Form1();
+            Application.Run(form);
         }
     }
 }
