@@ -32,7 +32,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.about = new System.Windows.Forms.ToolStripMenuItem();
             this.selectButton = new System.Windows.Forms.Button();
-            this.buttonAdj = new System.Windows.Forms.Button();
             this.deleteALLButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.drawEdgeButton = new System.Windows.Forms.Button();
@@ -78,16 +77,6 @@
             this.selectButton.TabIndex = 9;
             this.selectButton.UseVisualStyleBackColor = true;
             this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
-            // 
-            // buttonAdj
-            // 
-            this.buttonAdj.Image = global::SystAnalys_lr1.Properties.Resources.smezh;
-            this.buttonAdj.Location = new System.Drawing.Point(733, 39);
-            this.buttonAdj.Name = "buttonAdj";
-            this.buttonAdj.Size = new System.Drawing.Size(92, 52);
-            this.buttonAdj.TabIndex = 7;
-            this.buttonAdj.UseVisualStyleBackColor = true;
-            this.buttonAdj.Click += new System.EventHandler(this.buttonAdj_Click);
             // 
             // deleteALLButton
             // 
@@ -156,7 +145,6 @@
             this.ClientSize = new System.Drawing.Size(969, 444);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.selectButton);
-            this.Controls.Add(this.buttonAdj);
             this.Controls.Add(this.listBoxMatrix);
             this.Controls.Add(this.deleteALLButton);
             this.Controls.Add(this.deleteButton);

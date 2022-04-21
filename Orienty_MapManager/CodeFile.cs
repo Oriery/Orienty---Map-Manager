@@ -42,7 +42,7 @@ namespace SystAnalys_lr1
         Font font;
         Brush brush;
         PointF point;
-        public int rOfVertex = 20; //радиус окружности вершины
+        public int rOfVertex = 20; 
 
         public DrawGraph(int width, int height)
         {
@@ -124,19 +124,6 @@ namespace SystAnalys_lr1
             {
                 drawVertex(V[i].x, V[i].y, (i + 1).ToString());
             }
-        }
-
-        //заполняет матрицу смежности
-        public void fillAdjacencyMatrix(int numberV, List<Edge> E, int[,] matrix)
-        {
-            for (int i = 0; i < numberV; i++)
-                for (int j = 0; j < numberV; j++)
-                    matrix[i, j] = 0;
-            for (int i = 0; i < E.Count; i++)
-            {
-                matrix[E[i].v1, E[i].v2] = 1;
-                matrix[E[i].v2, E[i].v1] = 1;
-            }
-        }        
+        }      
     }
 }

@@ -16,8 +16,6 @@ namespace SystAnalys_lr1
         DrawGraph G;
         List<Vertex> V;
         List<Edge> E;
-        int[,] AMatrix; //матрица смежности
-        int[,] IMatrix; //матрица инцидентности
 
         int selected1; //выбранные вершины, для соединения линиями
         int selected2;
@@ -101,12 +99,6 @@ namespace SystAnalys_lr1
             }
         }
 
-        //кнопка - матрица смежности
-        private void buttonAdj_Click(object sender, EventArgs e)
-        {
-            createAdjAndOut();
-        }
-
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
             //нажата кнопка "выбрать вершину", ищем степень вершины
@@ -128,11 +120,9 @@ namespace SystAnalys_lr1
                             G.drawSelectedVertex(V[i].x, V[i].y);
                             selected1 = i;
                             sheet.Image = G.GetBitmap();
-                            createAdjAndOut();
                             listBoxMatrix.Items.Clear();
                             int degree = 0;
-                            for (int j = 0; j < V.Count; j++)
-                                degree += AMatrix[selected1, j];
+                            // Здесь был подсчёт степени вершины
                             listBoxMatrix.Items.Add("Степень вершины №" + (selected1 + 1) + " равна " + degree);
                             break;
                         }
@@ -252,25 +242,6 @@ namespace SystAnalys_lr1
                     G.drawALLGraph(V, E);
                     sheet.Image = G.GetBitmap();
                 }
-            }
-        }
-
-        //создание матрицы смежности и вывод в листбокс
-        private void createAdjAndOut()
-        {
-            AMatrix = new int[V.Count, V.Count];
-            G.fillAdjacencyMatrix(V.Count, E, AMatrix);
-            listBoxMatrix.Items.Clear();
-            string sOut = "    ";
-            for (int i = 0; i < V.Count; i++)
-                sOut += (i + 1) + " ";
-            listBoxMatrix.Items.Add(sOut);
-            for (int i = 0; i < V.Count; i++)
-            {
-                sOut = (i + 1) + " | ";
-                for (int j = 0; j < V.Count; j++)
-                    sOut += AMatrix[i, j] + " ";
-                listBoxMatrix.Items.Add(sOut);
             }
         }
 
