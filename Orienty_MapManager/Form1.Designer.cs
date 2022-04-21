@@ -31,7 +31,6 @@
             this.listBoxMatrix = new System.Windows.Forms.ListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.about = new System.Windows.Forms.ToolStripMenuItem();
-            this.cycleButton = new System.Windows.Forms.Button();
             this.selectButton = new System.Windows.Forms.Button();
             this.buttonAdj = new System.Windows.Forms.Button();
             this.deleteALLButton = new System.Windows.Forms.Button();
@@ -69,16 +68,6 @@
             this.about.Size = new System.Drawing.Size(94, 20);
             this.about.Text = "О программе";
             this.about.Click += new System.EventHandler(this.about_Click);
-            // 
-            // cycleButton
-            // 
-            this.cycleButton.Image = global::SystAnalys_lr1.Properties.Resources.cycle;
-            this.cycleButton.Location = new System.Drawing.Point(875, 354);
-            this.cycleButton.Name = "cycleButton";
-            this.cycleButton.Size = new System.Drawing.Size(70, 45);
-            this.cycleButton.TabIndex = 11;
-            this.cycleButton.UseVisualStyleBackColor = true;
-            this.cycleButton.Click += new System.EventHandler(this.cycleButton_Click);
             // 
             // selectButton
             // 
@@ -166,7 +155,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(969, 444);
             this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.cycleButton);
             this.Controls.Add(this.selectButton);
             this.Controls.Add(this.buttonAdj);
             this.Controls.Add(this.listBoxMatrix);
