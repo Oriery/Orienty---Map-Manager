@@ -274,47 +274,6 @@ namespace SystAnalys_lr1
             }
         }
 
-        //поиск элементарных цепей
-        private void chainButton_Click(object sender, EventArgs e)
-        {
-            listBoxMatrix.Items.Clear();
-            //1-white 2-black
-            int[] color = new int[V.Count];
-            for (int i = 0; i < V.Count - 1; i++)
-                for (int j = i + 1; j < V.Count; j++)
-                {
-                    for (int k = 0; k < V.Count; k++)
-                        color[k] = 1;
-                    DFSchain(i, j, E, color, (i + 1).ToString());
-                }
-        }
-
-        //обход в глубину. поиск элементарных цепей. (1-white 2-black)
-        private void DFSchain(int u, int endV, List<Edge> E, int[] color, string s)
-        {
-            //вершину не следует перекрашивать, если u == endV (возможно в нее есть несколько путей)
-            if (u != endV)  
-                color[u] = 2;
-            else
-            {
-                listBoxMatrix.Items.Add(s);
-                return;
-            }
-            for (int w = 0; w < E.Count; w++)
-            {
-                if (color[E[w].v2] == 1 && E[w].v1 == u)
-                {
-                    DFSchain(E[w].v2, endV, E, color, s + "-" + (E[w].v2 + 1).ToString());
-                    color[E[w].v2] = 1;
-                }
-                else if (color[E[w].v1] == 1 && E[w].v2 == u)
-                {
-                    DFSchain(E[w].v1, endV, E, color, s + "-" + (E[w].v1 + 1).ToString());
-                    color[E[w].v1] = 1;
-                }
-            }
-        }
-
         //поиск элементарных циклов
         private void cycleButton_Click(object sender, EventArgs e)
         {

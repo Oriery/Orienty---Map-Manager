@@ -32,7 +32,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.about = new System.Windows.Forms.ToolStripMenuItem();
             this.cycleButton = new System.Windows.Forms.Button();
-            this.chainButton = new System.Windows.Forms.Button();
             this.selectButton = new System.Windows.Forms.Button();
             this.buttonAdj = new System.Windows.Forms.Button();
             this.deleteALLButton = new System.Windows.Forms.Button();
@@ -80,16 +79,6 @@
             this.cycleButton.TabIndex = 11;
             this.cycleButton.UseVisualStyleBackColor = true;
             this.cycleButton.Click += new System.EventHandler(this.cycleButton_Click);
-            // 
-            // chainButton
-            // 
-            this.chainButton.Image = global::SystAnalys_lr1.Properties.Resources.chain;
-            this.chainButton.Location = new System.Drawing.Point(733, 354);
-            this.chainButton.Name = "chainButton";
-            this.chainButton.Size = new System.Drawing.Size(70, 45);
-            this.chainButton.TabIndex = 10;
-            this.chainButton.UseVisualStyleBackColor = true;
-            this.chainButton.Click += new System.EventHandler(this.chainButton_Click);
             // 
             // selectButton
             // 
@@ -178,7 +167,6 @@
             this.ClientSize = new System.Drawing.Size(969, 444);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cycleButton);
-            this.Controls.Add(this.chainButton);
             this.Controls.Add(this.selectButton);
             this.Controls.Add(this.buttonAdj);
             this.Controls.Add(this.listBoxMatrix);
