@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
 
 namespace Orienty_MapManager
 {
@@ -24,6 +17,7 @@ namespace Orienty_MapManager
         {
             InitializeComponent();
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
+            graph = new Graph();
             E = new List<Edge>();
             sheet.Image = canvas.GetBitmap();
         }

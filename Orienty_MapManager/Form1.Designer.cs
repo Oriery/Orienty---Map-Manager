@@ -48,7 +48,7 @@
             // 
             // selectButton
             // 
-            this.selectButton.Image = global::SystAnalys_lr1.Properties.Resources.cursor;
+            this.selectButton.Image = global::Orienty_MapManager.Properties.Resources.cursor;
             this.selectButton.Location = new System.Drawing.Point(12, 12);
             this.selectButton.Name = "selectButton";
             this.selectButton.Size = new System.Drawing.Size(45, 45);
@@ -58,7 +58,7 @@
             // 
             // deleteALLButton
             // 
-            this.deleteALLButton.Image = global::SystAnalys_lr1.Properties.Resources.deleteAll;
+            this.deleteALLButton.Image = global::Orienty_MapManager.Properties.Resources.deleteAll;
             this.deleteALLButton.Location = new System.Drawing.Point(13, 217);
             this.deleteALLButton.Name = "deleteALLButton";
             this.deleteALLButton.Size = new System.Drawing.Size(45, 45);
@@ -68,7 +68,7 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Image = global::SystAnalys_lr1.Properties.Resources.delete;
+            this.deleteButton.Image = global::Orienty_MapManager.Properties.Resources.delete;
             this.deleteButton.Location = new System.Drawing.Point(13, 166);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(45, 45);
@@ -78,7 +78,7 @@
             // 
             // drawEdgeButton
             // 
-            this.drawEdgeButton.Image = global::SystAnalys_lr1.Properties.Resources.edge;
+            this.drawEdgeButton.Image = global::Orienty_MapManager.Properties.Resources.edge;
             this.drawEdgeButton.Location = new System.Drawing.Point(12, 115);
             this.drawEdgeButton.Name = "drawEdgeButton";
             this.drawEdgeButton.Size = new System.Drawing.Size(45, 45);
@@ -88,7 +88,7 @@
             // 
             // drawVertexButton
             // 
-            this.drawVertexButton.Image = global::SystAnalys_lr1.Properties.Resources.vertex;
+            this.drawVertexButton.Image = global::Orienty_MapManager.Properties.Resources.vertex;
             this.drawVertexButton.Location = new System.Drawing.Point(13, 64);
             this.drawVertexButton.Name = "drawVertexButton";
             this.drawVertexButton.Size = new System.Drawing.Size(45, 45);
@@ -145,13 +145,7 @@
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button deleteALLButton;
         private System.Windows.Forms.ListBox listBoxMatrix;
-        private System.Windows.Forms.Button buttonAdj;
-        private System.Windows.Forms.Button buttonInc;
         private System.Windows.Forms.Button selectButton;
-        private System.Windows.Forms.Button chainButton;
-        private System.Windows.Forms.Button cycleButton;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem about;
         private System.Windows.Forms.Button saveButton;
     }
 }
