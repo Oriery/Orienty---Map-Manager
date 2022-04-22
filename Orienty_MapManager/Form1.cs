@@ -89,6 +89,21 @@ namespace Orienty_MapManager
             }
         }
 
+        private int getIdOfClickedVertex(MouseEventArgs e)
+        {
+            for (int i = 0; i < graph.V.Count; i++)
+            {
+                if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) < Math.Pow(canvas.rOfVertex, 2))
+                {
+                    return graph.V[i].id;
+                }
+            }
+
+            // TODO если друг на друга накладываются, то вибирать ближайший
+
+            return -1;
+        }
+
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
             //нажата кнопка "выбрать вершину", ищем степень вершины
@@ -123,7 +138,7 @@ namespace Orienty_MapManager
             if (drawVertexButton.Enabled == false)
             {
                 Vertex vertex = new Vertex(e.X, e.Y);
-                vertex.Name = "abc";
+                vertex.Name = "";
                 graph.V.Add(vertex);
                 canvas.drawVertex(vertex);
                 sheet.Image = canvas.GetBitmap();
