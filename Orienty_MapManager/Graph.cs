@@ -3,17 +3,30 @@ using System.Collections.Generic;
 
 namespace Orienty_MapManager
 {
+    public enum E_NodeType
+    {
+        Junktion,
+        Exit,
+        Pavilion
+    }
+
     public class Vertex
     {
         private int _id;
         public int id { get => _id; }
 
         public int x, y;
+        public string Name;
 
-        public Vertex(int x, int y)
+        E_NodeType nodeType;
+
+        public Vertex(int x, int y, E_NodeType nodeType = E_NodeType.Junktion)
         {
             this.x = x;
             this.y = y;
+            this.nodeType = nodeType;
+            Name = "";
+
             _id = Program.form.graph.GetFreeIdOfVertex();
         }
     }
@@ -33,13 +46,11 @@ namespace Orienty_MapManager
     {
         public List<Vertex> V;
         public List<Edge> E;
-        public Dictionary<int, string> idNamePairs;
 
         public Graph()
         {
             V = new List<Vertex>();
             E = new List<Edge>();
-            idNamePairs = new Dictionary<int, string>();
         }
 
         public int GetFreeIdOfVertex()
@@ -64,16 +75,6 @@ namespace Orienty_MapManager
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Возвращает имя вершины, если она есть в списке. Иначе возвращает само число id в виде строки
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public string GetNameOfVertexById(int id)
-        {
-            return idNamePairs.TryGetValue(id, out string name) ? name : id.ToString();
         }
 
         public void Clear()

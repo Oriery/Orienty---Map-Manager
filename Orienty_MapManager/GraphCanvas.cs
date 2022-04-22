@@ -56,23 +56,19 @@ namespace Orienty_MapManager
             }
             point = new PointF(x - rOfVertex + 2, y - font.Height / 2);
 
-            graphics.DrawString(Program.form.graph.GetNameOfVertexById(vertex.id), font, brush, point); 
+            graphics.DrawString(vertex.Name, font, brush, point); 
         }
 
-        public void drawEdge(Vertex V1, Vertex V2, Edge E, string nameOfEdge)
+        public void drawEdge(Vertex V1, Vertex V2, Edge E)
         {
             if (E.v1 == E.v2)
             {
                 graphics.DrawArc(penEdge, (V1.x - 2 * rOfVertex), (V1.y - 2 * rOfVertex), 2 * rOfVertex, 2 * rOfVertex, 90, 270);
-                point = new PointF(V1.x - (int)(2.75 * rOfVertex), V1.y - (int)(2.75 * rOfVertex));
-                graphics.DrawString(nameOfEdge, font, brush, point);
                 drawVertex(V1);
             }
             else
             {
                 graphics.DrawLine(penEdge, V1.x, V1.y, V2.x, V2.y);
-                point = new PointF((V1.x + V2.x) / 2, (V1.y + V2.y) / 2);
-                graphics.DrawString(nameOfEdge, font, brush, point);
                 drawVertex(V1);
                 drawVertex(V2);
             }
@@ -89,14 +85,10 @@ namespace Orienty_MapManager
                 if (E[i].v1 == E[i].v2)
                 {
                     graphics.DrawArc(penEdge, (V[E[i].v1].x - 2 * rOfVertex), (V[E[i].v1].y - 2 * rOfVertex), 2 * rOfVertex, 2 * rOfVertex, 90, 270);
-                    point = new PointF(V[E[i].v1].x - (int)(2.75 * rOfVertex), V[E[i].v1].y - (int)(2.75 * rOfVertex));
-                    graphics.DrawString(((char)('a' + i)).ToString(), font, brush, point);
                 }
                 else
                 {
                     graphics.DrawLine(penEdge, V[E[i].v1].x, V[E[i].v1].y, V[E[i].v2].x, V[E[i].v2].y);
-                    point = new PointF((V[E[i].v1].x + V[E[i].v2].x) / 2, (V[E[i].v1].y + V[E[i].v2].y) / 2);
-                    graphics.DrawString(((char)('a' + i)).ToString(), font, brush, point);
                 }
             }
             //рисуем вершины
