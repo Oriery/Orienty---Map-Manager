@@ -56,7 +56,7 @@ namespace Orienty_MapManager
             }
             point = new PointF(x - rOfVertex + 2, y - font.Height / 2);
 
-            graphics.DrawString(vertex.Name, font, brush, point); 
+            graphics.DrawString(vertex.name, font, brush, point); 
         }
 
         public void drawEdge(Vertex V1, Vertex V2, Edge E)

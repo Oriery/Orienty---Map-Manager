@@ -1,31 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Orienty_MapManager
 {
     public enum E_NodeType
     {
         Junktion,
-        Exit,
-        Pavilion
+        Pavilion,
+        Exit
     }
 
     public class Vertex
     {
         private int _id;
         public int id { get => _id; }
+        public int x, y, z;
+        public int[] coord { get => new int[] { x, y, z }; }
 
-        public int x, y;
-        public string Name;
+        public string name;
+        public E_NodeType type { get; set; }
+        public List<int> arrIDs { get; set; }
 
-        E_NodeType nodeType;
-
-        public Vertex(int x, int y, E_NodeType nodeType = E_NodeType.Junktion)
+        public Vertex(int x, int y, int z, E_NodeType nodeType = E_NodeType.Pavilion)
         {
             this.x = x;
             this.y = y;
-            this.nodeType = nodeType;
-            Name = "";
+            this.z = z;
+
+            this.type = nodeType;
+
+            arrIDs = new List<int>();
+            name = "";
 
             _id = Program.form.graph.GetFreeIdOfVertex();
         }
@@ -39,6 +45,27 @@ namespace Orienty_MapManager
         {
             this.v1 = v1;
             this.v2 = v2;
+        }
+    }
+    public class Beacon
+    {
+        public string uuid { get; set; }
+        public int x, y, z;
+
+        public int[] coord { get => new int[] { x, y, z }; }
+
+        /// <summary>
+        /// Ближайшая нода
+        /// </summary>
+        public int node { get; set; }
+
+        public Beacon(string uuid, int x, int y, int z, int node)
+        {
+            this.uuid = uuid;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.node = node;
         }
     }
 

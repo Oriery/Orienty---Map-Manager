@@ -106,39 +106,11 @@ namespace Orienty_MapManager
 
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
-            //нажата кнопка "выбрать вершину", ищем степень вершины
-            if (selectButton.Enabled == false)
-            {
-                for (int i = 0; i < graph.V.Count; i++)
-                {
-                    if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex)
-                    {
-                        if (selected1 != -1)
-                        {
-                            selected1 = -1;
-                            canvas.clearSheet();
-                            canvas.drawALLGraph(graph);
-                            sheet.Image = canvas.GetBitmap();
-                        }
-                        if (selected1 == -1)
-                        {
-                            canvas.drawVertex(graph.V[i], true);
-                            selected1 = i;
-                            sheet.Image = canvas.GetBitmap();
-                            listBoxMatrix.Items.Clear();
-                            int degree = 0;
-                            // Здесь был подсчёт степени вершины
-                            listBoxMatrix.Items.Add("Степень вершины №" + (selected1 + 1) + " равна " + degree);
-                            break;
-                        }
-                    }
-                }
-            }
             //нажата кнопка "рисовать вершину"
             if (drawVertexButton.Enabled == false)
             {
-                Vertex vertex = new Vertex(e.X, e.Y);
-                vertex.Name = "";
+                Vertex vertex = new Vertex(e.X, e.Y, 0);
+                vertex.name = "abc";
                 graph.V.Add(vertex);
                 canvas.drawVertex(vertex);
                 sheet.Image = canvas.GetBitmap();
@@ -165,6 +137,8 @@ namespace Orienty_MapManager
                                 selected2 = i;
                                 graph.E.Add(new Edge(selected1, selected2));
                                 canvas.drawEdge(graph.V[selected1], graph.V[selected2], graph.E[graph.E.Count - 1]);
+                                graph.V[selected1].arrIDs.Add(selected2);
+                                graph.V[selected2].arrIDs.Add(selected1);
                                 selected1 = -1;
                                 selected2 = -1;
                                 sheet.Image = canvas.GetBitmap();
@@ -255,27 +229,8 @@ namespace Orienty_MapManager
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (sheet.Image != null)
-            {
-                SaveFileDialog savedialog = new SaveFileDialog();
-                savedialog.Title = "Сохранить картинку как...";
-                savedialog.OverwritePrompt = true;
-                savedialog.CheckPathExists = true;
-                savedialog.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
-                savedialog.ShowHelp = true;
-                if (savedialog.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        sheet.Image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Невозможно сохранить изображение", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
+            string json = MapSerializer.SerializeMap(graph);
+            textBox1.Text = json;
         }
     }
 }
