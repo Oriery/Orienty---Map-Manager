@@ -17,7 +17,7 @@ namespace Orienty_MapManager
             InitializeComponent();
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
             graph = new Graph();
-            sheet.Image = canvas.GetBitmap();
+            UpdateGraphImage();
         }
 
         //кнопка - выбрать вершину
@@ -27,10 +27,8 @@ namespace Orienty_MapManager
             drawVertexButton.Enabled = true;
             drawEdgeButton.Enabled = true;
             deleteButton.Enabled = true;
-            canvas.clearSheet();
-            canvas.drawALLGraph(graph);
-            sheet.Image = canvas.GetBitmap();
             selected1 = -1;
+            UpdateGraphImage();
         }
 
         //кнопка - рисовать вершину
@@ -40,9 +38,7 @@ namespace Orienty_MapManager
             selectButton.Enabled = true;
             drawEdgeButton.Enabled = true;
             deleteButton.Enabled = true;
-            canvas.clearSheet();
-            canvas.drawALLGraph(graph);
-            sheet.Image = canvas.GetBitmap();
+            UpdateGraphImage();
         }
 
         //кнопка - рисовать ребро
@@ -52,11 +48,9 @@ namespace Orienty_MapManager
             selectButton.Enabled = true;
             drawVertexButton.Enabled = true;
             deleteButton.Enabled = true;
-            canvas.clearSheet();
-            canvas.drawALLGraph(graph);
-            sheet.Image = canvas.GetBitmap();
             selected1 = -1;
             selected2 = -1;
+            UpdateGraphImage();
         }
 
         //кнопка - удалить элемент
@@ -66,9 +60,7 @@ namespace Orienty_MapManager
             selectButton.Enabled = true;
             drawVertexButton.Enabled = true;
             drawEdgeButton.Enabled = true;
-            canvas.clearSheet();
-            canvas.drawALLGraph(graph);
-            sheet.Image = canvas.GetBitmap();
+            UpdateGraphImage();
         }
 
         //кнопка - удалить граф
@@ -84,8 +76,7 @@ namespace Orienty_MapManager
             if (MBSave == DialogResult.Yes)
             {
                 graph.Clear();
-                canvas.clearSheet();
-                sheet.Image = canvas.GetBitmap();
+                UpdateGraphImage();
             }
         }
 
@@ -104,6 +95,29 @@ namespace Orienty_MapManager
             return -1;
         }
 
+        private int getIdOfClickedEdge(MouseEventArgs e)
+        {
+            Edge edge;
+            Vertex v1, v2;
+            for (int i = 0; i < graph.E.Count; i++)
+            {
+                edge = graph.E[i];
+                v1 = graph.V[edge.v1];
+                v2 = graph.V[edge.v2];
+
+                // TODO деление на ноль и примерно вертикальные линии не сработают
+                if (Math.Abs(v1.y + (e.X - v1.x) * (v2.y - v1.y) / (v2.x - v1.x) - e.Y) < 10)
+                {
+                    if ((v1.x <= v2.x && v1.x <= e.X && e.X <= v2.x) ||
+                        (v1.x >= v2.x && v1.x >= e.X && e.X >= v2.x))
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
             //нажата кнопка "рисовать вершину"
@@ -112,117 +126,62 @@ namespace Orienty_MapManager
                 Vertex vertex = new Vertex(e.X, e.Y, 0);
                 vertex.name = "abc";
                 graph.V.Add(vertex);
-                canvas.drawVertex(vertex);
-                sheet.Image = canvas.GetBitmap();
+                UpdateGraphImage();
             }
-            //нажата кнопка "рисовать ребро"
+
+            
+            // нажата кнопка "рисовать ребро"
             if (drawEdgeButton.Enabled == false)
             {
-                if (e.Button == MouseButtons.Left)
+                int selectedV = getIdOfClickedVertex(e);
+                if (selectedV != -1) // клик по вершине
                 {
-                    for (int i = 0; i < graph.V.Count; i++)
+                    if (e.Button == MouseButtons.Left)
                     {
-                        if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex)
+                        if (selected1 == -1)
                         {
-                            if (selected1 == -1)
-                            {
-                                canvas.drawVertex(graph.V[i], true);
-                                selected1 = i;
-                                sheet.Image = canvas.GetBitmap();
-                                break;
-                            }
-                            if (selected2 == -1)
-                            {
-                                canvas.drawVertex(graph.V[i], true);
-                                selected2 = i;
-                                graph.E.Add(new Edge(selected1, selected2));
-                                canvas.drawEdge(graph.V[selected1], graph.V[selected2], graph.E[graph.E.Count - 1]);
-                                graph.V[selected1].arrIDs.Add(selected2);
-                                graph.V[selected2].arrIDs.Add(selected1);
-                                selected1 = -1;
-                                selected2 = -1;
-                                sheet.Image = canvas.GetBitmap();
-                                break;
-                            }
+                            selected1 = selectedV;
+                            UpdateGraphImage();
+                        }
+                        else if (selectedV != selected1)
+                        {
+                            selected2 = selectedV;
+                            graph.E.Add(new Edge(selected1, selected2));
+                            graph.V[selected1].arrIDs.Add(selected2);
+                            graph.V[selected2].arrIDs.Add(selected1);
+                            selected1 = -1;
+                            selected2 = -1;
+                            UpdateGraphImage();
+                        }
+                    }
+
+                    if (e.Button == MouseButtons.Right)
+                    {
+                        if (selected1 != -1 && selectedV == selected1)
+                        {
+                            selected1 = -1;
+                            UpdateGraphImage();
                         }
                     }
                 }
-                if (e.Button == MouseButtons.Right)
-                {
-                    if ((selected1 != -1) &&
-                        (Math.Pow((graph.V[selected1].x - e.X), 2) + Math.Pow((graph.V[selected1].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex))
-                    {
-                        canvas.drawVertex(graph.V[selected1]);
-                        selected1 = -1;
-                        sheet.Image = canvas.GetBitmap();
-                    }
-                }
             }
+
             //нажата кнопка "удалить элемент"
             if (deleteButton.Enabled == false)
             {
-                bool haveDeleted = false; //удалили ли что-нибудь по ЭТОМУ клику
+                bool haveDeleted = false;
 
-                //ищем, возможно была нажата вершина
-                for (int i = 0; i < graph.V.Count; i++)
-                {
-                    if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) <= canvas.rOfVertex * canvas.rOfVertex)
-                    {
-                        for (int j = 0; j < graph.E.Count; j++)
-                        {
-                            if ((graph.E[j].v1 == i) || (graph.E[j].v2 == i))
-                            {
-                                graph.E.RemoveAt(j);
-                                j--;
-                            }
-                            else
-                            {
-                                if (graph.E[j].v1 > i) graph.E[j].v1--;
-                                if (graph.E[j].v2 > i) graph.E[j].v2--;
-                            }
-                        }
-                        graph.V.RemoveAt(i);
-                        haveDeleted = true;
-                        break;
-                    }
-                }
-                //ищем, возможно было нажато ребро
+                haveDeleted = graph.DeleteVertex(getIdOfClickedVertex(e)); // клик по вершине
+
                 if (!haveDeleted)
                 {
-                    for (int i = 0; i < graph.E.Count; i++)
-                    {
-                        if (graph.E[i].v1 == graph.E[i].v2) //если это петля
-                        {
-                            if ((Math.Pow((graph.V[graph.E[i].v1].x - canvas.rOfVertex - e.X), 2) + Math.Pow((graph.V[graph.E[i].v1].y - canvas.rOfVertex - e.Y), 2) <= ((canvas.rOfVertex + 2) * (canvas.rOfVertex + 2))) &&
-                                (Math.Pow((graph.V[graph.E[i].v1].x - canvas.rOfVertex - e.X), 2) + Math.Pow((graph.V[graph.E[i].v1].y - canvas.rOfVertex - e.Y), 2) >= ((canvas.rOfVertex - 2) * (canvas.rOfVertex - 2))))
-                            {
-                                graph.E.RemoveAt(i);
-                                haveDeleted = true;
-                                break;
-                            }
-                        }
-                        else //не петля
-                        {
-                            if (((e.X - graph.V[graph.E[i].v1].x) * (graph.V[graph.E[i].v2].y - graph.V[graph.E[i].v1].y) / (graph.V[graph.E[i].v2].x - graph.V[graph.E[i].v1].x) + graph.V[graph.E[i].v1].y) <= (e.Y + 4) &&
-                                ((e.X - graph.V[graph.E[i].v1].x) * (graph.V[graph.E[i].v2].y - graph.V[graph.E[i].v1].y) / (graph.V[graph.E[i].v2].x - graph.V[graph.E[i].v1].x) + graph.V[graph.E[i].v1].y) >= (e.Y - 4))
-                            {
-                                if ((graph.V[graph.E[i].v1].x <= graph.V[graph.E[i].v2].x && graph.V[graph.E[i].v1].x <= e.X && e.X <= graph.V[graph.E[i].v2].x) ||
-                                    (graph.V[graph.E[i].v1].x >= graph.V[graph.E[i].v2].x && graph.V[graph.E[i].v1].x >= e.X && e.X >= graph.V[graph.E[i].v2].x))
-                                {
-                                    graph.E.RemoveAt(i);
-                                    haveDeleted = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    haveDeleted = graph.DeleteEdge(getIdOfClickedEdge(e)); // клик по ребру
                 }
-                //если что-то было удалено, то обновляем граф на экране
+
+                // обновляем граф на экране
                 if (haveDeleted)
                 {
-                    canvas.clearSheet();
-                    canvas.drawALLGraph(graph);
-                    sheet.Image = canvas.GetBitmap();
+                    UpdateGraphImage();
                 }
             }
         }
@@ -231,6 +190,13 @@ namespace Orienty_MapManager
         {
             string json = MapSerializer.SerializeMap(graph);
             textBox1.Text = json;
+        }
+
+        private void UpdateGraphImage()
+        {
+            canvas.clearSheet();
+            canvas.drawALLGraph(graph, new List<int>() { selected1, selected2 });
+            sheet.Image = canvas.GetBitmap();
         }
     }
 }

@@ -59,22 +59,14 @@ namespace Orienty_MapManager
             graphics.DrawString(vertex.name, font, brush, point); 
         }
 
-        public void drawEdge(Vertex V1, Vertex V2, Edge E)
+        public void drawEdge(Vertex V1, Vertex V2)
         {
-            if (E.v1 == E.v2)
-            {
-                graphics.DrawArc(penEdge, (V1.x - 2 * rOfVertex), (V1.y - 2 * rOfVertex), 2 * rOfVertex, 2 * rOfVertex, 90, 270);
-                drawVertex(V1);
-            }
-            else
-            {
-                graphics.DrawLine(penEdge, V1.x, V1.y, V2.x, V2.y);
-                drawVertex(V1);
-                drawVertex(V2);
-            }
+            graphics.DrawLine(penEdge, V1.x, V1.y, V2.x, V2.y);
+            drawVertex(V1);
+            drawVertex(V2);
         }
 
-        public void drawALLGraph(Graph graph)
+        public void drawALLGraph(Graph graph, List<int> selectedV = null)
         { 
             List<Vertex> V = graph.V;
             List<Edge> E = graph.E;
@@ -82,19 +74,21 @@ namespace Orienty_MapManager
             //рисуем ребра
             for (int i = 0; i < E.Count; i++)
             {
-                if (E[i].v1 == E[i].v2)
-                {
-                    graphics.DrawArc(penEdge, (V[E[i].v1].x - 2 * rOfVertex), (V[E[i].v1].y - 2 * rOfVertex), 2 * rOfVertex, 2 * rOfVertex, 90, 270);
-                }
-                else
-                {
-                    graphics.DrawLine(penEdge, V[E[i].v1].x, V[E[i].v1].y, V[E[i].v2].x, V[E[i].v2].y);
-                }
+                graphics.DrawLine(penEdge, V[E[i].v1].x, V[E[i].v1].y, V[E[i].v2].x, V[E[i].v2].y);
             }
+
             //рисуем вершины
-            for (int i = 0; i < V.Count; i++)
+            if (selectedV == null) {
+                for (int i = 0; i < V.Count; i++)
+                {
+                    drawVertex(V[i]);
+                }
+            } else
             {
-                drawVertex(V[i]);
+                for (int i = 0; i < V.Count; i++)
+                {
+                    drawVertex(V[i], selectedV.Contains(i));
+                }
             }
         }
     }

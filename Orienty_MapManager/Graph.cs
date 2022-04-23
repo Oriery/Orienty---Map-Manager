@@ -35,6 +35,11 @@ namespace Orienty_MapManager
 
             _id = Program.form.graph.GetFreeIdOfVertex();
         }
+
+        public void DecID()
+        {
+            _id--;
+        }
     }
 
     public class Edge
@@ -91,23 +96,60 @@ namespace Orienty_MapManager
             return maxId + 1;
         }
 
-        public Vertex GetVertexById(int id)
-        {
-            foreach (var v in V)
-            {
-                if (v.id == id)
-                {
-                    return v;
-                }
-            }
-
-            return null;
-        }
-
         public void Clear()
         {
             V.Clear();
             E.Clear();
+        }
+
+        public bool DeleteVertex(int Id)
+        {
+            if (Id < 0 || Id > V.Count - 1)
+            {
+                return false;
+            }
+
+            for (int j = 0; j < E.Count; j++)
+            {
+                if ((E[j].v1 == Id) || (E[j].v2 == Id))
+                {
+                    E.RemoveAt(j);
+                    j--;
+                }
+                else // сдвигаем id вершин у рёбер
+                {
+                    if (E[j].v1 > Id) E[j].v1--;
+                    if (E[j].v2 > Id) E[j].v2--;
+                }
+            }
+            foreach (int v in V[Id].arrIDs)
+            {
+                V[v].arrIDs.Remove(Id);
+            }
+            V.RemoveAt(Id);
+            // сдвигаем id вершин
+            for (int i = Id; i < V.Count - 1; i++)
+            {
+                V[i].DecID();
+            }
+
+            return true;
+        }
+
+        public bool DeleteEdge(int Id)
+        {
+            if (Id < 0 || Id > E.Count - 1)
+            {
+                return false;
+            }
+
+            Edge edge = E[Id];
+
+            V[edge.v1].arrIDs.Remove(edge.v2);
+            V[edge.v2].arrIDs.Remove(edge.v1);
+
+            E.RemoveAt(Id);
+            return true;
         }
     }
 }
