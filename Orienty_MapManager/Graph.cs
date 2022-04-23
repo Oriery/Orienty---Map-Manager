@@ -87,13 +87,7 @@ namespace Orienty_MapManager
 
         public int GetFreeIdOfVertex()
         {
-            int maxId = -1;
-            foreach (var v in V)
-            {
-                maxId = Math.Max(maxId, v.id);
-            }
-
-            return maxId + 1;
+            return V.Count;
         }
 
         public void Clear()
@@ -109,46 +103,55 @@ namespace Orienty_MapManager
                 return false;
             }
 
-            for (int j = 0; j < E.Count; j++)
+            // удаляем рёбра
+            for (int i = 0; i < E.Count; i++)
             {
-                if ((E[j].v1 == Id) || (E[j].v2 == Id))
+                if ((E[i].v1 == Id) || (E[i].v2 == Id))
                 {
-                    E.RemoveAt(j);
-                    j--;
+                    DeleteEdge(E[i]);
+                    i--;
                 }
                 else // сдвигаем id вершин у рёбер
                 {
-                    if (E[j].v1 > Id) E[j].v1--;
-                    if (E[j].v2 > Id) E[j].v2--;
+                    if (E[i].v1 > Id) E[i].v1--;
+                    if (E[i].v2 > Id) E[i].v2--;
                 }
             }
-            foreach (int v in V[Id].arrIDs)
-            {
-                V[v].arrIDs.Remove(Id);
-            }
-            V.RemoveAt(Id);
+
             // сдвигаем id вершин
-            for (int i = Id; i < V.Count - 1; i++)
+            for (int i = Id + 1; i < V.Count; i++)
             {
                 V[i].DecID();
             }
 
+            // сдвигаем id вершин у вершин
+            foreach (Vertex v in V)
+            {
+                for (int i = 0; i < v.arrIDs.Count; i++)
+                {
+                    if (v.arrIDs[i] > Id)
+                    {
+                        v.arrIDs[i]--;
+                    }
+                }
+            }
+
+            V.RemoveAt(Id);
+
             return true;
         }
 
-        public bool DeleteEdge(int Id)
+        public bool DeleteEdge(Edge edge)
         {
-            if (Id < 0 || Id > E.Count - 1)
+            if (edge == null)
             {
                 return false;
             }
 
-            Edge edge = E[Id];
-
             V[edge.v1].arrIDs.Remove(edge.v2);
             V[edge.v2].arrIDs.Remove(edge.v1);
 
-            E.RemoveAt(Id);
+            E.Remove(edge);
             return true;
         }
     }

@@ -95,7 +95,7 @@ namespace Orienty_MapManager
             return -1;
         }
 
-        private int getIdOfClickedEdge(MouseEventArgs e)
+        private Edge getClickedEdge(MouseEventArgs e)
         {
             Edge edge;
             Vertex v1, v2;
@@ -111,11 +111,11 @@ namespace Orienty_MapManager
                     if ((v1.x <= v2.x && v1.x <= e.X && e.X <= v2.x) ||
                         (v1.x >= v2.x && v1.x >= e.X && e.X >= v2.x))
                     {
-                        return i;
+                        return edge;
                     }
                 }
             }
-            return -1;
+            return null;
         }
 
         private void sheet_MouseClick(object sender, MouseEventArgs e)
@@ -175,7 +175,7 @@ namespace Orienty_MapManager
 
                 if (!haveDeleted)
                 {
-                    haveDeleted = graph.DeleteEdge(getIdOfClickedEdge(e)); // клик по ребру
+                    haveDeleted = graph.DeleteEdge(getClickedEdge(e)); // клик по ребру
                 }
 
                 // обновляем граф на экране
