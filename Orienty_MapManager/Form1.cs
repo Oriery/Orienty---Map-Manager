@@ -105,11 +105,22 @@ namespace Orienty_MapManager
                 v1 = graph.V[edge.v1];
                 v2 = graph.V[edge.v2];
 
-                // TODO деление на ноль и примерно вертикальные линии не сработают
-                if (Math.Abs(v1.y + (e.X - v1.x) * (v2.y - v1.y) / (v2.x - v1.x) - e.Y) < 10)
+                int dx = (v2.x - v1.x);
+                int dy = (v2.y - v1.y);
+                int dx_ = (e.X - v1.x);
+                int dy_ = (e.Y - v1.y);
+                if (Math.Abs(dx) > Math.Abs(dy))
                 {
-                    if ((v1.x <= v2.x && v1.x <= e.X && e.X <= v2.x) ||
-                        (v1.x >= v2.x && v1.x >= e.X && e.X >= v2.x))
+                    float ax = dx_ / dx;
+                    if (Math.Abs(dx_ * dy / dx - dy_) < 10 && (ax >= 0) && (ax <= 1)) 
+                    {
+                        return edge;
+                    }
+                } 
+                else
+                {
+                    float ay = dy_ / dy;
+                    if (Math.Abs(dy_ * dx / dy - dx_) < 10 && (ay >= 0) && (ay <= 1))
                     {
                         return edge;
                     }
