@@ -12,23 +12,30 @@ namespace Orienty_MapManager
         int selected1; //выбранные вершины, для соединения линиями
         int selected2;
 
+        List<Button> buttonGroup;
+
+        WhatDoing whatDoing;
+
         public Form1()
         {
             InitializeComponent();
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
             graph = new Graph();
+
+            buttonGroup = new List<Button>() { drawEdgeButton, drawVertexButton, deleteButton, selectButton };
+
+            whatDoing = WhatDoing.AddingVertices;
+            UpdateButtonsAndResetSelection();
+
             UpdateGraphImage();
-            selected1 = -1;
-            selected2 = -1;
         }
 
         //кнопка - выбрать вершину
         private void selectButton_Click(object sender, EventArgs e)
         {
-            selectButton.Enabled = false;
-            drawVertexButton.Enabled = true;
-            drawEdgeButton.Enabled = true;
-            deleteButton.Enabled = true;
+            whatDoing = WhatDoing.Selecting;
+            UpdateButtonsAndResetSelection(sender);
+
             selected1 = -1;
             UpdateGraphImage();
         }
@@ -36,42 +43,33 @@ namespace Orienty_MapManager
         //кнопка - рисовать вершину
         private void drawVertexButton_Click(object sender, EventArgs e)
         {
-            drawVertexButton.Enabled = false;
-            selectButton.Enabled = true;
-            drawEdgeButton.Enabled = true;
-            deleteButton.Enabled = true;
+            whatDoing = WhatDoing.AddingVertices;
+            UpdateButtonsAndResetSelection(sender);
+
             UpdateGraphImage();
         }
 
         //кнопка - рисовать ребро
         private void drawEdgeButton_Click(object sender, EventArgs e)
         {
-            drawEdgeButton.Enabled = false;
-            selectButton.Enabled = true;
-            drawVertexButton.Enabled = true;
-            deleteButton.Enabled = true;
-            selected1 = -1;
-            selected2 = -1;
+            whatDoing = WhatDoing.AddingEdges;
+            UpdateButtonsAndResetSelection(sender);
+
             UpdateGraphImage();
         }
 
         //кнопка - удалить элемент
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            deleteButton.Enabled = false;
-            selectButton.Enabled = true;
-            drawVertexButton.Enabled = true;
-            drawEdgeButton.Enabled = true;
+            whatDoing = WhatDoing.Deleting;
+            UpdateButtonsAndResetSelection(sender);
+
             UpdateGraphImage();
         }
 
         //кнопка - удалить граф
         private void deleteALLButton_Click(object sender, EventArgs e)
         {
-            selectButton.Enabled = true;
-            drawVertexButton.Enabled = true;
-            drawEdgeButton.Enabled = true;
-            deleteButton.Enabled = true;
             const string message = "Вы действительно хотите полностью удалить граф?";
             const string caption = "Удаление";
             var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -79,6 +77,17 @@ namespace Orienty_MapManager
             {
                 graph.Clear();
                 UpdateGraphImage();
+            }
+        }
+
+        void UpdateButtonsAndResetSelection(object sender = null)
+        {
+            selected1 = -1;
+            selected2 = -1;
+
+            foreach (Button button in buttonGroup)
+            {
+                button.Enabled = button != sender;
             }
         }
 
@@ -133,8 +142,7 @@ namespace Orienty_MapManager
 
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
-            //нажата кнопка "рисовать вершину"
-            if (drawVertexButton.Enabled == false)
+            if (whatDoing == WhatDoing.AddingVertices)
             {
                 Vertex vertex = new Vertex(e.X, e.Y, 0);
                 vertex.name = "abc";
@@ -142,9 +150,7 @@ namespace Orienty_MapManager
                 UpdateGraphImage();
             }
 
-            
-            // нажата кнопка "рисовать ребро"
-            if (drawEdgeButton.Enabled == false)
+            if (whatDoing == WhatDoing.AddingEdges)
             {
                 int selectedV = getIdOfClickedVertex(e);
                 if (selectedV != -1) // клик по вершине
@@ -179,8 +185,7 @@ namespace Orienty_MapManager
                 }
             }
 
-            //нажата кнопка "удалить элемент"
-            if (deleteButton.Enabled == false)
+            if (whatDoing == WhatDoing.Deleting)
             {
                 bool haveDeleted = false;
 
@@ -210,6 +215,16 @@ namespace Orienty_MapManager
             canvas.clearSheet();
             canvas.drawALLGraph(graph, new List<int>() { selected1, selected2 });
             sheet.Image = canvas.GetBitmap();
+        }
+
+        private enum WhatDoing
+        {
+            AddingVertices,
+            AddingEdges,
+            Deleting,
+            Selecting,
+            DrawingWalls,
+            DrawingOuterWall
         }
     }
 }

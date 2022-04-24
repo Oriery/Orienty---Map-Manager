@@ -57,7 +57,7 @@
             // deleteALLButton
             // 
             this.deleteALLButton.Image = global::Orienty_MapManager.Properties.Resources.deleteAll;
-            this.deleteALLButton.Location = new System.Drawing.Point(127, 239);
+            this.deleteALLButton.Location = new System.Drawing.Point(15, 742);
             this.deleteALLButton.Margin = new System.Windows.Forms.Padding(6);
             this.deleteALLButton.Name = "deleteALLButton";
             this.deleteALLButton.Size = new System.Drawing.Size(100, 100);
@@ -68,7 +68,7 @@
             // deleteButton
             // 
             this.deleteButton.Image = global::Orienty_MapManager.Properties.Resources.delete;
-            this.deleteButton.Location = new System.Drawing.Point(15, 239);
+            this.deleteButton.Location = new System.Drawing.Point(127, 15);
             this.deleteButton.Margin = new System.Windows.Forms.Padding(6);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(100, 100);
@@ -112,12 +112,10 @@
             // 
             // saveButton
             // 
-            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(25, 792);
+            this.saveButton.Location = new System.Drawing.Point(24, 248);
             this.saveButton.Margin = new System.Windows.Forms.Padding(15);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(182, 44);
+            this.saveButton.Size = new System.Drawing.Size(185, 44);
             this.saveButton.TabIndex = 13;
             this.saveButton.Text = "Сохранить";
             this.saveButton.UseVisualStyleBackColor = true;
