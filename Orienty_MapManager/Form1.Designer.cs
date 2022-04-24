@@ -38,6 +38,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.panelRight = new System.Windows.Forms.Panel();
             this.panelLeft = new System.Windows.Forms.Panel();
+            this.B_drawOuterWalls = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
             this.panelRight.SuspendLayout();
             this.panelLeft.SuspendLayout();
@@ -109,10 +110,11 @@
             this.sheet.TabIndex = 0;
             this.sheet.TabStop = false;
             this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
+            this.sheet.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseMove);
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(24, 248);
+            this.saveButton.Location = new System.Drawing.Point(27, 503);
             this.saveButton.Margin = new System.Windows.Forms.Padding(15);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(185, 44);
@@ -132,6 +134,7 @@
             // 
             // panelRight
             // 
+            this.panelRight.BackColor = System.Drawing.SystemColors.Control;
             this.panelRight.Controls.Add(this.textBox1);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.panelRight.Location = new System.Drawing.Point(1029, 0);
@@ -143,6 +146,7 @@
             // 
             this.panelLeft.AutoSize = true;
             this.panelLeft.BackColor = System.Drawing.SystemColors.Control;
+            this.panelLeft.Controls.Add(this.B_drawOuterWalls);
             this.panelLeft.Controls.Add(this.drawVertexButton);
             this.panelLeft.Controls.Add(this.drawEdgeButton);
             this.panelLeft.Controls.Add(this.deleteButton);
@@ -154,6 +158,16 @@
             this.panelLeft.Name = "panelLeft";
             this.panelLeft.Size = new System.Drawing.Size(233, 854);
             this.panelLeft.TabIndex = 16;
+            // 
+            // B_drawOuterWalls
+            // 
+            this.B_drawOuterWalls.Location = new System.Drawing.Point(15, 239);
+            this.B_drawOuterWalls.Margin = new System.Windows.Forms.Padding(6);
+            this.B_drawOuterWalls.Name = "B_drawOuterWalls";
+            this.B_drawOuterWalls.Size = new System.Drawing.Size(100, 100);
+            this.B_drawOuterWalls.TabIndex = 14;
+            this.B_drawOuterWalls.UseVisualStyleBackColor = true;
+            this.B_drawOuterWalls.Click += new System.EventHandler(this.B_drawOuterWalls_Click);
             // 
             // Form1
             // 
@@ -187,6 +201,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Panel panelRight;
         private System.Windows.Forms.Panel panelLeft;
+        private System.Windows.Forms.Button B_drawOuterWalls;
     }
 }
 

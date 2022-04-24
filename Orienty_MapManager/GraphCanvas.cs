@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Orienty_MapManager
 {
@@ -15,17 +17,20 @@ namespace Orienty_MapManager
         PointF point;
         public int rOfVertex = 20;
 
+        // Walls
+        Color buildColor = Color.FromArgb(122, 122, 122);
+        Pen penWalls;
+        public Polygon polygon = new Polygon(); // TODO должен быть список полигонов по идее
+
         public GraphCanvas(int width, int height)
         {
             bitmap = new Bitmap(width, height);
             graphics = Graphics.FromImage(bitmap);
             clearSheet();
-            penVertex = new Pen(Color.Black);
-            penVertex.Width = 2;
-            penVertexSelected = new Pen(Color.Red);
-            penVertexSelected.Width = 2;
-            penEdge = new Pen(Color.DarkGoldenrod);
-            penEdge.Width = 2;
+            penVertex = new Pen(Color.Black, 2);
+            penVertexSelected = new Pen(Color.Red, 2);
+            penEdge = new Pen(Color.DarkGoldenrod, 5);
+            penWalls = new Pen(buildColor, 5);
             font = new Font("Arial", 15);
             brush = Brushes.Black;
         }
@@ -66,7 +71,7 @@ namespace Orienty_MapManager
             drawVertex(V2);
         }
 
-        public void drawALLGraph(Graph graph, List<int> selectedV = null)
+        private void drawALLGraph(Graph graph, List<int> selectedV = null)
         { 
             List<Vertex> V = graph.V;
             List<Edge> E = graph.E;
@@ -90,6 +95,26 @@ namespace Orienty_MapManager
                     drawVertex(V[i], selectedV.Contains(i));
                 }
             }
+        }
+
+        private void DrawPolygonOfWalls(Polygon polygon)
+        {
+            for (int i = polygon.isFinished ? 0 : 1; i < polygon.points.Count; i++)
+            {
+                int j = (i - 1 + polygon.points.Count) % polygon.points.Count;
+                graphics.DrawLine(penWalls, polygon.points[i], polygon.points[j]);
+            }
+
+            if (polygon.isFinished)
+            {
+                graphics.FillPolygon(new SolidBrush(buildColor), polygon.points.ToArray());
+            }
+        }
+
+        public void DrawEverything(Graph graph, List<int> selectedV = null)
+        {
+            DrawPolygonOfWalls(polygon);
+            drawALLGraph(graph, selectedV);
         }
     }
 }

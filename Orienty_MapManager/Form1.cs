@@ -16,58 +16,50 @@ namespace Orienty_MapManager
 
         WhatDoing whatDoing;
 
+        bool shouldUpdateOnHover = true; // TODO только во время рисования стен и рёбер
+
         public Form1()
         {
             InitializeComponent();
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
             graph = new Graph();
 
-            buttonGroup = new List<Button>() { drawEdgeButton, drawVertexButton, deleteButton, selectButton };
+            buttonGroup = new List<Button>() { drawEdgeButton, drawVertexButton, deleteButton, selectButton, B_drawOuterWalls };
 
             whatDoing = WhatDoing.AddingVertices;
-            UpdateButtonsAndResetSelection();
-
-            UpdateGraphImage();
+            ResetAllSelections();
         }
 
-        //кнопка - выбрать вершину
         private void selectButton_Click(object sender, EventArgs e)
         {
             whatDoing = WhatDoing.Selecting;
-            UpdateButtonsAndResetSelection(sender);
-
-            selected1 = -1;
-            UpdateGraphImage();
+            ResetAllSelections(sender);
         }
 
-        //кнопка - рисовать вершину
         private void drawVertexButton_Click(object sender, EventArgs e)
         {
             whatDoing = WhatDoing.AddingVertices;
-            UpdateButtonsAndResetSelection(sender);
-
-            UpdateGraphImage();
+            ResetAllSelections(sender);
         }
 
-        //кнопка - рисовать ребро
         private void drawEdgeButton_Click(object sender, EventArgs e)
         {
             whatDoing = WhatDoing.AddingEdges;
-            UpdateButtonsAndResetSelection(sender);
-
-            UpdateGraphImage();
+            ResetAllSelections(sender);
         }
 
-        //кнопка - удалить элемент
         private void deleteButton_Click(object sender, EventArgs e)
         {
             whatDoing = WhatDoing.Deleting;
-            UpdateButtonsAndResetSelection(sender);
-
-            UpdateGraphImage();
+            ResetAllSelections(sender);
         }
 
-        //кнопка - удалить граф
+        private void B_drawOuterWalls_Click(object sender, EventArgs e)
+        {
+            whatDoing = WhatDoing.DrawingOuterWall;
+            ResetAllSelections(sender);
+        }
+
         private void deleteALLButton_Click(object sender, EventArgs e)
         {
             const string message = "Вы действительно хотите полностью удалить граф?";
@@ -80,7 +72,7 @@ namespace Orienty_MapManager
             }
         }
 
-        void UpdateButtonsAndResetSelection(object sender = null)
+        void ResetAllSelections(object sender = null)
         {
             selected1 = -1;
             selected2 = -1;
@@ -89,6 +81,8 @@ namespace Orienty_MapManager
             {
                 button.Enabled = button != sender;
             }
+
+            UpdateGraphImage();
         }
 
         private int getIdOfClickedVertex(MouseEventArgs e)
@@ -148,6 +142,8 @@ namespace Orienty_MapManager
                 vertex.name = "abc";
                 graph.V.Add(vertex);
                 UpdateGraphImage();
+
+                return;
             }
 
             if (whatDoing == WhatDoing.AddingEdges)
@@ -183,6 +179,8 @@ namespace Orienty_MapManager
                         }
                     }
                 }
+
+                return;
             }
 
             if (whatDoing == WhatDoing.Deleting)
@@ -201,6 +199,16 @@ namespace Orienty_MapManager
                 {
                     UpdateGraphImage();
                 }
+
+                return;
+            }
+
+            if (whatDoing == WhatDoing.DrawingOuterWall)
+            {
+                canvas.polygon.AddPointOfWall(e.Location);
+                UpdateGraphImage();
+
+                // TODO отмена рисования и прерывание рисования
             }
         }
 
@@ -213,7 +221,7 @@ namespace Orienty_MapManager
         private void UpdateGraphImage()
         {
             canvas.clearSheet();
-            canvas.drawALLGraph(graph, new List<int>() { selected1, selected2 });
+            canvas.DrawEverything(graph, new List<int>() { selected1, selected2 });
             sheet.Image = canvas.GetBitmap();
         }
 
@@ -223,8 +231,16 @@ namespace Orienty_MapManager
             AddingEdges,
             Deleting,
             Selecting,
-            DrawingWalls,
+            DrawingPavilions,
             DrawingOuterWall
+        }
+
+        private void sheet_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (shouldUpdateOnHover)
+            {
+                // TODO рисовать полностью канвас
+            }
         }
     }
 }
