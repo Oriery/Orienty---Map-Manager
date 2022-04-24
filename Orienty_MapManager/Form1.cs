@@ -32,32 +32,27 @@ namespace Orienty_MapManager
 
         private void selectButton_Click(object sender, EventArgs e)
         {
-            whatDoing = WhatDoing.Selecting;
-            ResetAllSelections(sender);
+            ResetAllSelections(WhatDoing.Selecting, sender);
         }
 
         private void drawVertexButton_Click(object sender, EventArgs e)
         {
-            whatDoing = WhatDoing.AddingVertices;
-            ResetAllSelections(sender);
+            ResetAllSelections(WhatDoing.AddingVertices, sender);
         }
 
         private void drawEdgeButton_Click(object sender, EventArgs e)
         {
-            whatDoing = WhatDoing.AddingEdges;
-            ResetAllSelections(sender);
+            ResetAllSelections(WhatDoing.AddingEdges, sender);
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            whatDoing = WhatDoing.Deleting;
-            ResetAllSelections(sender);
+            ResetAllSelections(WhatDoing.Deleting, sender);
         }
 
         private void B_drawOuterWalls_Click(object sender, EventArgs e)
         {
-            whatDoing = WhatDoing.DrawingOuterWall;
-            ResetAllSelections(sender);
+            ResetAllSelections(WhatDoing.DrawingOuterWall, sender);
         }
 
         private void deleteALLButton_Click(object sender, EventArgs e)
@@ -72,8 +67,14 @@ namespace Orienty_MapManager
             }
         }
 
-        void ResetAllSelections(object sender = null)
+        void ResetAllSelections(WhatDoing whatDoing = WhatDoing.Selecting, object sender = null)
         {
+            this.whatDoing = whatDoing;
+            if (whatDoing == WhatDoing.Selecting)
+            {
+                sender = selectButton;
+            }
+
             selected1 = -1;
             selected2 = -1;
 
@@ -205,7 +206,10 @@ namespace Orienty_MapManager
 
             if (whatDoing == WhatDoing.DrawingOuterWall)
             {
-                canvas.polygon.AddPointOfWall(e.Location);
+                if (canvas.polygon.AddPointOfWall(e.Location))
+                {
+                    ResetAllSelections();
+                } 
                 UpdateGraphImage();
 
                 // TODO отмена рисования и прерывание рисования
