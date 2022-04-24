@@ -18,6 +18,8 @@ namespace Orienty_MapManager
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
             graph = new Graph();
             UpdateGraphImage();
+            selected1 = -1;
+            selected2 = -1;
         }
 
         //кнопка - выбрать вершину
