@@ -10,7 +10,7 @@ namespace Orienty_MapManager
         public GraphCanvas canvas;
         public Graph graph;
 
-        int selected1; //выбранные вершины, для соединения линиями
+        int selected1;
         int selected2;
 
         Dictionary<WhatDoing, Button> buttonsOfActions;
@@ -152,7 +152,7 @@ namespace Orienty_MapManager
                 int dy_ = (e.Y - v1.y);
                 if (Math.Abs(dx) > Math.Abs(dy))
                 {
-                    float ax = dx_ / dx;
+                    float ax = (float)dx_ / dx;
                     if (Math.Abs(dx_ * dy / dx - dy_) < 10 && (ax >= 0) && (ax <= 1)) 
                     {
                         return edge;
@@ -160,7 +160,7 @@ namespace Orienty_MapManager
                 } 
                 else
                 {
-                    float ay = dy_ / dy;
+                    float ay = (float)dy_ / dy;
                     if (Math.Abs(dy_ * dx / dy - dx_) < 10 && (ay >= 0) && (ay <= 1))
                     {
                         return edge;
@@ -315,6 +315,7 @@ namespace Orienty_MapManager
         {
             string json = MapSerializer.SerializeMap(graph);
             TB_Debug.Text = json;
+            TB_Debug.Visible = true;
         }
 
         private void UpdateGraphImage()

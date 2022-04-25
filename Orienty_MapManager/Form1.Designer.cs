@@ -139,6 +139,7 @@
             this.TB_Debug.Name = "TB_Debug";
             this.TB_Debug.Size = new System.Drawing.Size(368, 379);
             this.TB_Debug.TabIndex = 14;
+            this.TB_Debug.Visible = false;
             // 
             // panelLeft
             // 
