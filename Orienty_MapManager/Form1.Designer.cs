@@ -38,8 +38,18 @@
             this.TB_Debug = new System.Windows.Forms.TextBox();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.B_drawOuterWalls = new System.Windows.Forms.Button();
+            this.mainPanel = new System.Windows.Forms.Panel();
+            this.panelContextVertex = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RB_Junktion = new System.Windows.Forms.RadioButton();
+            this.RB_Pavilion = new System.Windows.Forms.RadioButton();
+            this.RB_Exit = new System.Windows.Forms.RadioButton();
+            this.TB_Name = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
             this.panelLeft.SuspendLayout();
+            this.mainPanel.SuspendLayout();
+            this.panelContextVertex.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectButton
@@ -102,8 +112,8 @@
             // 
             this.sheet.BackColor = System.Drawing.SystemColors.Control;
             this.sheet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sheet.Location = new System.Drawing.Point(233, 0);
-            this.sheet.Margin = new System.Windows.Forms.Padding(6);
+            this.sheet.Location = new System.Drawing.Point(0, 0);
+            this.sheet.Margin = new System.Windows.Forms.Padding(0);
             this.sheet.Name = "sheet";
             this.sheet.Size = new System.Drawing.Size(1421, 1129);
             this.sheet.TabIndex = 0;
@@ -157,6 +167,80 @@
             this.B_drawOuterWalls.UseVisualStyleBackColor = true;
             this.B_drawOuterWalls.Click += new System.EventHandler(this.B_drawOuterWalls_Click);
             // 
+            // mainPanel
+            // 
+            this.mainPanel.Controls.Add(this.panelContextVertex);
+            this.mainPanel.Controls.Add(this.sheet);
+            this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainPanel.Location = new System.Drawing.Point(233, 0);
+            this.mainPanel.Name = "mainPanel";
+            this.mainPanel.Size = new System.Drawing.Size(1421, 1129);
+            this.mainPanel.TabIndex = 17;
+            // 
+            // panelContextVertex
+            // 
+            this.panelContextVertex.Controls.Add(this.groupBox1);
+            this.panelContextVertex.Controls.Add(this.TB_Name);
+            this.panelContextVertex.Location = new System.Drawing.Point(374, 517);
+            this.panelContextVertex.Name = "panelContextVertex";
+            this.panelContextVertex.Size = new System.Drawing.Size(288, 189);
+            this.panelContextVertex.TabIndex = 1;
+            this.panelContextVertex.Visible = false;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.RB_Junktion);
+            this.groupBox1.Controls.Add(this.RB_Pavilion);
+            this.groupBox1.Controls.Add(this.RB_Exit);
+            this.groupBox1.Location = new System.Drawing.Point(3, 54);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(282, 132);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Тип";
+            // 
+            // RB_Junktion
+            // 
+            this.RB_Junktion.AutoSize = true;
+            this.RB_Junktion.Checked = true;
+            this.RB_Junktion.Location = new System.Drawing.Point(15, 30);
+            this.RB_Junktion.Name = "RB_Junktion";
+            this.RB_Junktion.Size = new System.Drawing.Size(173, 29);
+            this.RB_Junktion.TabIndex = 0;
+            this.RB_Junktion.TabStop = true;
+            this.RB_Junktion.Text = "Перекрёсток";
+            this.RB_Junktion.UseVisualStyleBackColor = true;
+            // 
+            // RB_Pavilion
+            // 
+            this.RB_Pavilion.AutoSize = true;
+            this.RB_Pavilion.Location = new System.Drawing.Point(15, 100);
+            this.RB_Pavilion.Name = "RB_Pavilion";
+            this.RB_Pavilion.Size = new System.Drawing.Size(107, 29);
+            this.RB_Pavilion.TabIndex = 1;
+            this.RB_Pavilion.Text = "Выход";
+            this.RB_Pavilion.UseVisualStyleBackColor = true;
+            // 
+            // RB_Exit
+            // 
+            this.RB_Exit.AutoSize = true;
+            this.RB_Exit.Location = new System.Drawing.Point(15, 65);
+            this.RB_Exit.Name = "RB_Exit";
+            this.RB_Exit.Size = new System.Drawing.Size(140, 29);
+            this.RB_Exit.TabIndex = 2;
+            this.RB_Exit.Text = "Павильон";
+            this.RB_Exit.UseVisualStyleBackColor = true;
+            // 
+            // TB_Name
+            // 
+            this.TB_Name.Location = new System.Drawing.Point(18, 17);
+            this.TB_Name.MaxLength = 20;
+            this.TB_Name.Name = "TB_Name";
+            this.TB_Name.Size = new System.Drawing.Size(252, 31);
+            this.TB_Name.TabIndex = 2;
+            this.TB_Name.TextChanged += new System.EventHandler(this.TB_Name_TextChanged);
+            this.TB_Name.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TB_Name_PreviewKeyDown);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -164,7 +248,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1654, 1129);
             this.Controls.Add(this.TB_Debug);
-            this.Controls.Add(this.sheet);
+            this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.panelLeft);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(6);
@@ -172,6 +256,11 @@
             this.Text = "Orienty: Map Manager";
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).EndInit();
             this.panelLeft.ResumeLayout(false);
+            this.mainPanel.ResumeLayout(false);
+            this.panelContextVertex.ResumeLayout(false);
+            this.panelContextVertex.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,6 +278,13 @@
         private System.Windows.Forms.TextBox TB_Debug;
         private System.Windows.Forms.Panel panelLeft;
         private System.Windows.Forms.Button B_drawOuterWalls;
+        private System.Windows.Forms.Panel mainPanel;
+        private System.Windows.Forms.Panel panelContextVertex;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton RB_Junktion;
+        private System.Windows.Forms.RadioButton RB_Pavilion;
+        private System.Windows.Forms.RadioButton RB_Exit;
+        private System.Windows.Forms.TextBox TB_Name;
     }
 }
 

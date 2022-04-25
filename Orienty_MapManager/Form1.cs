@@ -101,6 +101,8 @@ namespace Orienty_MapManager
                 button.Enabled = button != sender;
             }
 
+            panelContextVertex.Visible = false;
+
             UpdateGraphImage();
         }
 
@@ -157,20 +159,23 @@ namespace Orienty_MapManager
         {
             if (whatDoing == WhatDoing.AddingVertices)
             {
-                Vertex vertex = new Vertex(e.X, e.Y, 0);
-                vertex.name = "abc";
-                graph.V.Add(vertex);
-                UpdateGraphImage();
+                if (e.Button == MouseButtons.Left)
+                {
+                    Vertex vertex = new Vertex(e.X, e.Y, 0);
+                    vertex.name = "abc";
+                    graph.V.Add(vertex);
+                    UpdateGraphImage();
+                }
 
                 return;
             }
 
             if (whatDoing == WhatDoing.AddingEdges)
             {
-                int selectedV = getIdOfClickedVertex(e);
-                if (selectedV != -1) // клик по вершине
+                if (e.Button == MouseButtons.Left)
                 {
-                    if (e.Button == MouseButtons.Left)
+                    int selectedV = getIdOfClickedVertex(e);
+                    if (selectedV != -1) // клик по вершине
                     {
                         if (selected1 == -1)
                         {
@@ -188,15 +193,11 @@ namespace Orienty_MapManager
                             UpdateGraphImage();
                         }
                     }
+                }
 
-                    if (e.Button == MouseButtons.Right)
-                    {
-                        if (selected1 != -1 && selectedV == selected1)
-                        {
-                            selected1 = -1;
-                            UpdateGraphImage();
-                        }
-                    }
+                if (e.Button == MouseButtons.Right)
+                {
+                    ResetAllSelections(WhatDoing.AddingEdges);
                 }
 
                 return;
@@ -233,7 +234,43 @@ namespace Orienty_MapManager
 
 
                 // TODO отмена рисования и прерывание рисования
+
+                return;
             }
+
+            if (whatDoing == WhatDoing.Selecting)
+            {
+                int selectedV = getIdOfClickedVertex(e);
+                if (selectedV != -1) // клик по вершине
+                {
+                    if (e.Button == MouseButtons.Right)
+                    {
+                        selected1 = selectedV;
+                        ShowContextPanelVertex(selectedV, e);
+                    }
+                }
+                else
+                {
+                    ResetAllSelections();
+                }
+            }
+        }
+
+        private void ShowContextPanelVertex(int idOfVertex, MouseEventArgs e)
+        {
+            panelContextVertex.Visible = false;
+
+            panelContextVertex.Location = e.Location;
+            if (!graph.V[idOfVertex].name.Trim().Equals(""))
+            {
+                TB_Name.Text = graph.V[idOfVertex].name;
+            }
+            else
+            {
+                TB_Name.Text = "Безымянный";
+            }
+
+            panelContextVertex.Visible = true;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -264,6 +301,26 @@ namespace Orienty_MapManager
             if (shouldUpdateOnHover)
             {
                 // TODO рисовать полностью канвас
+            }
+        }
+
+        private void TB_Name_TextChanged(object sender, EventArgs e)
+        {
+            if (!(sender as TextBox).Text.Trim().Equals(""))
+            {
+                graph.V[selected1].name = (sender as TextBox).Text;
+            }
+            else
+            {
+                graph.V[selected1].name = "Безымянный";
+            }
+        }
+
+        private void TB_Name_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                ResetAllSelections();
             }
         }
     }
