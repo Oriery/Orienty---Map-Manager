@@ -13,9 +13,9 @@ namespace Orienty_MapManager
         public static string SerializeMap(Graph graph)
         {
             MapContainer mapContainer = new MapContainer();
-            mapContainer.vertices = graph.V;
+            mapContainer.nodes = graph.V;
 
-            foreach ( var v in mapContainer.vertices )
+            foreach ( var v in mapContainer.nodes )
             {
                 if (v.type == E_NodeType.Pavilion)
                 {
@@ -33,12 +33,12 @@ namespace Orienty_MapManager
         {
             public MapContainer()
             {
-                vertices = new List<Vertex>();
+                nodes = new List<Vertex>();
                 idNamePairs = new List<IdNamePair>();
                 beacons = new List<Beacon>();
             }
 
-            public List<Vertex> vertices { get; set; }
+            public List<Vertex> nodes { get; set; }
             public List<IdNamePair> idNamePairs { get; set; }
             public List<Beacon> beacons { get; set; }
         }
