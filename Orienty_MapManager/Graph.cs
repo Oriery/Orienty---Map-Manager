@@ -23,7 +23,7 @@ namespace Orienty_MapManager
         public E_NodeType type { get; set; }
         public List<int> arrIDs { get; set; }
 
-        public Vertex(int x, int y, int z, E_NodeType nodeType = E_NodeType.Pavilion)
+        public Vertex(int x, int y, int z, E_NodeType nodeType = E_NodeType.Junktion)
         {
             this.x = x;
             this.y = y;

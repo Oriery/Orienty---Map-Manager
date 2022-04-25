@@ -13,7 +13,7 @@ namespace Orienty_MapManager
         int selected1; //выбранные вершины, для соединения линиями
         int selected2;
 
-        List<Button> buttonGroup;
+        Dictionary<WhatDoing, Button> buttonsOfActions;
 
         WhatDoing whatDoing;
 
@@ -25,7 +25,13 @@ namespace Orienty_MapManager
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
             graph = new Graph();
 
-            buttonGroup = new List<Button>() { drawEdgeButton, drawVertexButton, deleteButton, selectButton, B_drawOuterWalls };
+            buttonsOfActions = new Dictionary<WhatDoing, Button>();
+            buttonsOfActions.Add(WhatDoing.Selecting, selectButton);
+            buttonsOfActions.Add(WhatDoing.AddingEdges, drawEdgeButton);
+            buttonsOfActions.Add(WhatDoing.AddingVertices, drawVertexButton);
+            buttonsOfActions.Add(WhatDoing.Deleting, deleteButton);
+            buttonsOfActions.Add(WhatDoing.DrawingPavilions, null); // TODO добавить кнопку рисования стен павильонов
+            buttonsOfActions.Add(WhatDoing.DrawingOuterWall, B_drawOuterWalls);
 
             whatDoing = WhatDoing.AddingVertices;
             ResetAllSelections();
@@ -33,22 +39,22 @@ namespace Orienty_MapManager
 
         private void selectButton_Click(object sender, EventArgs e)
         {
-            ResetAllSelections(WhatDoing.Selecting, sender);
+            ResetAllSelections(WhatDoing.Selecting);
         }
 
         private void drawVertexButton_Click(object sender, EventArgs e)
         {
-            ResetAllSelections(WhatDoing.AddingVertices, sender);
+            ResetAllSelections(WhatDoing.AddingVertices);
         }
 
         private void drawEdgeButton_Click(object sender, EventArgs e)
         {
-            ResetAllSelections(WhatDoing.AddingEdges, sender);
+            ResetAllSelections(WhatDoing.AddingEdges);
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            ResetAllSelections(WhatDoing.Deleting, sender);
+            ResetAllSelections(WhatDoing.Deleting);
         }
 
         private void B_drawOuterWalls_Click(object sender, EventArgs e)
@@ -66,7 +72,7 @@ namespace Orienty_MapManager
             if (allowedToDrawNewOuterWall)
             {
                 canvas.outerWall.Reset();
-                ResetAllSelections(WhatDoing.DrawingOuterWall, sender);
+                ResetAllSelections(WhatDoing.DrawingOuterWall);
             } 
             else
             {
@@ -86,20 +92,22 @@ namespace Orienty_MapManager
             }
         }
 
-        void ResetAllSelections(WhatDoing whatDoing = WhatDoing.Selecting, object sender = null)
+        void ResetAllSelections(WhatDoing whatDoing = WhatDoing.Selecting)
         {
             this.whatDoing = whatDoing;
-            if (whatDoing == WhatDoing.Selecting)
-            {
-                sender = selectButton;
-            }
+
+            Button buttonOfAction;
+            buttonsOfActions.TryGetValue(whatDoing, out buttonOfAction);
 
             selected1 = -1;
             selected2 = -1;
 
-            foreach (Button button in buttonGroup)
+            foreach (Button button in buttonsOfActions.Values)
             {
-                button.Enabled = button != sender;
+                if (button != null)
+                {
+                    button.Enabled = button != buttonOfAction;
+                }
             }
 
             panelContextVertex.Visible = false;
@@ -111,7 +119,8 @@ namespace Orienty_MapManager
         {
             for (int i = 0; i < graph.V.Count; i++)
             {
-                if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) < Math.Pow(canvas.rOfVertex, 2))
+                int rOfVertex = canvas.GetRadiusOfVertex(graph.V[i]);
+                if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) < Math.Pow(rOfVertex, 2))
                 {
                     return graph.V[i].id;
                 }
@@ -163,7 +172,6 @@ namespace Orienty_MapManager
                 if (e.Button == MouseButtons.Left)
                 {
                     Vertex vertex = new Vertex(e.X, e.Y, 0);
-                    vertex.name = "abc";
                     graph.V.Add(vertex);
                     UpdateGraphImage();
                 }
@@ -264,7 +272,9 @@ namespace Orienty_MapManager
 
             Vertex vertex = graph.V[idOfVertex];
 
-            panelContextVertex.Location = vertex.GetPoint() + new Size(-canvas.rOfVertex, canvas.rOfVertex * 2 / 3);
+            panelContextVertex.Location = vertex.GetPoint() + new Size(-canvas.rOfPavilion, canvas.rOfPavilion * 2 / 3);
+
+            TB_Name.Visible = vertex.type == E_NodeType.Pavilion;
 
             if (!vertex.name.Trim().Equals(""))
             {
@@ -286,7 +296,6 @@ namespace Orienty_MapManager
                 case E_NodeType.Exit:
                     RB_Exit.Checked = true;
                     break;
-
             }
 
             panelContextVertex.Visible = true;

@@ -8,14 +8,26 @@ namespace Orienty_MapManager
     public class GraphCanvas
     {
         Bitmap bitmap;
+        Graphics graphics;
+
+        Font font;
+        Brush brushText = Brushes.Black;
+
+        Color colorEdges = Color.FromArgb(0, 100, 100);
+
+        Brush brushPavilion = Brushes.White;
+        Brush brushJunktion;
+        Brush brushExit = Brushes.Aquamarine;
+
         Pen penVertex;
         Pen penVertexSelected;
         Pen penEdge;
-        Graphics graphics;
-        Font font;
-        Brush brush;
+
+        public int rOfPavilion = 10;
+        public int rOfJunktion = 6;
+        public int rOfExit = 6;
+
         PointF point;
-        public int rOfVertex = 20;
 
         // Walls
         Color wallsColor = Color.FromArgb(180, 180, 180);
@@ -30,10 +42,10 @@ namespace Orienty_MapManager
             clearSheet();
             penVertex = new Pen(Color.Black, 2);
             penVertexSelected = new Pen(Color.Red, 2);
-            penEdge = new Pen(Color.DarkGoldenrod, 5);
+            penEdge = new Pen(colorEdges, 2);
             penWalls = new Pen(wallsColor, 5);
-            font = new Font("Arial", 15);
-            brush = Brushes.Black;
+            font = new Font("Arial", 10);
+            brushJunktion = new SolidBrush(colorEdges);
         }
 
         public Bitmap GetBitmap()
@@ -50,8 +62,11 @@ namespace Orienty_MapManager
         {
             int x = vertex.x;
             int y = vertex.y;
+            int rOfVertex = GetRadiusOfVertex(vertex);
 
-            graphics.FillEllipse(Brushes.White, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+            graphics.FillEllipse(GetBrushOfVertex(vertex), 
+                (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+
             if (isSelected)
             {
                 graphics.DrawEllipse(penVertexSelected, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
@@ -60,11 +75,11 @@ namespace Orienty_MapManager
             {
                 graphics.DrawEllipse(penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
             }
-            point = new PointF(x - rOfVertex + 2, y - font.Height / 2);
 
             if (vertex.type == E_NodeType.Pavilion)
             {
-                graphics.DrawString(vertex.name, font, brush, point);
+                point = new PointF(x + rOfVertex + 2, y - font.Height / 2);
+                graphics.DrawString(vertex.name, font, brushText, point);
             }
         }
 
@@ -119,6 +134,36 @@ namespace Orienty_MapManager
         {
             DrawPolygonOfWalls(outerWall);
             DrawALLGraph(graph, selectedV);
+        }
+
+        public int GetRadiusOfVertex(Vertex vertex)
+        {
+            switch (vertex.type)
+            {
+                case E_NodeType.Junktion:
+                    return rOfJunktion;
+                case E_NodeType.Pavilion:
+                    return rOfPavilion;
+                case E_NodeType.Exit:
+                    return rOfExit;
+                default: 
+                    return rOfPavilion;
+            }
+        }
+
+        public Brush GetBrushOfVertex(Vertex vertex)
+        {
+            switch (vertex.type)
+            {
+                case E_NodeType.Junktion:
+                    return brushJunktion;
+                case E_NodeType.Pavilion:
+                    return brushPavilion;
+                case E_NodeType.Exit:
+                    return brushExit;
+                default:
+                    return brushPavilion;
+            }
         }
     }
 }
