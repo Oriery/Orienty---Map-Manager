@@ -115,6 +115,10 @@ namespace Orienty_MapManager
                 graphics.DrawLine(penEdge, graph.V[v1].x, graph.V[v1].y, graph.V[v2].x, graph.V[v2].y);
             }
         }
+        public void DrawEdge(Point v1, Point v2)
+        {
+            graphics.DrawLine(penEdge, v1, v2);
+        }
 
         private void DrawPolygonOfWalls(Polygon polygon)
         {
@@ -130,10 +134,18 @@ namespace Orienty_MapManager
             }
         }
 
-        public void DrawEverything(Graph graph, List<int> selectedV = null)
+        public void DrawEverything(Graph graph, List<int> selectedV = null, List<PairPoints> extraLines = null)
         {
             DrawPolygonOfWalls(outerWall);
             DrawALLGraph(graph, selectedV);
+
+            if (extraLines != null)
+            {
+                foreach (var line in extraLines)
+                {
+                    DrawEdge(line.p1, line.p2);
+                }
+            }
         }
 
         public int GetRadiusOfVertex(Vertex vertex)
@@ -164,6 +176,18 @@ namespace Orienty_MapManager
                 default:
                     return brushPavilion;
             }
+        }
+    }
+
+    public class PairPoints
+    {
+        public Point p1;
+        public Point p2;
+
+        public PairPoints(Point p1, Point p2)
+        {
+            this.p1 = p1;
+            this.p2 = p2;
         }
     }
 }

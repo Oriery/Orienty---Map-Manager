@@ -119,7 +119,6 @@
             this.sheet.TabIndex = 0;
             this.sheet.TabStop = false;
             this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
-            this.sheet.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseMove);
             // 
             // saveButton
             // 

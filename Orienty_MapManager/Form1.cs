@@ -17,8 +17,6 @@ namespace Orienty_MapManager
 
         WhatDoing whatDoing;
 
-        bool shouldUpdateOnHover = true; // TODO только во время рисования стен и рёбер
-
         public Form1()
         {
             InitializeComponent();
@@ -194,6 +192,7 @@ namespace Orienty_MapManager
                         if (selected1 == -1)
                         {
                             selected1 = selectedV;
+                            ShouldUpdateOnHover(true);
                             UpdateGraphImage();
                         }
                         else if (selectedV != selected1)
@@ -204,6 +203,7 @@ namespace Orienty_MapManager
                             graph.V[selected2].arrIDs.Add(selected1);
                             selected1 = -1;
                             selected2 = -1;
+                            ShouldUpdateOnHover(false);
                             UpdateGraphImage();
                         }
                     }
@@ -219,19 +219,7 @@ namespace Orienty_MapManager
 
             if (whatDoing == WhatDoing.Deleting)
             {
-                bool haveDeleted = false;
-
-                haveDeleted = graph.DeleteVertex(getIdOfClickedVertex(e)); // клик по вершине
-
-                if (!haveDeleted)
-                {
-                    haveDeleted = graph.DeleteEdge(getClickedEdge(e)); // клик по ребру
-                }
-
-                if (haveDeleted)
-                {
-                    UpdateGraphImage();
-                }
+                DeleteClicked(e);
 
                 return;
             }
@@ -273,6 +261,23 @@ namespace Orienty_MapManager
                 {
                     ResetAllSelections();
                 }
+            }
+        }
+
+        private void DeleteClicked(MouseEventArgs e)
+        {
+            bool haveDeleted = false;
+
+            haveDeleted = graph.DeleteVertex(getIdOfClickedVertex(e)); // клик по вершине
+
+            if (!haveDeleted)
+            {
+                haveDeleted = graph.DeleteEdge(getClickedEdge(e)); // клик по ребру
+            }
+
+            if (haveDeleted)
+            {
+                UpdateGraphImage();
             }
         }
 
@@ -318,10 +323,10 @@ namespace Orienty_MapManager
             TB_Debug.Visible = true;
         }
 
-        private void UpdateGraphImage()
+        private void UpdateGraphImage(List<PairPoints> extraLines = null)
         {
             canvas.clearSheet();
-            canvas.DrawEverything(graph, new List<int>() { selected1, selected2 });
+            canvas.DrawEverything(graph, new List<int>() { selected1, selected2 }, extraLines);
             sheet.Image = canvas.GetBitmap();
         }
 
@@ -337,9 +342,21 @@ namespace Orienty_MapManager
 
         private void sheet_MouseMove(object sender, MouseEventArgs e)
         {
-            if (shouldUpdateOnHover)
+            if (whatDoing == WhatDoing.AddingEdges && selected1 != -1)
             {
-                // TODO рисовать полностью канвас
+                UpdateGraphImage(new List<PairPoints> { new PairPoints(graph.V[selected1].GetPoint(), e.Location) });
+            }
+        }
+
+        private void ShouldUpdateOnHover(bool shouldUpdate)
+        {
+            if (shouldUpdate)
+            {
+                sheet.MouseMove += sheet_MouseMove;
+            } 
+            else
+            {
+                sheet.MouseMove -= sheet_MouseMove;
             }
         }
 
