@@ -42,8 +42,8 @@
             this.panelContextVertex = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.RB_Junktion = new System.Windows.Forms.RadioButton();
-            this.RB_Exit = new System.Windows.Forms.RadioButton();
             this.RB_Pavilion = new System.Windows.Forms.RadioButton();
+            this.RB_Exit = new System.Windows.Forms.RadioButton();
             this.TB_Name = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
             this.panelLeft.SuspendLayout();
@@ -213,18 +213,6 @@
             this.RB_Junktion.UseVisualStyleBackColor = true;
             this.RB_Junktion.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
             // 
-            // RB_Exit
-            // 
-            this.RB_Exit.AutoSize = true;
-            this.RB_Exit.Location = new System.Drawing.Point(15, 100);
-            this.RB_Exit.Name = "RB_Exit";
-            this.RB_Exit.Size = new System.Drawing.Size(107, 29);
-            this.RB_Exit.TabIndex = 2;
-            this.RB_Exit.Tag = "Exit";
-            this.RB_Exit.Text = "Выход";
-            this.RB_Exit.UseVisualStyleBackColor = true;
-            this.RB_Exit.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
-            // 
             // RB_Pavilion
             // 
             this.RB_Pavilion.AutoSize = true;
@@ -236,6 +224,18 @@
             this.RB_Pavilion.Text = "Павильон";
             this.RB_Pavilion.UseVisualStyleBackColor = true;
             this.RB_Pavilion.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
+            // 
+            // RB_Exit
+            // 
+            this.RB_Exit.AutoSize = true;
+            this.RB_Exit.Location = new System.Drawing.Point(15, 100);
+            this.RB_Exit.Name = "RB_Exit";
+            this.RB_Exit.Size = new System.Drawing.Size(107, 29);
+            this.RB_Exit.TabIndex = 2;
+            this.RB_Exit.Tag = "Exit";
+            this.RB_Exit.Text = "Выход";
+            this.RB_Exit.UseVisualStyleBackColor = true;
+            this.RB_Exit.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
             // 
             // TB_Name
             // 
@@ -258,6 +258,7 @@
             this.Controls.Add(this.panelLeft);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(6);
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Orienty: Map Manager";
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).EndInit();

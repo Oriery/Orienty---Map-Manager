@@ -272,7 +272,14 @@ namespace Orienty_MapManager
 
             Vertex vertex = graph.V[idOfVertex];
 
-            panelContextVertex.Location = vertex.GetPoint() + new Size(-canvas.rOfPavilion, canvas.rOfPavilion * 2 / 3);
+            Point pos = vertex.GetPoint() + new Size(-canvas.rOfPavilion, canvas.rOfPavilion * 2 / 3);
+            pos.X = Math.Min(pos.X, mainPanel.Width - panelContextVertex.Width);
+            pos.X = Math.Max(pos.X, 0);
+            if (pos.Y + panelContextVertex.Height > mainPanel.Height)
+            {
+                pos.Y = vertex.GetPoint().Y - canvas.rOfPavilion * 2 / 3 - panelContextVertex.Height;
+            }
+            panelContextVertex.Location = pos;
 
             TB_Name.Visible = vertex.type == E_NodeType.Pavilion;
 
