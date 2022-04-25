@@ -17,7 +17,7 @@ namespace Orienty_MapManager
         private int _id;
         public int id { get => _id; }
         public int x, y, z;
-        public int[] coord { get => new int[] { x, y, z }; }
+        public Coord coord { get => new Coord(x, y, z); }
 
         public string name;
         public E_NodeType type { get; set; }
@@ -63,7 +63,7 @@ namespace Orienty_MapManager
         public string uuid { get; set; }
         public int x, y, z;
 
-        public int[] coord { get => new int[] { x, y, z }; }
+        public Coord coord { get => new Coord(x, y, z); }
 
         /// <summary>
         /// Ближайшая нода
