@@ -109,7 +109,7 @@ namespace Orienty_MapManager
             UpdateGraphImage();
         }
 
-        private int getIdOfUnderlyingVertex(MouseEventArgs e)
+        private int GetIdOfUnderlyingVertex(MouseEventArgs e)
         {
             for (int i = 0; i < graph.V.Count; i++)
             {
@@ -125,7 +125,7 @@ namespace Orienty_MapManager
             return -1;
         }
 
-        private Edge getClickedEdge(MouseEventArgs e)
+        private Edge GetUnderlyingEdge(MouseEventArgs e)
         {
             Edge edge;
             Vertex v1, v2;
@@ -165,30 +165,29 @@ namespace Orienty_MapManager
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    int selectedV = getIdOfUnderlyingVertex(e);
+                    int selectedV = GetIdOfUnderlyingVertex(e);
                     if (selectedV != -1) // Рисуем ребро
                     {
                         if (selected1 == -1) // Новое ребро
                         {
-                            selected1 = selectedV;
-                            ShouldUpdateOnHover(true);
-                            UpdateGraphImage();
+                            StartNewEdge(selectedV);
                         }
                         else if (selectedV != selected1) // Новое ребро оканчивается на существующей вершине
                         {
-                            CreateNewEdge(selected1, selectedV);
+                            FinishNewEdge(selected1, selectedV);
+                            StartNewEdge(selectedV);
                         }
                     } 
-                    else if (selected1 != -1) // Новая вершина на конце рисуемого ребра
-                    { 
+                    else // Новая вершина
+                    {
                         int id = CreateNewVertex(e.X, e.Y, 0);
 
-                        CreateNewEdge(selected1, id);
-                    }
-                    else // Новая вершина
-                    { 
-                        CreateNewVertex(e.X, e.Y, 0);
-                        UpdateGraphImage();
+                        if (selected1 != -1) // Рисовали ребро
+                        {
+                            FinishNewEdge(selected1, id);
+                        }
+
+                        StartNewEdge(id);
                     }
                 }
 
@@ -229,7 +228,7 @@ namespace Orienty_MapManager
 
             if (whatDoing == WhatDoing.Selecting)
             {
-                int selectedV = getIdOfUnderlyingVertex(e);
+                int selectedV = GetIdOfUnderlyingVertex(e);
                 if (selectedV != -1) // клик по вершине
                 {
                     if (e.Button == MouseButtons.Right)
@@ -251,11 +250,11 @@ namespace Orienty_MapManager
         {
             bool haveDeleted = false;
 
-            haveDeleted = graph.DeleteVertex(getIdOfUnderlyingVertex(e)); // клик по вершине
+            haveDeleted = graph.DeleteVertex(GetIdOfUnderlyingVertex(e)); // клик по вершине
 
             if (!haveDeleted)
             {
-                haveDeleted = graph.DeleteEdge(getClickedEdge(e)); // клик по ребру
+                haveDeleted = graph.DeleteEdge(GetUnderlyingEdge(e)); // клик по ребру
             }
 
             if (haveDeleted)
@@ -271,7 +270,14 @@ namespace Orienty_MapManager
             return vertex.id;
         }
 
-        private void CreateNewEdge(int v1, int v2)
+        private void StartNewEdge(int idOfNode)
+        {
+            selected1 = idOfNode;
+            ShouldUpdateOnHover(true);
+            UpdateGraphImage();
+        }
+
+        private void FinishNewEdge(int v1, int v2)
         {
             graph.E.Add(new Edge(v1, v2));
             graph.V[v1].arrIDs.Add(v2);
