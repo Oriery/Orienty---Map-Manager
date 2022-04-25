@@ -42,8 +42,8 @@
             this.panelContextVertex = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.RB_Junktion = new System.Windows.Forms.RadioButton();
-            this.RB_Pavilion = new System.Windows.Forms.RadioButton();
             this.RB_Exit = new System.Windows.Forms.RadioButton();
+            this.RB_Pavilion = new System.Windows.Forms.RadioButton();
             this.TB_Name = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
             this.panelLeft.SuspendLayout();
@@ -183,7 +183,7 @@
             this.panelContextVertex.Controls.Add(this.TB_Name);
             this.panelContextVertex.Location = new System.Drawing.Point(374, 517);
             this.panelContextVertex.Name = "panelContextVertex";
-            this.panelContextVertex.Size = new System.Drawing.Size(288, 189);
+            this.panelContextVertex.Size = new System.Drawing.Size(288, 204);
             this.panelContextVertex.TabIndex = 1;
             this.panelContextVertex.Visible = false;
             // 
@@ -192,7 +192,7 @@
             this.groupBox1.Controls.Add(this.RB_Junktion);
             this.groupBox1.Controls.Add(this.RB_Pavilion);
             this.groupBox1.Controls.Add(this.RB_Exit);
-            this.groupBox1.Location = new System.Drawing.Point(3, 54);
+            this.groupBox1.Location = new System.Drawing.Point(3, 69);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(282, 132);
             this.groupBox1.TabIndex = 1;
@@ -208,28 +208,34 @@
             this.RB_Junktion.Size = new System.Drawing.Size(173, 29);
             this.RB_Junktion.TabIndex = 0;
             this.RB_Junktion.TabStop = true;
+            this.RB_Junktion.Tag = "Junktion";
             this.RB_Junktion.Text = "Перекрёсток";
             this.RB_Junktion.UseVisualStyleBackColor = true;
-            // 
-            // RB_Pavilion
-            // 
-            this.RB_Pavilion.AutoSize = true;
-            this.RB_Pavilion.Location = new System.Drawing.Point(15, 100);
-            this.RB_Pavilion.Name = "RB_Pavilion";
-            this.RB_Pavilion.Size = new System.Drawing.Size(107, 29);
-            this.RB_Pavilion.TabIndex = 1;
-            this.RB_Pavilion.Text = "Выход";
-            this.RB_Pavilion.UseVisualStyleBackColor = true;
+            this.RB_Junktion.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
             // 
             // RB_Exit
             // 
             this.RB_Exit.AutoSize = true;
-            this.RB_Exit.Location = new System.Drawing.Point(15, 65);
+            this.RB_Exit.Location = new System.Drawing.Point(15, 100);
             this.RB_Exit.Name = "RB_Exit";
-            this.RB_Exit.Size = new System.Drawing.Size(140, 29);
+            this.RB_Exit.Size = new System.Drawing.Size(107, 29);
             this.RB_Exit.TabIndex = 2;
-            this.RB_Exit.Text = "Павильон";
+            this.RB_Exit.Tag = "Exit";
+            this.RB_Exit.Text = "Выход";
             this.RB_Exit.UseVisualStyleBackColor = true;
+            this.RB_Exit.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
+            // 
+            // RB_Pavilion
+            // 
+            this.RB_Pavilion.AutoSize = true;
+            this.RB_Pavilion.Location = new System.Drawing.Point(15, 65);
+            this.RB_Pavilion.Name = "RB_Pavilion";
+            this.RB_Pavilion.Size = new System.Drawing.Size(140, 29);
+            this.RB_Pavilion.TabIndex = 1;
+            this.RB_Pavilion.Tag = "Pavilion";
+            this.RB_Pavilion.Text = "Павильон";
+            this.RB_Pavilion.UseVisualStyleBackColor = true;
+            this.RB_Pavilion.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
             // 
             // TB_Name
             // 
@@ -282,8 +288,8 @@
         private System.Windows.Forms.Panel panelContextVertex;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton RB_Junktion;
-        private System.Windows.Forms.RadioButton RB_Pavilion;
         private System.Windows.Forms.RadioButton RB_Exit;
+        private System.Windows.Forms.RadioButton RB_Pavilion;
         private System.Windows.Forms.TextBox TB_Name;
     }
 }

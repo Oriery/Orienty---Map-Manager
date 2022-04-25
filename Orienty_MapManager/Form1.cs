@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Orienty_MapManager
@@ -214,7 +215,6 @@ namespace Orienty_MapManager
                     haveDeleted = graph.DeleteEdge(getClickedEdge(e)); // клик по ребру
                 }
 
-                // обновляем граф на экране
                 if (haveDeleted)
                 {
                     UpdateGraphImage();
@@ -246,8 +246,10 @@ namespace Orienty_MapManager
                     if (e.Button == MouseButtons.Right)
                     {
                         selected1 = selectedV;
-                        ShowContextPanelVertex(selectedV, e);
+                        ShowContextPanelVertex(selectedV);
                     }
+
+                    UpdateGraphImage();
                 }
                 else
                 {
@@ -256,18 +258,35 @@ namespace Orienty_MapManager
             }
         }
 
-        private void ShowContextPanelVertex(int idOfVertex, MouseEventArgs e)
+        private void ShowContextPanelVertex(int idOfVertex)
         {
             panelContextVertex.Visible = false;
 
-            panelContextVertex.Location = e.Location;
-            if (!graph.V[idOfVertex].name.Trim().Equals(""))
+            Vertex vertex = graph.V[idOfVertex];
+
+            panelContextVertex.Location = vertex.GetPoint() + new Size(-canvas.rOfVertex, canvas.rOfVertex * 2 / 3);
+
+            if (!vertex.name.Trim().Equals(""))
             {
-                TB_Name.Text = graph.V[idOfVertex].name;
+                TB_Name.Text = vertex.name;
             }
             else
             {
                 TB_Name.Text = "Безымянный";
+            }
+
+            switch (vertex.type)
+            {
+                case E_NodeType.Junktion:
+                    RB_Junktion.Checked = true;
+                    break;
+                case E_NodeType.Pavilion:
+                    RB_Pavilion.Checked = true;
+                    break;
+                case E_NodeType.Exit:
+                    RB_Exit.Checked = true;
+                    break;
+
             }
 
             panelContextVertex.Visible = true;
@@ -314,6 +333,8 @@ namespace Orienty_MapManager
             {
                 graph.V[selected1].name = "Безымянный";
             }
+
+            UpdateGraphImage();
         }
 
         private void TB_Name_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -322,6 +343,34 @@ namespace Orienty_MapManager
             {
                 ResetAllSelections();
             }
+        }
+
+        private void RB_Type_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as RadioButton).Checked)
+            {
+                switch ((sender as RadioButton).Tag)
+                {
+                    case "Junktion":
+                        ChangeTypeOfSelectedVertex(E_NodeType.Junktion);
+                        break;
+                    case "Pavilion":
+                        ChangeTypeOfSelectedVertex(E_NodeType.Pavilion);
+                        break;
+                    case "Exit":
+                        ChangeTypeOfSelectedVertex(E_NodeType.Exit);
+                        break;
+                }
+            }
+        }
+
+        private void ChangeTypeOfSelectedVertex(E_NodeType nodeType)
+        {
+            graph.V[selected1].type = nodeType;
+
+            TB_Name.Visible = nodeType == E_NodeType.Pavilion;
+
+            UpdateGraphImage();
         }
     }
 }

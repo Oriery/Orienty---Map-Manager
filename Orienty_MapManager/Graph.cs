@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text.Json.Serialization;
 
 namespace Orienty_MapManager
@@ -39,6 +40,11 @@ namespace Orienty_MapManager
         public void DecID()
         {
             _id--;
+        }
+
+        public Point GetPoint()
+        {
+            return new Point(x, y);
         }
     }
 

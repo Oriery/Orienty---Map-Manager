@@ -62,17 +62,15 @@ namespace Orienty_MapManager
             }
             point = new PointF(x - rOfVertex + 2, y - font.Height / 2);
 
-            graphics.DrawString(vertex.name, font, brush, point); 
+            if (vertex.type == E_NodeType.Pavilion)
+            {
+                graphics.DrawString(vertex.name, font, brush, point);
+            }
         }
 
-        public void drawEdge(Vertex V1, Vertex V2)
-        {
-            graphics.DrawLine(penEdge, V1.x, V1.y, V2.x, V2.y);
-            drawVertex(V1);
-            drawVertex(V2);
-        }
+        
 
-        private void drawALLGraph(Graph graph, List<int> selectedV = null)
+        private void DrawALLGraph(Graph graph, List<int> selectedV = null)
         { 
             List<Vertex> V = graph.V;
             List<Edge> E = graph.E;
@@ -80,7 +78,7 @@ namespace Orienty_MapManager
             //рисуем ребра
             for (int i = 0; i < E.Count; i++)
             {
-                graphics.DrawLine(penEdge, V[E[i].v1].x, V[E[i].v1].y, V[E[i].v2].x, V[E[i].v2].y);
+                DrawEdge(E[i].v1, E[i].v2);
             }
 
             //рисуем вершины
@@ -95,6 +93,11 @@ namespace Orienty_MapManager
                 {
                     drawVertex(V[i], selectedV.Contains(i));
                 }
+            }
+
+            void DrawEdge(int v1, int v2)
+            {
+                graphics.DrawLine(penEdge, graph.V[v1].x, graph.V[v1].y, graph.V[v2].x, graph.V[v2].y);
             }
         }
 
@@ -115,7 +118,7 @@ namespace Orienty_MapManager
         public void DrawEverything(Graph graph, List<int> selectedV = null)
         {
             DrawPolygonOfWalls(outerWall);
-            drawALLGraph(graph, selectedV);
+            DrawALLGraph(graph, selectedV);
         }
     }
 }
