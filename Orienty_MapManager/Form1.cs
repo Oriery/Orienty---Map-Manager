@@ -112,6 +112,11 @@ namespace Orienty_MapManager
 
             panelContextVertex.Visible = false;
 
+            if (!canvas.outerWall.isFinished)
+            {
+                canvas.outerWall.Reset();
+            }
+
             UpdateGraphImage();
         }
 
@@ -233,15 +238,20 @@ namespace Orienty_MapManager
 
             if (whatDoing == WhatDoing.DrawingOuterWall)
             {
-                if (canvas.outerWall.AddPointOfWall(e.Location))
+                if (e.Button == MouseButtons.Left)
                 {
-                    ResetAllSelections();
+                    if (canvas.outerWall.AddPointOfWall(e.Location))
+                    {
+                        ResetAllSelections();
+                    }
+                }
+
+                if (e.Button == MouseButtons.Right)
+                {
+                    canvas.outerWall.Reset();
                 }
 
                 UpdateGraphImage();
-
-
-                // TODO отмена рисования и прерывание рисования
 
                 return;
             }
