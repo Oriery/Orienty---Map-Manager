@@ -22,6 +22,7 @@ namespace Orienty_MapManager
         Pen penVertex;
         Pen penVertexSelected;
         Pen penEdge;
+        Pen penEdgeHovered;
 
         public int rOfPavilion = 10;
         public int rOfJunktion = 6;
@@ -43,6 +44,7 @@ namespace Orienty_MapManager
             penVertex = new Pen(Color.Black, 2);
             penVertexSelected = new Pen(Color.Red, 2);
             penEdge = new Pen(colorEdges, 2);
+            penEdgeHovered = new Pen(colorEdges, 3);
             penWalls = new Pen(wallsColor, 5);
             font = new Font("Arial", 10);
             brushJunktion = new SolidBrush(colorEdges);
@@ -58,23 +60,16 @@ namespace Orienty_MapManager
             graphics.Clear(Color.White);
         }
 
-        public void drawVertex(Vertex vertex, bool isSelected = false)
+        public void drawVertex(Vertex vertex, bool isHovered = false, bool isSelected = false)
         {
             int x = vertex.x;
             int y = vertex.y;
-            int rOfVertex = GetRadiusOfVertex(vertex);
+            int rOfVertex = GetRadiusOfVertex(vertex) + (isHovered ? 2 : 0);
 
             graphics.FillEllipse(GetBrushOfVertex(vertex), 
                 (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
 
-            if (isSelected)
-            {
-                graphics.DrawEllipse(penVertexSelected, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
-            }
-            else
-            {
-                graphics.DrawEllipse(penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
-            }
+            graphics.DrawEllipse(isSelected ? penVertexSelected : penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
 
             if (vertex.type == E_NodeType.Pavilion)
             {
@@ -85,34 +80,34 @@ namespace Orienty_MapManager
 
         
 
-        private void DrawALLGraph(Graph graph, List<int> selectedV = null)
+        private void DrawALLGraph(Graph graph, int vertexHovered = -1, Edge edgeHovered = null, List<int> selectedV = null)
         { 
             List<Vertex> V = graph.V;
             List<Edge> E = graph.E;
 
             //рисуем ребра
-            for (int i = 0; i < E.Count; i++)
+            foreach (Edge edge in E)
             {
-                DrawEdge(E[i].v1, E[i].v2);
+                DrawEdge(edge.v1, edge.v2, edgeHovered == edge);
             }
 
             //рисуем вершины
             if (selectedV == null) {
                 for (int i = 0; i < V.Count; i++)
                 {
-                    drawVertex(V[i]);
+                    drawVertex(V[i], i == vertexHovered);
                 }
             } else
             {
                 for (int i = 0; i < V.Count; i++)
                 {
-                    drawVertex(V[i], selectedV.Contains(i));
+                    drawVertex(V[i], i == vertexHovered, selectedV.Contains(i));
                 }
             }
 
-            void DrawEdge(int v1, int v2)
+            void DrawEdge(int v1, int v2, bool hovered)
             {
-                graphics.DrawLine(penEdge, graph.V[v1].x, graph.V[v1].y, graph.V[v2].x, graph.V[v2].y);
+                graphics.DrawLine(hovered ? penEdgeHovered : penEdge, graph.V[v1].x, graph.V[v1].y, graph.V[v2].x, graph.V[v2].y);
             }
         }
         public void DrawEdge(Point v1, Point v2)
@@ -134,10 +129,10 @@ namespace Orienty_MapManager
             }
         }
 
-        public void DrawEverything(Graph graph, List<int> selectedV = null, List<PairPoints> extraLines = null)
+        public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, List<PairPoints> extraLines = null)
         {
             DrawPolygonOfWalls(outerWall);
-            DrawALLGraph(graph, selectedV);
+            DrawALLGraph(graph, vertexHovered, edgeHovered, selectedV);
 
             if (extraLines != null)
             {

@@ -16,6 +16,9 @@ namespace Orienty_MapManager
 
         WhatDoing whatDoing;
 
+        int vertexHovered = -1;
+        Edge edgeHovered = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -165,17 +168,16 @@ namespace Orienty_MapManager
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    int selectedV = GetIdOfUnderlyingVertex(e);
-                    if (selectedV != -1) // Рисуем ребро
+                    if (vertexHovered != -1) // Рисуем ребро
                     {
                         if (selected1 == -1) // Новое ребро
                         {
-                            StartNewEdge(selectedV);
+                            StartNewEdge(vertexHovered);
                         }
-                        else if (selectedV != selected1) // Новое ребро оканчивается на существующей вершине
+                        else if (vertexHovered != selected1) // Новое ребро оканчивается на существующей вершине
                         {
-                            FinishNewEdge(selected1, selectedV);
-                            StartNewEdge(selectedV);
+                            FinishNewEdge(selected1, vertexHovered);
+                            StartNewEdge(vertexHovered);
                         }
                     } 
                     else // Новая вершина
@@ -228,13 +230,12 @@ namespace Orienty_MapManager
 
             if (whatDoing == WhatDoing.Selecting)
             {
-                int selectedV = GetIdOfUnderlyingVertex(e);
-                if (selectedV != -1) // клик по вершине
+                if (vertexHovered != -1) // клик по вершине
                 {
                     if (e.Button == MouseButtons.Right)
                     {
-                        selected1 = selectedV;
-                        ShowContextPanelVertex(selectedV);
+                        selected1 = vertexHovered;
+                        ShowContextPanelVertex(vertexHovered);
                     }
 
                     UpdateGraphImage();
@@ -250,11 +251,11 @@ namespace Orienty_MapManager
         {
             bool haveDeleted = false;
 
-            haveDeleted = graph.DeleteVertex(GetIdOfUnderlyingVertex(e)); // клик по вершине
+            haveDeleted = graph.DeleteVertex(vertexHovered); // клик по вершине
 
             if (!haveDeleted)
             {
-                haveDeleted = graph.DeleteEdge(GetUnderlyingEdge(e)); // клик по ребру
+                haveDeleted = graph.DeleteEdge(edgeHovered); // клик по ребру
             }
 
             if (haveDeleted)
@@ -273,7 +274,6 @@ namespace Orienty_MapManager
         private void StartNewEdge(int idOfNode)
         {
             selected1 = idOfNode;
-            ShouldUpdateOnHover(true);
             UpdateGraphImage();
         }
 
@@ -283,7 +283,6 @@ namespace Orienty_MapManager
             graph.V[v1].arrIDs.Add(v2);
             graph.V[v2].arrIDs.Add(v1);
             selected1 = -1;
-            ShouldUpdateOnHover(false);
             UpdateGraphImage();
         }
 
@@ -332,7 +331,7 @@ namespace Orienty_MapManager
         private void UpdateGraphImage(List<PairPoints> extraLines = null)
         {
             canvas.clearSheet();
-            canvas.DrawEverything(graph, new List<int>() { selected1 }, extraLines);
+            canvas.DrawEverything(graph, vertexHovered, edgeHovered, new List<int>() { selected1 }, extraLines);
             sheet.Image = canvas.GetBitmap();
         }
 
@@ -347,21 +346,26 @@ namespace Orienty_MapManager
 
         private void sheet_MouseMove(object sender, MouseEventArgs e)
         {
+            UpdateHoveredElements(e);
+
             if (whatDoing == WhatDoing.DrawingGraph && selected1 != -1)
             {
                 UpdateGraphImage(new List<PairPoints> { new PairPoints(graph.V[selected1].GetPoint(), e.Location) });
+                return;
             }
-        }
 
-        private void ShouldUpdateOnHover(bool shouldUpdate)
+            UpdateGraphImage();
+        }
+        private void UpdateHoveredElements(MouseEventArgs e)
         {
-            if (shouldUpdate)
+            vertexHovered = GetIdOfUnderlyingVertex(e);
+            if (vertexHovered == -1)
             {
-                sheet.MouseMove += sheet_MouseMove;
-            } 
+                edgeHovered = GetUnderlyingEdge(e);
+            }
             else
             {
-                sheet.MouseMove -= sheet_MouseMove;
+                edgeHovered = null;
             }
         }
 
