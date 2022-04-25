@@ -276,14 +276,7 @@ namespace Orienty_MapManager
 
             TB_Name.Visible = vertex.type == E_NodeType.Pavilion;
 
-            if (!vertex.name.Trim().Equals(""))
-            {
-                TB_Name.Text = vertex.name;
-            }
-            else
-            {
-                TB_Name.Text = "Безымянный";
-            }
+            TB_Name.Text = vertex.name;
 
             switch (vertex.type)
             {
@@ -336,7 +329,7 @@ namespace Orienty_MapManager
         {
             if (!(sender as TextBox).Text.Trim().Equals(""))
             {
-                graph.V[selected1].name = (sender as TextBox).Text;
+                graph.V[selected1].name = (sender as TextBox).Text.Trim();
             }
             else
             {
