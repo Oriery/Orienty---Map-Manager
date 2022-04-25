@@ -206,6 +206,20 @@ namespace Orienty_MapManager
                             ShouldUpdateOnHover(false);
                             UpdateGraphImage();
                         }
+                    } 
+                    else if (selected1 != -1)
+                    {
+                        Vertex vertex = new Vertex(e.X, e.Y, 0);
+                        graph.V.Add(vertex);
+
+                        selected2 = vertex.id;
+                        graph.E.Add(new Edge(selected1, selected2));
+                        graph.V[selected1].arrIDs.Add(selected2);
+                        graph.V[selected2].arrIDs.Add(selected1);
+                        selected1 = -1;
+                        selected2 = -1;
+                        ShouldUpdateOnHover(false);
+                        UpdateGraphImage();
                     }
                 }
 
