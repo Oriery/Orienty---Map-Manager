@@ -11,7 +11,6 @@ namespace Orienty_MapManager
         public Graph graph;
 
         int selected1;
-        int selected2;
 
         Dictionary<WhatDoing, Button> buttonsOfActions;
 
@@ -25,14 +24,12 @@ namespace Orienty_MapManager
 
             buttonsOfActions = new Dictionary<WhatDoing, Button>();
             buttonsOfActions.Add(WhatDoing.Selecting, selectButton);
-            buttonsOfActions.Add(WhatDoing.AddingEdges, drawEdgeButton);
-            buttonsOfActions.Add(WhatDoing.AddingVertices, drawVertexButton);
+            buttonsOfActions.Add(WhatDoing.DrawingGraph, drawEdgeButton);
             buttonsOfActions.Add(WhatDoing.Deleting, deleteButton);
             buttonsOfActions.Add(WhatDoing.DrawingPavilions, null); // TODO добавить кнопку рисования стен павильонов
             buttonsOfActions.Add(WhatDoing.DrawingOuterWall, B_drawOuterWalls);
 
-            whatDoing = WhatDoing.AddingVertices;
-            ResetAllSelections();
+            ResetAllSelections(WhatDoing.DrawingGraph);
         }
 
         private void selectButton_Click(object sender, EventArgs e)
@@ -40,14 +37,9 @@ namespace Orienty_MapManager
             ResetAllSelections(WhatDoing.Selecting);
         }
 
-        private void drawVertexButton_Click(object sender, EventArgs e)
-        {
-            ResetAllSelections(WhatDoing.AddingVertices);
-        }
-
         private void drawEdgeButton_Click(object sender, EventArgs e)
         {
-            ResetAllSelections(WhatDoing.AddingEdges);
+            ResetAllSelections(WhatDoing.DrawingGraph);
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -98,7 +90,6 @@ namespace Orienty_MapManager
             buttonsOfActions.TryGetValue(whatDoing, out buttonOfAction);
 
             selected1 = -1;
-            selected2 = -1;
 
             foreach (Button button in buttonsOfActions.Values)
             {
@@ -118,7 +109,7 @@ namespace Orienty_MapManager
             UpdateGraphImage();
         }
 
-        private int getIdOfClickedVertex(MouseEventArgs e)
+        private int getIdOfUnderlyingVertex(MouseEventArgs e)
         {
             for (int i = 0; i < graph.V.Count; i++)
             {
@@ -170,62 +161,40 @@ namespace Orienty_MapManager
 
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
-            if (whatDoing == WhatDoing.AddingVertices)
+            if (whatDoing == WhatDoing.DrawingGraph)
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    Vertex vertex = new Vertex(e.X, e.Y, 0);
-                    graph.V.Add(vertex);
-                    UpdateGraphImage();
-                }
-
-                return;
-            }
-
-            if (whatDoing == WhatDoing.AddingEdges)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    int selectedV = getIdOfClickedVertex(e);
-                    if (selectedV != -1) // клик по вершине
+                    int selectedV = getIdOfUnderlyingVertex(e);
+                    if (selectedV != -1) // Рисуем ребро
                     {
-                        if (selected1 == -1)
+                        if (selected1 == -1) // Новое ребро
                         {
                             selected1 = selectedV;
                             ShouldUpdateOnHover(true);
                             UpdateGraphImage();
                         }
-                        else if (selectedV != selected1)
+                        else if (selectedV != selected1) // Новое ребро оканчивается на существующей вершине
                         {
-                            selected2 = selectedV;
-                            graph.E.Add(new Edge(selected1, selected2));
-                            graph.V[selected1].arrIDs.Add(selected2);
-                            graph.V[selected2].arrIDs.Add(selected1);
-                            selected1 = -1;
-                            selected2 = -1;
-                            ShouldUpdateOnHover(false);
-                            UpdateGraphImage();
+                            CreateNewEdge(selected1, selectedV);
                         }
                     } 
-                    else if (selected1 != -1)
-                    {
-                        Vertex vertex = new Vertex(e.X, e.Y, 0);
-                        graph.V.Add(vertex);
+                    else if (selected1 != -1) // Новая вершина на конце рисуемого ребра
+                    { 
+                        int id = CreateNewVertex(e.X, e.Y, 0);
 
-                        selected2 = vertex.id;
-                        graph.E.Add(new Edge(selected1, selected2));
-                        graph.V[selected1].arrIDs.Add(selected2);
-                        graph.V[selected2].arrIDs.Add(selected1);
-                        selected1 = -1;
-                        selected2 = -1;
-                        ShouldUpdateOnHover(false);
+                        CreateNewEdge(selected1, id);
+                    }
+                    else // Новая вершина
+                    { 
+                        CreateNewVertex(e.X, e.Y, 0);
                         UpdateGraphImage();
                     }
                 }
 
                 if (e.Button == MouseButtons.Right)
                 {
-                    ResetAllSelections(WhatDoing.AddingEdges);
+                    ResetAllSelections(WhatDoing.DrawingGraph);
                 }
 
                 return;
@@ -260,7 +229,7 @@ namespace Orienty_MapManager
 
             if (whatDoing == WhatDoing.Selecting)
             {
-                int selectedV = getIdOfClickedVertex(e);
+                int selectedV = getIdOfUnderlyingVertex(e);
                 if (selectedV != -1) // клик по вершине
                 {
                     if (e.Button == MouseButtons.Right)
@@ -282,7 +251,7 @@ namespace Orienty_MapManager
         {
             bool haveDeleted = false;
 
-            haveDeleted = graph.DeleteVertex(getIdOfClickedVertex(e)); // клик по вершине
+            haveDeleted = graph.DeleteVertex(getIdOfUnderlyingVertex(e)); // клик по вершине
 
             if (!haveDeleted)
             {
@@ -293,6 +262,23 @@ namespace Orienty_MapManager
             {
                 UpdateGraphImage();
             }
+        }
+
+        private int CreateNewVertex(int x, int y, int z)
+        {
+            Vertex vertex = new Vertex(x, y, z);
+            graph.V.Add(vertex);
+            return vertex.id;
+        }
+
+        private void CreateNewEdge(int v1, int v2)
+        {
+            graph.E.Add(new Edge(v1, v2));
+            graph.V[v1].arrIDs.Add(v2);
+            graph.V[v2].arrIDs.Add(v1);
+            selected1 = -1;
+            ShouldUpdateOnHover(false);
+            UpdateGraphImage();
         }
 
         private void ShowContextPanelVertex(int idOfVertex)
@@ -340,14 +326,13 @@ namespace Orienty_MapManager
         private void UpdateGraphImage(List<PairPoints> extraLines = null)
         {
             canvas.clearSheet();
-            canvas.DrawEverything(graph, new List<int>() { selected1, selected2 }, extraLines);
+            canvas.DrawEverything(graph, new List<int>() { selected1 }, extraLines);
             sheet.Image = canvas.GetBitmap();
         }
 
         private enum WhatDoing
         {
-            AddingVertices,
-            AddingEdges,
+            DrawingGraph,
             Deleting,
             Selecting,
             DrawingPavilions,
@@ -356,7 +341,7 @@ namespace Orienty_MapManager
 
         private void sheet_MouseMove(object sender, MouseEventArgs e)
         {
-            if (whatDoing == WhatDoing.AddingEdges && selected1 != -1)
+            if (whatDoing == WhatDoing.DrawingGraph && selected1 != -1)
             {
                 UpdateGraphImage(new List<PairPoints> { new PairPoints(graph.V[selected1].GetPoint(), e.Location) });
             }

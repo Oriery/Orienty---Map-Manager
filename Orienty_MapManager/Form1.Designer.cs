@@ -32,7 +32,6 @@
             this.deleteALLButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.drawEdgeButton = new System.Windows.Forms.Button();
-            this.drawVertexButton = new System.Windows.Forms.Button();
             this.sheet = new System.Windows.Forms.PictureBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.TB_Debug = new System.Windows.Forms.TextBox();
@@ -97,17 +96,6 @@
             this.drawEdgeButton.UseVisualStyleBackColor = true;
             this.drawEdgeButton.Click += new System.EventHandler(this.drawEdgeButton_Click);
             // 
-            // drawVertexButton
-            // 
-            this.drawVertexButton.Image = global::Orienty_MapManager.Properties.Resources.vertex;
-            this.drawVertexButton.Location = new System.Drawing.Point(15, 127);
-            this.drawVertexButton.Margin = new System.Windows.Forms.Padding(6);
-            this.drawVertexButton.Name = "drawVertexButton";
-            this.drawVertexButton.Size = new System.Drawing.Size(100, 100);
-            this.drawVertexButton.TabIndex = 1;
-            this.drawVertexButton.UseVisualStyleBackColor = true;
-            this.drawVertexButton.Click += new System.EventHandler(this.drawVertexButton_Click);
-            // 
             // sheet
             // 
             this.sheet.BackColor = System.Drawing.SystemColors.Control;
@@ -145,7 +133,6 @@
             this.panelLeft.AutoSize = true;
             this.panelLeft.BackColor = System.Drawing.SystemColors.Control;
             this.panelLeft.Controls.Add(this.B_drawOuterWalls);
-            this.panelLeft.Controls.Add(this.drawVertexButton);
             this.panelLeft.Controls.Add(this.drawEdgeButton);
             this.panelLeft.Controls.Add(this.deleteButton);
             this.panelLeft.Controls.Add(this.saveButton);
@@ -276,7 +263,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox sheet;
-        private System.Windows.Forms.Button drawVertexButton;
         private System.Windows.Forms.Button drawEdgeButton;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button deleteALLButton;
