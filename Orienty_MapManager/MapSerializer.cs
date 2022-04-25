@@ -19,7 +19,7 @@ namespace Orienty_MapManager
             {
                 if (v.type == E_NodeType.Pavilion)
                 {
-                    mapContainer.idNamePairs.Add(v.id, v.name);
+                    mapContainer.idNamePairs.Add(new IdNamePair(v.id, v.name));
                 }
 
                 // TODO сейчас сериализуются ненастоящие маячки
@@ -34,15 +34,25 @@ namespace Orienty_MapManager
             public MapContainer()
             {
                 vertices = new List<Vertex>();
-                idNamePairs = new Dictionary<int, string>();
+                idNamePairs = new List<IdNamePair>();
                 beacons = new List<Beacon>();
             }
 
             public List<Vertex> vertices { get; set; }
-            public Dictionary<int, string> idNamePairs { get; set; }
+            public List<IdNamePair> idNamePairs { get; set; }
             public List<Beacon> beacons { get; set; }
+        }
 
-         
+        private class IdNamePair
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+
+            public IdNamePair(int id, string name)
+            {
+                this.id = id;
+                this.name = name;
+            }
         }
     }
 }
