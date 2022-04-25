@@ -52,7 +52,25 @@ namespace Orienty_MapManager
 
         private void B_drawOuterWalls_Click(object sender, EventArgs e)
         {
-            ResetAllSelections(WhatDoing.DrawingOuterWall, sender);
+            bool allowedToDrawNewOuterWall = !canvas.outerWall.isFinished;
+
+            if (!allowedToDrawNewOuterWall)
+            {
+                const string message = "Вы действительно хотите перерисовать внешнюю стену?";
+                const string caption = "Внешняя стена уже существует!";
+                var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                allowedToDrawNewOuterWall = MBSave == DialogResult.Yes;
+            }
+
+            if (allowedToDrawNewOuterWall)
+            {
+                canvas.outerWall.Reset();
+                ResetAllSelections(WhatDoing.DrawingOuterWall, sender);
+            } 
+            else
+            {
+                ResetAllSelections();
+            }
         }
 
         private void deleteALLButton_Click(object sender, EventArgs e)
@@ -206,11 +224,13 @@ namespace Orienty_MapManager
 
             if (whatDoing == WhatDoing.DrawingOuterWall)
             {
-                if (canvas.polygon.AddPointOfWall(e.Location))
+                if (canvas.outerWall.AddPointOfWall(e.Location))
                 {
                     ResetAllSelections();
-                } 
+                }
+
                 UpdateGraphImage();
+
 
                 // TODO отмена рисования и прерывание рисования
             }
@@ -219,7 +239,7 @@ namespace Orienty_MapManager
         private void saveButton_Click(object sender, EventArgs e)
         {
             string json = MapSerializer.SerializeMap(graph);
-            textBox1.Text = json;
+            TB_Debug.Text = json;
         }
 
         private void UpdateGraphImage()

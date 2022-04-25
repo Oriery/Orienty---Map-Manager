@@ -35,12 +35,10 @@
             this.drawVertexButton = new System.Windows.Forms.Button();
             this.sheet = new System.Windows.Forms.PictureBox();
             this.saveButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.panelRight = new System.Windows.Forms.Panel();
+            this.TB_Debug = new System.Windows.Forms.TextBox();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.B_drawOuterWalls = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
-            this.panelRight.SuspendLayout();
             this.panelLeft.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,8 +55,9 @@
             // 
             // deleteALLButton
             // 
+            this.deleteALLButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.deleteALLButton.Image = global::Orienty_MapManager.Properties.Resources.deleteAll;
-            this.deleteALLButton.Location = new System.Drawing.Point(15, 742);
+            this.deleteALLButton.Location = new System.Drawing.Point(15, 1014);
             this.deleteALLButton.Margin = new System.Windows.Forms.Padding(6);
             this.deleteALLButton.Name = "deleteALLButton";
             this.deleteALLButton.Size = new System.Drawing.Size(100, 100);
@@ -106,7 +105,7 @@
             this.sheet.Location = new System.Drawing.Point(233, 0);
             this.sheet.Margin = new System.Windows.Forms.Padding(6);
             this.sheet.Name = "sheet";
-            this.sheet.Size = new System.Drawing.Size(796, 854);
+            this.sheet.Size = new System.Drawing.Size(1421, 1129);
             this.sheet.TabIndex = 0;
             this.sheet.TabStop = false;
             this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
@@ -114,7 +113,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(27, 503);
+            this.saveButton.Location = new System.Drawing.Point(24, 360);
             this.saveButton.Margin = new System.Windows.Forms.Padding(15);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(185, 44);
@@ -123,24 +122,13 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
-            // textBox1
+            // TB_Debug
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(23, 463);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(368, 379);
-            this.textBox1.TabIndex = 14;
-            // 
-            // panelRight
-            // 
-            this.panelRight.BackColor = System.Drawing.SystemColors.Control;
-            this.panelRight.Controls.Add(this.textBox1);
-            this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelRight.Location = new System.Drawing.Point(1029, 0);
-            this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(403, 854);
-            this.panelRight.TabIndex = 15;
+            this.TB_Debug.Location = new System.Drawing.Point(239, 12);
+            this.TB_Debug.Multiline = true;
+            this.TB_Debug.Name = "TB_Debug";
+            this.TB_Debug.Size = new System.Drawing.Size(368, 379);
+            this.TB_Debug.TabIndex = 14;
             // 
             // panelLeft
             // 
@@ -156,7 +144,7 @@
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(233, 854);
+            this.panelLeft.Size = new System.Drawing.Size(233, 1129);
             this.panelLeft.TabIndex = 16;
             // 
             // B_drawOuterWalls
@@ -171,18 +159,18 @@
             // 
             // Form1
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1432, 854);
+            this.ClientSize = new System.Drawing.Size(1654, 1129);
+            this.Controls.Add(this.TB_Debug);
             this.Controls.Add(this.sheet);
             this.Controls.Add(this.panelLeft);
-            this.Controls.Add(this.panelRight);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
-            this.Text = "vscode.ru";
+            this.Text = "Orienty: Map Manager";
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).EndInit();
-            this.panelRight.ResumeLayout(false);
-            this.panelRight.PerformLayout();
             this.panelLeft.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -198,8 +186,7 @@
         private System.Windows.Forms.Button deleteALLButton;
         private System.Windows.Forms.Button selectButton;
         private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Panel panelRight;
+        private System.Windows.Forms.TextBox TB_Debug;
         private System.Windows.Forms.Panel panelLeft;
         private System.Windows.Forms.Button B_drawOuterWalls;
     }

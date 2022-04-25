@@ -18,9 +18,10 @@ namespace Orienty_MapManager
         public int rOfVertex = 20;
 
         // Walls
-        Color buildColor = Color.FromArgb(122, 122, 122);
+        Color wallsColor = Color.FromArgb(180, 180, 180);
+        Color buildingBackgroundColor = Color.FromArgb(230, 230, 230);
         Pen penWalls;
-        public Polygon polygon = new Polygon(); // TODO должен быть список полигонов по идее
+        public Polygon outerWall = new Polygon();
 
         public GraphCanvas(int width, int height)
         {
@@ -30,7 +31,7 @@ namespace Orienty_MapManager
             penVertex = new Pen(Color.Black, 2);
             penVertexSelected = new Pen(Color.Red, 2);
             penEdge = new Pen(Color.DarkGoldenrod, 5);
-            penWalls = new Pen(buildColor, 5);
+            penWalls = new Pen(wallsColor, 5);
             font = new Font("Arial", 15);
             brush = Brushes.Black;
         }
@@ -107,13 +108,13 @@ namespace Orienty_MapManager
 
             if (polygon.isFinished)
             {
-                graphics.FillPolygon(new SolidBrush(buildColor), polygon.points.ToArray());
+                graphics.FillPolygon(new SolidBrush(buildingBackgroundColor), polygon.points.ToArray());
             }
         }
 
         public void DrawEverything(Graph graph, List<int> selectedV = null)
         {
-            DrawPolygonOfWalls(polygon);
+            DrawPolygonOfWalls(outerWall);
             drawALLGraph(graph, selectedV);
         }
     }

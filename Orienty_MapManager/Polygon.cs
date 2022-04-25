@@ -45,5 +45,11 @@ namespace Orienty_MapManager
         {
             return GetDistanceBetweenPoints(first, second) < 10;
         }
+
+        public void Reset()
+        {
+            points.Clear();
+            isFinished = false;
+        }
     }
 }
