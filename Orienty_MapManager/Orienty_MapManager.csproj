@@ -167,6 +167,21 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\build.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\store.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\grid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\grid2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\grid3.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.3\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.3\build\System.Text.Json.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

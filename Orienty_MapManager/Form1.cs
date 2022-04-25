@@ -17,6 +17,8 @@ namespace Orienty_MapManager
 
         WhatDoing whatDoing;
 
+        bool isFastEnter = false;
+
         bool shouldUpdateOnHover = true; // TODO только во время рисования стен и рёбер
 
         public Form1()
@@ -30,8 +32,10 @@ namespace Orienty_MapManager
             buttonsOfActions.Add(WhatDoing.AddingEdges, drawEdgeButton);
             buttonsOfActions.Add(WhatDoing.AddingVertices, drawVertexButton);
             buttonsOfActions.Add(WhatDoing.Deleting, deleteButton);
-            buttonsOfActions.Add(WhatDoing.DrawingPavilions, null); // TODO добавить кнопку рисования стен павильонов
+            buttonsOfActions.Add(WhatDoing.DrawingPavilions, draw_Pav); // TODO добавить кнопку рисования стен павильонов
             buttonsOfActions.Add(WhatDoing.DrawingOuterWall, B_drawOuterWalls);
+
+           // sheet.BackgroundImage = Image.FromFile("../../Resources/grid3.png");
 
             whatDoing = WhatDoing.AddingVertices;
             ResetAllSelections();
@@ -45,6 +49,11 @@ namespace Orienty_MapManager
         private void drawVertexButton_Click(object sender, EventArgs e)
         {
             ResetAllSelections(WhatDoing.AddingVertices);
+        }
+
+        private void draw_Pav_Click(object sender, EventArgs e)
+        {
+            ResetAllSelections(WhatDoing.DrawingPavilions);
         }
 
         private void drawEdgeButton_Click(object sender, EventArgs e)
@@ -192,14 +201,22 @@ namespace Orienty_MapManager
                             UpdateGraphImage();
                         }
                         else if (selectedV != selected1)
-                        {
+                         {
                             selected2 = selectedV;
                             graph.E.Add(new Edge(selected1, selected2));
                             graph.V[selected1].arrIDs.Add(selected2);
                             graph.V[selected2].arrIDs.Add(selected1);
+                            int save = selected2;
                             selected1 = -1;
+                            
                             selected2 = -1;
                             UpdateGraphImage();
+                            if(isFastEnter)
+                            {
+                                selected1 = save;
+                                UpdateGraphImage();
+
+                            }
                         }
                     }
                 }
@@ -380,6 +397,11 @@ namespace Orienty_MapManager
             TB_Name.Visible = nodeType == E_NodeType.Pavilion;
 
             UpdateGraphImage();
+        }
+
+        private void Ch_fastEnter_CheckedChanged(object sender, EventArgs e)
+        {
+            isFastEnter = Ch_fastEnter.Checked;
         }
     }
 }

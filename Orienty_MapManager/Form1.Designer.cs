@@ -28,105 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.selectButton = new System.Windows.Forms.Button();
-            this.deleteALLButton = new System.Windows.Forms.Button();
-            this.deleteButton = new System.Windows.Forms.Button();
-            this.drawEdgeButton = new System.Windows.Forms.Button();
-            this.drawVertexButton = new System.Windows.Forms.Button();
-            this.sheet = new System.Windows.Forms.PictureBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.TB_Debug = new System.Windows.Forms.TextBox();
             this.panelLeft = new System.Windows.Forms.Panel();
+            this.draw_Pav = new System.Windows.Forms.Button();
             this.B_drawOuterWalls = new System.Windows.Forms.Button();
+            this.drawVertexButton = new System.Windows.Forms.Button();
+            this.drawEdgeButton = new System.Windows.Forms.Button();
+            this.deleteButton = new System.Windows.Forms.Button();
+            this.deleteALLButton = new System.Windows.Forms.Button();
+            this.selectButton = new System.Windows.Forms.Button();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.panelContextVertex = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.RB_Junktion = new System.Windows.Forms.RadioButton();
-            this.RB_Exit = new System.Windows.Forms.RadioButton();
             this.RB_Pavilion = new System.Windows.Forms.RadioButton();
+            this.RB_Exit = new System.Windows.Forms.RadioButton();
             this.TB_Name = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
+            this.sheet = new System.Windows.Forms.PictureBox();
+            this.Ch_fastEnter = new System.Windows.Forms.CheckBox();
             this.panelLeft.SuspendLayout();
             this.mainPanel.SuspendLayout();
             this.panelContextVertex.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
             this.SuspendLayout();
-            // 
-            // selectButton
-            // 
-            this.selectButton.Image = global::Orienty_MapManager.Properties.Resources.cursor;
-            this.selectButton.Location = new System.Drawing.Point(15, 15);
-            this.selectButton.Margin = new System.Windows.Forms.Padding(6);
-            this.selectButton.Name = "selectButton";
-            this.selectButton.Size = new System.Drawing.Size(100, 100);
-            this.selectButton.TabIndex = 9;
-            this.selectButton.UseVisualStyleBackColor = true;
-            this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
-            // 
-            // deleteALLButton
-            // 
-            this.deleteALLButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.deleteALLButton.Image = global::Orienty_MapManager.Properties.Resources.deleteAll;
-            this.deleteALLButton.Location = new System.Drawing.Point(15, 1014);
-            this.deleteALLButton.Margin = new System.Windows.Forms.Padding(6);
-            this.deleteALLButton.Name = "deleteALLButton";
-            this.deleteALLButton.Size = new System.Drawing.Size(100, 100);
-            this.deleteALLButton.TabIndex = 5;
-            this.deleteALLButton.UseVisualStyleBackColor = true;
-            this.deleteALLButton.Click += new System.EventHandler(this.deleteALLButton_Click);
-            // 
-            // deleteButton
-            // 
-            this.deleteButton.Image = global::Orienty_MapManager.Properties.Resources.delete;
-            this.deleteButton.Location = new System.Drawing.Point(127, 15);
-            this.deleteButton.Margin = new System.Windows.Forms.Padding(6);
-            this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(100, 100);
-            this.deleteButton.TabIndex = 3;
-            this.deleteButton.UseVisualStyleBackColor = true;
-            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
-            // 
-            // drawEdgeButton
-            // 
-            this.drawEdgeButton.Image = global::Orienty_MapManager.Properties.Resources.edge;
-            this.drawEdgeButton.Location = new System.Drawing.Point(127, 127);
-            this.drawEdgeButton.Margin = new System.Windows.Forms.Padding(6);
-            this.drawEdgeButton.Name = "drawEdgeButton";
-            this.drawEdgeButton.Size = new System.Drawing.Size(100, 100);
-            this.drawEdgeButton.TabIndex = 2;
-            this.drawEdgeButton.UseVisualStyleBackColor = true;
-            this.drawEdgeButton.Click += new System.EventHandler(this.drawEdgeButton_Click);
-            // 
-            // drawVertexButton
-            // 
-            this.drawVertexButton.Image = global::Orienty_MapManager.Properties.Resources.vertex;
-            this.drawVertexButton.Location = new System.Drawing.Point(15, 127);
-            this.drawVertexButton.Margin = new System.Windows.Forms.Padding(6);
-            this.drawVertexButton.Name = "drawVertexButton";
-            this.drawVertexButton.Size = new System.Drawing.Size(100, 100);
-            this.drawVertexButton.TabIndex = 1;
-            this.drawVertexButton.UseVisualStyleBackColor = true;
-            this.drawVertexButton.Click += new System.EventHandler(this.drawVertexButton_Click);
-            // 
-            // sheet
-            // 
-            this.sheet.BackColor = System.Drawing.SystemColors.Control;
-            this.sheet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sheet.Location = new System.Drawing.Point(0, 0);
-            this.sheet.Margin = new System.Windows.Forms.Padding(0);
-            this.sheet.Name = "sheet";
-            this.sheet.Size = new System.Drawing.Size(1421, 1129);
-            this.sheet.TabIndex = 0;
-            this.sheet.TabStop = false;
-            this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
-            this.sheet.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseMove);
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(24, 360);
-            this.saveButton.Margin = new System.Windows.Forms.Padding(15);
+            this.saveButton.Location = new System.Drawing.Point(19, 309);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(10);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(185, 44);
+            this.saveButton.Size = new System.Drawing.Size(123, 28);
             this.saveButton.TabIndex = 13;
             this.saveButton.Text = "Сохранить";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -134,16 +67,18 @@
             // 
             // TB_Debug
             // 
-            this.TB_Debug.Location = new System.Drawing.Point(239, 12);
+            this.TB_Debug.Location = new System.Drawing.Point(159, 8);
+            this.TB_Debug.Margin = new System.Windows.Forms.Padding(2);
             this.TB_Debug.Multiline = true;
             this.TB_Debug.Name = "TB_Debug";
-            this.TB_Debug.Size = new System.Drawing.Size(368, 379);
+            this.TB_Debug.Size = new System.Drawing.Size(247, 244);
             this.TB_Debug.TabIndex = 14;
             // 
             // panelLeft
             // 
             this.panelLeft.AutoSize = true;
             this.panelLeft.BackColor = System.Drawing.SystemColors.Control;
+            this.panelLeft.Controls.Add(this.draw_Pav);
             this.panelLeft.Controls.Add(this.B_drawOuterWalls);
             this.panelLeft.Controls.Add(this.drawVertexButton);
             this.panelLeft.Controls.Add(this.drawEdgeButton);
@@ -153,48 +88,122 @@
             this.panelLeft.Controls.Add(this.selectButton);
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
+            this.panelLeft.Margin = new System.Windows.Forms.Padding(2);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(233, 1129);
+            this.panelLeft.Size = new System.Drawing.Size(157, 675);
             this.panelLeft.TabIndex = 16;
+            // 
+            // draw_Pav
+            // 
+            this.draw_Pav.Image = global::Orienty_MapManager.Properties.Resources.store;
+            this.draw_Pav.Location = new System.Drawing.Point(86, 153);
+            this.draw_Pav.Margin = new System.Windows.Forms.Padding(4);
+            this.draw_Pav.Name = "draw_Pav";
+            this.draw_Pav.Size = new System.Drawing.Size(67, 64);
+            this.draw_Pav.TabIndex = 15;
+            this.draw_Pav.UseVisualStyleBackColor = true;
+            this.draw_Pav.Click += new System.EventHandler(this.draw_Pav_Click);
             // 
             // B_drawOuterWalls
             // 
-            this.B_drawOuterWalls.Location = new System.Drawing.Point(15, 239);
-            this.B_drawOuterWalls.Margin = new System.Windows.Forms.Padding(6);
+            this.B_drawOuterWalls.Image = global::Orienty_MapManager.Properties.Resources.build;
+            this.B_drawOuterWalls.Location = new System.Drawing.Point(10, 153);
+            this.B_drawOuterWalls.Margin = new System.Windows.Forms.Padding(4);
             this.B_drawOuterWalls.Name = "B_drawOuterWalls";
-            this.B_drawOuterWalls.Size = new System.Drawing.Size(100, 100);
+            this.B_drawOuterWalls.Size = new System.Drawing.Size(67, 64);
             this.B_drawOuterWalls.TabIndex = 14;
             this.B_drawOuterWalls.UseVisualStyleBackColor = true;
             this.B_drawOuterWalls.Click += new System.EventHandler(this.B_drawOuterWalls_Click);
+            // 
+            // drawVertexButton
+            // 
+            this.drawVertexButton.Image = global::Orienty_MapManager.Properties.Resources.vertex;
+            this.drawVertexButton.Location = new System.Drawing.Point(10, 81);
+            this.drawVertexButton.Margin = new System.Windows.Forms.Padding(4);
+            this.drawVertexButton.Name = "drawVertexButton";
+            this.drawVertexButton.Size = new System.Drawing.Size(67, 64);
+            this.drawVertexButton.TabIndex = 1;
+            this.drawVertexButton.UseVisualStyleBackColor = true;
+            this.drawVertexButton.Click += new System.EventHandler(this.drawVertexButton_Click);
+            // 
+            // drawEdgeButton
+            // 
+            this.drawEdgeButton.Image = global::Orienty_MapManager.Properties.Resources.edge;
+            this.drawEdgeButton.Location = new System.Drawing.Point(85, 81);
+            this.drawEdgeButton.Margin = new System.Windows.Forms.Padding(4);
+            this.drawEdgeButton.Name = "drawEdgeButton";
+            this.drawEdgeButton.Size = new System.Drawing.Size(67, 64);
+            this.drawEdgeButton.TabIndex = 2;
+            this.drawEdgeButton.UseVisualStyleBackColor = true;
+            this.drawEdgeButton.Click += new System.EventHandler(this.drawEdgeButton_Click);
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Image = global::Orienty_MapManager.Properties.Resources.delete;
+            this.deleteButton.Location = new System.Drawing.Point(85, 10);
+            this.deleteButton.Margin = new System.Windows.Forms.Padding(4);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(67, 64);
+            this.deleteButton.TabIndex = 3;
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
+            // deleteALLButton
+            // 
+            this.deleteALLButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.deleteALLButton.Image = global::Orienty_MapManager.Properties.Resources.deleteAll;
+            this.deleteALLButton.Location = new System.Drawing.Point(10, 601);
+            this.deleteALLButton.Margin = new System.Windows.Forms.Padding(4);
+            this.deleteALLButton.Name = "deleteALLButton";
+            this.deleteALLButton.Size = new System.Drawing.Size(67, 64);
+            this.deleteALLButton.TabIndex = 5;
+            this.deleteALLButton.UseVisualStyleBackColor = true;
+            this.deleteALLButton.Click += new System.EventHandler(this.deleteALLButton_Click);
+            // 
+            // selectButton
+            // 
+            this.selectButton.Image = global::Orienty_MapManager.Properties.Resources.cursor;
+            this.selectButton.Location = new System.Drawing.Point(10, 10);
+            this.selectButton.Margin = new System.Windows.Forms.Padding(4);
+            this.selectButton.Name = "selectButton";
+            this.selectButton.Size = new System.Drawing.Size(67, 64);
+            this.selectButton.TabIndex = 9;
+            this.selectButton.UseVisualStyleBackColor = true;
+            this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
             // 
             // mainPanel
             // 
             this.mainPanel.Controls.Add(this.panelContextVertex);
             this.mainPanel.Controls.Add(this.sheet);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPanel.Location = new System.Drawing.Point(233, 0);
+            this.mainPanel.Location = new System.Drawing.Point(157, 0);
+            this.mainPanel.Margin = new System.Windows.Forms.Padding(2);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(1421, 1129);
+            this.mainPanel.Size = new System.Drawing.Size(946, 675);
             this.mainPanel.TabIndex = 17;
             // 
             // panelContextVertex
             // 
             this.panelContextVertex.Controls.Add(this.groupBox1);
             this.panelContextVertex.Controls.Add(this.TB_Name);
-            this.panelContextVertex.Location = new System.Drawing.Point(374, 517);
+            this.panelContextVertex.Location = new System.Drawing.Point(400, 278);
+            this.panelContextVertex.Margin = new System.Windows.Forms.Padding(2);
             this.panelContextVertex.Name = "panelContextVertex";
-            this.panelContextVertex.Size = new System.Drawing.Size(288, 204);
+            this.panelContextVertex.Size = new System.Drawing.Size(234, 148);
             this.panelContextVertex.TabIndex = 1;
             this.panelContextVertex.Visible = false;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.Ch_fastEnter);
             this.groupBox1.Controls.Add(this.RB_Junktion);
             this.groupBox1.Controls.Add(this.RB_Pavilion);
             this.groupBox1.Controls.Add(this.RB_Exit);
-            this.groupBox1.Location = new System.Drawing.Point(3, 69);
+            this.groupBox1.Location = new System.Drawing.Point(2, 44);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(282, 132);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Size = new System.Drawing.Size(232, 104);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Тип";
@@ -203,9 +212,10 @@
             // 
             this.RB_Junktion.AutoSize = true;
             this.RB_Junktion.Checked = true;
-            this.RB_Junktion.Location = new System.Drawing.Point(15, 30);
+            this.RB_Junktion.Location = new System.Drawing.Point(10, 19);
+            this.RB_Junktion.Margin = new System.Windows.Forms.Padding(2);
             this.RB_Junktion.Name = "RB_Junktion";
-            this.RB_Junktion.Size = new System.Drawing.Size(173, 29);
+            this.RB_Junktion.Size = new System.Drawing.Size(114, 20);
             this.RB_Junktion.TabIndex = 0;
             this.RB_Junktion.TabStop = true;
             this.RB_Junktion.Tag = "Junktion";
@@ -213,60 +223,87 @@
             this.RB_Junktion.UseVisualStyleBackColor = true;
             this.RB_Junktion.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
             // 
-            // RB_Exit
-            // 
-            this.RB_Exit.AutoSize = true;
-            this.RB_Exit.Location = new System.Drawing.Point(15, 100);
-            this.RB_Exit.Name = "RB_Exit";
-            this.RB_Exit.Size = new System.Drawing.Size(107, 29);
-            this.RB_Exit.TabIndex = 2;
-            this.RB_Exit.Tag = "Exit";
-            this.RB_Exit.Text = "Выход";
-            this.RB_Exit.UseVisualStyleBackColor = true;
-            this.RB_Exit.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
-            // 
             // RB_Pavilion
             // 
             this.RB_Pavilion.AutoSize = true;
-            this.RB_Pavilion.Location = new System.Drawing.Point(15, 65);
+            this.RB_Pavilion.Location = new System.Drawing.Point(10, 42);
+            this.RB_Pavilion.Margin = new System.Windows.Forms.Padding(2);
             this.RB_Pavilion.Name = "RB_Pavilion";
-            this.RB_Pavilion.Size = new System.Drawing.Size(140, 29);
+            this.RB_Pavilion.Size = new System.Drawing.Size(93, 20);
             this.RB_Pavilion.TabIndex = 1;
             this.RB_Pavilion.Tag = "Pavilion";
             this.RB_Pavilion.Text = "Павильон";
             this.RB_Pavilion.UseVisualStyleBackColor = true;
             this.RB_Pavilion.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
             // 
+            // RB_Exit
+            // 
+            this.RB_Exit.AutoSize = true;
+            this.RB_Exit.Location = new System.Drawing.Point(10, 64);
+            this.RB_Exit.Margin = new System.Windows.Forms.Padding(2);
+            this.RB_Exit.Name = "RB_Exit";
+            this.RB_Exit.Size = new System.Drawing.Size(68, 20);
+            this.RB_Exit.TabIndex = 2;
+            this.RB_Exit.Tag = "Exit";
+            this.RB_Exit.Text = "Выход";
+            this.RB_Exit.UseVisualStyleBackColor = true;
+            this.RB_Exit.CheckedChanged += new System.EventHandler(this.RB_Type_CheckedChanged);
+            // 
             // TB_Name
             // 
-            this.TB_Name.Location = new System.Drawing.Point(18, 17);
+            this.TB_Name.Location = new System.Drawing.Point(12, 11);
+            this.TB_Name.Margin = new System.Windows.Forms.Padding(2);
             this.TB_Name.MaxLength = 20;
             this.TB_Name.Name = "TB_Name";
-            this.TB_Name.Size = new System.Drawing.Size(252, 31);
+            this.TB_Name.Size = new System.Drawing.Size(169, 22);
             this.TB_Name.TabIndex = 2;
             this.TB_Name.TextChanged += new System.EventHandler(this.TB_Name_TextChanged);
             this.TB_Name.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TB_Name_PreviewKeyDown);
             // 
+            // sheet
+            // 
+            this.sheet.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.sheet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sheet.Location = new System.Drawing.Point(0, 0);
+            this.sheet.Margin = new System.Windows.Forms.Padding(0);
+            this.sheet.Name = "sheet";
+            this.sheet.Size = new System.Drawing.Size(946, 675);
+            this.sheet.TabIndex = 0;
+            this.sheet.TabStop = false;
+            this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
+            this.sheet.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseMove);
+            // 
+            // Ch_fastEnter
+            // 
+            this.Ch_fastEnter.AutoSize = true;
+            this.Ch_fastEnter.Location = new System.Drawing.Point(113, 84);
+            this.Ch_fastEnter.Name = "Ch_fastEnter";
+            this.Ch_fastEnter.Size = new System.Drawing.Size(121, 20);
+            this.Ch_fastEnter.TabIndex = 3;
+            this.Ch_fastEnter.Text = "Быстрый ввод";
+            this.Ch_fastEnter.UseVisualStyleBackColor = true;
+            this.Ch_fastEnter.CheckedChanged += new System.EventHandler(this.Ch_fastEnter_CheckedChanged);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1654, 1129);
+            this.ClientSize = new System.Drawing.Size(1103, 675);
             this.Controls.Add(this.TB_Debug);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.panelLeft);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(6);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Orienty: Map Manager";
-            ((System.ComponentModel.ISupportInitialize)(this.sheet)).EndInit();
             this.panelLeft.ResumeLayout(false);
             this.mainPanel.ResumeLayout(false);
             this.panelContextVertex.ResumeLayout(false);
             this.panelContextVertex.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sheet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,6 +328,8 @@
         private System.Windows.Forms.RadioButton RB_Exit;
         private System.Windows.Forms.RadioButton RB_Pavilion;
         private System.Windows.Forms.TextBox TB_Name;
+        private System.Windows.Forms.Button draw_Pav;
+        private System.Windows.Forms.CheckBox Ch_fastEnter;
     }
 }
 
