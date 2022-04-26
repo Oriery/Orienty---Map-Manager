@@ -10,7 +10,7 @@ namespace Orienty_MapManager
         public GraphCanvas canvas;
         public Graph graph;
 
-        Image backgrImage = Image.FromFile("../../Resources/grid.png");
+        Image backgroundImage = Image.FromFile("../../Resources/grid.png");
 
         int selected1;
 
@@ -40,6 +40,8 @@ namespace Orienty_MapManager
             t.SetToolTip(draw_Pav, "Рисовать павильоны");
 
             ResetAllSelections(WhatDoing.DrawingGraph);
+
+            SetBackgroundImage(backgroundImage);
         }
 
         private void selectButton_Click(object sender, EventArgs e)
@@ -417,19 +419,15 @@ namespace Orienty_MapManager
             TB_Debug.Visible = true;
         }
 
-        private void FillBackgroundImage()
+        private void SetBackgroundImage(Image image)
         {
-           sheet.BackgroundImage = backgrImage;
+           sheet.BackgroundImage = backgroundImage;
         }
 
         private void UpdateGraphImage(List<PairPoints> extraLines = null)
         {
-            
-            canvas.clearSheet();
-            FillBackgroundImage();
             canvas.DrawEverything(graph, vertexHovered, edgeHovered, new List<int>() { selected1 }, extraLines);
             sheet.Image = canvas.GetBitmap();
-
         }
 
         private enum WhatDoing
@@ -515,6 +513,5 @@ namespace Orienty_MapManager
 
             UpdateGraphImage();
         }
-
     }
 }

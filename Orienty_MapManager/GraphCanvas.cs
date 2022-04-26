@@ -12,13 +12,16 @@ namespace Orienty_MapManager
         Graphics graphics;
 
         Font font;
-        Brush brushText = Brushes.Black;
 
-        Color colorEdges = Color.FromArgb(0, 100, 100);
+        Color colorEdges = Color.FromArgb(245, 205, 159);
+        Color colorText = Color.FromArgb(117, 124, 168);
+        Color colorPavilion = Color.FromArgb(117, 124, 168);
+        Color colorExit = Color.FromArgb(115, 176, 139);
 
+        Brush brushText;
         Brush brushPavilion = Brushes.White;
         Brush brushJunktion;
-        Brush brushExit = Brushes.Aquamarine;
+        Brush brushExit;
 
         Pen penVertex;
         Pen penVertexSelected;
@@ -46,20 +49,24 @@ namespace Orienty_MapManager
 
         public GraphCanvas(int width, int height)
         {
-           // bitmap = new Bitmap(width, height);
-            bitmap = new Bitmap(Image.FromFile("../../Resources/grid.png"), width, height);
-          //  bitmap.SetResolution(width, height);
+            bitmap = new Bitmap(width, height);
 
             graphics = Graphics.FromImage(bitmap);
             clearSheet();
+
             penVertex = new Pen(Color.Black, 2);
             penVertexSelected = new Pen(Color.Red, 2);
             penEdge = new Pen(colorEdges, 2);
             penEdgeHovered = new Pen(colorEdges, 3);
             penWalls = new Pen(wallsColor, 3);
-            font = new Font("Arial", 10);
-            brushJunktion = new SolidBrush(colorEdges);
             penPav = new Pen(PavBorderColor, 3);
+
+            font = new Font("Arial", 10);
+
+            brushJunktion = new SolidBrush(colorEdges);
+            brushText = new SolidBrush(colorText);
+            brushExit = new SolidBrush(colorExit);
+            brushPavilion = new SolidBrush(colorPavilion);
         }
 
         public Bitmap GetBitmap()
@@ -69,7 +76,7 @@ namespace Orienty_MapManager
 
         public void clearSheet()
         {
-            graphics.Clear(Color.White);
+            graphics.Clear(Color.Transparent);
         }
 
         public void drawVertex(Vertex vertex, bool isHovered = false, bool isSelected = false)
@@ -143,6 +150,8 @@ namespace Orienty_MapManager
 
         public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, List<PairPoints> extraLines = null)
         {
+            clearSheet();
+
             DrawPolygonOfWalls(outerWall, penWalls, buildingBackgroundColor);
 
             //draw pavilions
@@ -160,7 +169,6 @@ namespace Orienty_MapManager
                     DrawEdge(line.p1, line.p2);
                 }
             }
-            
         }
 
         public int GetRadiusOfVertex(Vertex vertex)
