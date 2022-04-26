@@ -23,7 +23,7 @@ namespace Orienty_MapManager
                 }
 
                 // TODO сейчас сериализуются ненастоящие маячки
-                mapContainer.beacons.Add(new Beacon("4hgjrb-264rtb-524bdg-245gbt-tr565tb", v.x + 5, v.y - 2, 0, v.id)); 
+                mapContainer.beacons.Add(new Beacon("00:00:00:00:00:00", v.x + 5, v.y - 2, 0, v.id)); 
             }
             var options = new JsonSerializerOptions
             {
