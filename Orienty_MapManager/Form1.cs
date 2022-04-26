@@ -136,7 +136,7 @@ namespace Orienty_MapManager
         {
             for (int i = 0; i < graph.V.Count; i++)
             {
-                int rOfVertex = canvas.GetRadiusOfVertex(graph.V[i]) + 2;
+                int rOfVertex = canvas.GetRadiusOfVertex(graph.V[i].type) * 2;
                 if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) < Math.Pow(rOfVertex, 2))
                 {
                     return graph.V[i].id;
@@ -152,6 +152,7 @@ namespace Orienty_MapManager
         {
             Edge edge;
             Vertex v1, v2;
+            float alpha;
             for (int i = 0; i < graph.E.Count; i++)
             {
                 edge = graph.E[i];
@@ -162,23 +163,22 @@ namespace Orienty_MapManager
                 int dy = (v2.y - v1.y);
                 int dx_ = (e.X - v1.x);
                 int dy_ = (e.Y - v1.y);
-                if (Math.Abs(dx) > Math.Abs(dy))
+
+                if (Math.Abs(dy) > Math.Abs(dx))
                 {
-                    float ax = (float)dx_ / dx;
-                    if (Math.Abs(dx_ * dy / dx - dy_) < 10 && (ax >= 0) && (ax <= 1)) 
-                    {
-                        return edge;
-                    }
-                } 
-                else
+                    (dx, dy) = (dy, dx);
+                    (dx_, dy_) = (dy_, dx_);
+                }
+                dx = dx == 0 ? 1 : dx;
+                dy = dy == 0 ? 1 : dy;
+
+                alpha = (float)dx_ / dx;
+                if (Math.Abs(dx_ * dy / dx - dy_) < 10 && (alpha >= 0) && (alpha <= 1))
                 {
-                    float ay = (float)dy_ / dy;
-                    if (Math.Abs(dy_ * dx / dy - dx_) < 10 && (ay >= 0) && (ay <= 1))
-                    {
-                        return edge;
-                    }
+                    return edge;
                 }
             }
+
             return null;
         }
 
@@ -355,9 +355,49 @@ namespace Orienty_MapManager
 
         private int CreateNewVertex(int x, int y, int z)
         {
-            Vertex vertex = new Vertex(x, y, z);
+            Vertex vertex;
+            if (edgeHovered != null)
+            {
+                Point a1 = graph.V[edgeHovered.v1].GetPoint();
+                Point a2 = graph.V[edgeHovered.v2].GetPoint();
+                Point pointOnEdge = GetPointOnLineNearestToPoint(a1, a2, new Point(x, y));
+                vertex = new Vertex(pointOnEdge.X, pointOnEdge.Y, z);
+            }
+            else
+            {
+                vertex = new Vertex(x, y, z);
+            }
+
             graph.V.Add(vertex);
             return vertex.id;
+        }
+
+        private Point GetPointOnLineNearestToPoint(Point a1, Point a2, Point b)
+        {
+            int dx = (a2.X - a1.X);
+            int dy = (a2.Y - a1.Y);
+            dx = dx == 0 ? 1 : dx;
+            dy = dy == 0 ? 1 : dy;
+            bool swaped = false;
+
+            if (Math.Abs(dx) > Math.Abs(dy))
+            {
+                (dx, dy) = (dy, dx);
+                (a1.X, a1.Y) = (a1.Y, a1.X);
+                (a2.X, a2.Y) = (a2.Y, a2.X);
+                (b.X, b.Y) = (b.Y, b.X);
+                swaped = true;
+            }
+
+            int y = (int)((float)(b.Y * dy * dy + a1.Y * dx * dx + dx * dy * (b.X - a1.X)) / (dx * dx + dy * dy));
+            int x = (int)(a1.X + (y - a1.Y) * ((float)dx / dy));
+
+            if (swaped)
+            {
+                (x, y) = (y, x);
+            }
+
+            return new Point(x, y);
         }
 
         private void StartNewEdge(int idOfNode)
@@ -425,9 +465,9 @@ namespace Orienty_MapManager
            sheet.BackgroundImage = backgroundImage;
         }
 
-        private void UpdateGraphImage(List<PairPoints> extraLines = null)
+        private void UpdateGraphImage(PairPoints extraLine = null, bool drawExtraVertex = false)
         {
-            canvas.DrawEverything(graph, vertexHovered, edgeHovered, new List<int>() { selected1 }, extraLines);
+            canvas.DrawEverything(graph, vertexHovered, edgeHovered, new List<int>() { selected1 }, extraLine, drawExtraVertex);
             sheet.Image = canvas.GetBitmap();
         }
 
@@ -444,9 +484,38 @@ namespace Orienty_MapManager
         {
             UpdateHoveredElements(e);
 
-            if (whatDoing == WhatDoing.DrawingGraph && selected1 != -1)
+            if (whatDoing == WhatDoing.DrawingGraph && (selected1 != -1 || edgeHovered != null))
             {
-                UpdateGraphImage(new List<PairPoints> { new PairPoints(graph.V[selected1].GetPoint(), e.Location) });
+                Point pointMouse;
+                if (edgeHovered != null)
+                {
+                    Point a1 = graph.V[edgeHovered.v1].GetPoint();
+                    Point a2 = graph.V[edgeHovered.v2].GetPoint();
+                    pointMouse = GetPointOnLineNearestToPoint(a1, a2, e.Location);
+                }
+                else
+                {
+                    if (vertexHovered != -1)
+                    {
+                        pointMouse = graph.V[vertexHovered].GetPoint();
+                    }
+                    else
+                    {
+                        pointMouse = e.Location;
+                    }
+                }
+
+                PairPoints pairPoints;
+                if (selected1 != -1)
+                {
+                    pairPoints = new PairPoints(graph.V[selected1].GetPoint(), pointMouse);
+                }
+                else
+                {
+                    pairPoints = new PairPoints(pointMouse, pointMouse); // Костыль
+                }
+
+                UpdateGraphImage(pairPoints, edgeHovered != null);
                 return;
             }
 
