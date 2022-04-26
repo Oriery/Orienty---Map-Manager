@@ -26,6 +26,7 @@ namespace Orienty_MapManager
         public Form1()
         {
             InitializeComponent();
+
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
             graph = new Graph();
 
@@ -512,6 +513,14 @@ namespace Orienty_MapManager
             TB_Name.Visible = nodeType == E_NodeType.Pavilion;
 
             UpdateGraphImage();
+        }
+
+        private void sheet_Resize(object sender, EventArgs e)
+        {
+            if (canvas != null)
+            {
+                canvas.SetSize(sheet.Width, sheet.Height);
+            }
         }
     }
 }

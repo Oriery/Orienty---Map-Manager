@@ -6,17 +6,16 @@ using System.Windows.Forms;
 namespace Orienty_MapManager
 {
     public class GraphCanvas
-    {
-        Image backgrImage = Image.FromFile("../../Resources/grid.png");
+    { 
         Bitmap bitmap;
         Graphics graphics;
 
         Font font;
 
         Color colorEdges = Color.FromArgb(245, 205, 159);
-        Color colorText = Color.FromArgb(117, 124, 168);
-        Color colorPavilion = Color.FromArgb(117, 124, 168);
-        Color colorExit = Color.FromArgb(115, 176, 139);
+        Color colorText;
+        Color colorPavilion = Color.FromArgb(115, 176, 139);
+        Color colorExit = Color.FromArgb(117, 124, 168);
 
         Brush brushText;
         Brush brushPavilion = Brushes.White;
@@ -49,10 +48,11 @@ namespace Orienty_MapManager
 
         public GraphCanvas(int width, int height)
         {
-            bitmap = new Bitmap(width, height);
-
-            graphics = Graphics.FromImage(bitmap);
+            SetSize(width, height);
+            
             clearSheet();
+
+            colorText = colorPavilion;
 
             penVertex = new Pen(Color.Black, 2);
             penVertexSelected = new Pen(Color.Red, 2);
@@ -61,7 +61,7 @@ namespace Orienty_MapManager
             penWalls = new Pen(wallsColor, 3);
             penPav = new Pen(PavBorderColor, 3);
 
-            font = new Font("Arial", 10);
+            font = new Font("Arial", 14);
 
             brushJunktion = new SolidBrush(colorEdges);
             brushText = new SolidBrush(colorText);
@@ -92,8 +92,12 @@ namespace Orienty_MapManager
 
             if (vertex.type == E_NodeType.Pavilion)
             {
-                point = new PointF(x + rOfVertex + 2, y - font.Height / 2);
-                graphics.DrawString(vertex.name, font, brushText, point);
+                point = new PointF(x, y - rOfVertex + 2);
+
+                StringFormat stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Center;
+                stringFormat.LineAlignment = StringAlignment.Far;
+                graphics.DrawString(vertex.name, font, brushText, point, stringFormat);
             }
         }
 
@@ -199,6 +203,12 @@ namespace Orienty_MapManager
                 default:
                     return brushPavilion;
             }
+        }
+
+        public void SetSize(int width, int height)
+        {
+            bitmap = new Bitmap(width, height);
+            graphics = Graphics.FromImage(bitmap);
         }
     }
 
