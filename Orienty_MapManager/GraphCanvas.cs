@@ -42,7 +42,21 @@ namespace Orienty_MapManager
 
         public List<Polygon> Pavilions { get; set; } = new List<Polygon>();
 
-       
+        public Image SaveMap()
+        {
+            var exportBitmap = new Bitmap(bitmap);
+            var exportGraphics = Graphics.FromImage(exportBitmap);
+            exportGraphics.Clear(Color.White);
+            
+            DrawPolygonOfWalls(exportGraphics,outerWall, penWalls, buildingBackgroundColor);
+
+            //draw pavilions
+            foreach (var pav in Pavilions)
+            {
+                DrawPolygonOfWalls(exportGraphics, pav, penPav, pavColor);
+            }
+            return exportBitmap;
+        }
 
         public GraphCanvas(int width, int height)
         {
@@ -127,7 +141,7 @@ namespace Orienty_MapManager
             graphics.DrawLine(penEdge, v1, v2);
         }
 
-        private void DrawPolygonOfWalls(Polygon polygon, Pen pen, Color brush)
+        private void DrawPolygonOfWalls(Graphics graphics, Polygon polygon, Pen pen, Color brush)
         {
             for (int i = polygon.isFinished ? 0 : 1; i < polygon.points.Count; i++)
             {
@@ -143,12 +157,12 @@ namespace Orienty_MapManager
 
         public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, List<PairPoints> extraLines = null)
         {
-            DrawPolygonOfWalls(outerWall, penWalls, buildingBackgroundColor);
+            DrawPolygonOfWalls(graphics,outerWall, penWalls, buildingBackgroundColor);
 
             //draw pavilions
             foreach(var pav in Pavilions)
             {
-                DrawPolygonOfWalls(pav, penPav, pavColor);
+                DrawPolygonOfWalls(graphics,pav, penPav, pavColor);
             }
 
             DrawALLGraph(graph, vertexHovered, edgeHovered, selectedV);

@@ -45,6 +45,7 @@
             this.RB_Exit = new System.Windows.Forms.RadioButton();
             this.TB_Name = new System.Windows.Forms.TextBox();
             this.sheet = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.panelLeft.SuspendLayout();
             this.mainPanel.SuspendLayout();
             this.panelContextVertex.SuspendLayout();
@@ -77,6 +78,7 @@
             // 
             this.panelLeft.AutoSize = true;
             this.panelLeft.BackColor = System.Drawing.SystemColors.Control;
+            this.panelLeft.Controls.Add(this.button1);
             this.panelLeft.Controls.Add(this.draw_Pav);
             this.panelLeft.Controls.Add(this.B_drawOuterWalls);
             this.panelLeft.Controls.Add(this.drawEdgeButton);
@@ -259,6 +261,16 @@
             this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
             this.sheet.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseMove);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(16, 271);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(121, 51);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "отправить на сервер";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -303,6 +315,7 @@
         private System.Windows.Forms.RadioButton RB_Pavilion;
         private System.Windows.Forms.TextBox TB_Name;
         private System.Windows.Forms.Button draw_Pav;
+        private System.Windows.Forms.Button button1;
     }
 }
 

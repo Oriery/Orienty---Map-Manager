@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Orienty_MapManager
@@ -20,6 +25,7 @@ namespace Orienty_MapManager
 
         int vertexHovered = -1;
         Edge edgeHovered = null;
+        const string PATHMAP = "../../Resources/map.png";
 
         public Form1()
         {
@@ -412,12 +418,40 @@ namespace Orienty_MapManager
             panelContextVertex.Visible = true;
         }
 
+        private void SaveJPG100(Bitmap bmp, string filename)
+        {
+            EncoderParameters encoderParameters = new EncoderParameters(1);
+            encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
+            bmp.Save(filename, GetEncoder(ImageFormat.Png), encoderParameters);
+        }
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+
+            return null;
+        }
         private void saveButton_Click(object sender, EventArgs e)
         {
             string json = MapSerializer.SerializeMap(graph);
             TB_Debug.Text = json;
             TB_Debug.Visible = true;
+
+
+            //save map 
+            var mapImg = canvas.SaveMap();
+
+            SaveJPG100((Bitmap)mapImg, PATHMAP);
         }
+
+
 
         private void FillBackgroundImage()
         {
@@ -518,5 +552,78 @@ namespace Orienty_MapManager
             UpdateGraphImage();
         }
 
+        private byte[] ImageToByteArray(Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, imageIn.RawFormat);
+                return ms.ToArray();
+            }
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            byte[] file = ImageToByteArray(Image.FromFile(PATHMAP));
+
+            /*
+            WebRequest request = WebRequest.Create("http://nigger.by:7770/api/v1/map/map");
+            request.Method = "POST"; // для отправки используется метод Post
+                                     // данные для отправки
+                                     // string data = "sName=Hello world!";
+                                     // преобразуем данные в массив байтов
+            byte[] byteArray = file;
+            // устанавливаем тип содержимого - параметр ContentType
+            request.ContentType = "multipart/form-data";
+            // Устанавливаем заголовок Content-Length запроса - свойство ContentLength
+            request.ContentLength = byteArray.Length;
+
+            //записываем данные в поток запроса
+            using (Stream dataStream = request.GetRequestStream())
+            {
+                dataStream.Write(byteArray, 0, byteArray.Length);
+            }
+
+            WebResponse response = await request.GetResponseAsync();
+            using (Stream stream = response.GetResponseStream())
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    var str = reader.ReadToEnd();
+                }
+            }
+            response.Close();
+
+            */
+
+            WebClient http = new WebClient();
+            //http.UploadData()
+            http.UploadFile("http://nigger.by:7770/api/v1/map/map", @"../../Resources/map.png");
+
+            /*HttpClient httpClient = new HttpClient();
+            MultipartFormDataContent form = new MultipartFormDataContent();
+
+            form.Add(new ByteArrayContent(file, 0, file.Length), "map", "map.png");
+            HttpResponseMessage response = await httpClient.PostAsync("http://nigger.by:7770/api/v1/map/map", form);
+
+            response.EnsureSuccessStatusCode();
+            httpClient.Dispose();
+            string sd = response.Content.ReadAsStringAsync().Result;
+            */
+
+            /*
+            System.Net.WebRequest reqPOST = System.Net.WebRequest.Create("http://nigger.by:7770/api/v1/map/map");
+            reqPOST.Method = "POST"; // Устанавливаем метод передачи данных в POST
+            reqPOST.Timeout = 120000; // Устанавливаем таймаут соединения
+            reqPOST.ContentType = "application/x-www-form-urlencoded"; // указываем тип контента
+                                                                       // передаем список пар параметров / значений для запрашиваемого скрипта методом POST
+                                                                       // здесь используется кодировка cp1251 для кодирования кирилицы и спец. символов в значениях параметров
+                                                                       // Если скрипт должен принимать данные в utf-8, то нужно выбрать Encodinf.UTF8
+            //byte[] sentData = Encoding.GetEncoding(1251).GetBytes("message=" + System.Net.WebUtility.UrlEncode("отправляемые данные", Encoding.GetEncoding(1251)));
+            reqPOST.ContentLength = file.Length;
+            System.IO.Stream sendStream = reqPOST.GetRequestStream();
+            sendStream.Write(file, 0, file.Length);
+            sendStream.Close();
+            System.Net.WebResponse result = reqPOST.GetResponse();*/
+        }
     }
 }
