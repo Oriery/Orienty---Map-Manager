@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Orienty_MapManager
@@ -9,6 +14,9 @@ namespace Orienty_MapManager
     {
         public GraphCanvas canvas;
         public Graph graph;
+
+        string graphJson; //json for graph
+
 
         Image backgroundImage = Image.FromFile("../../Resources/grid.png");
 
@@ -20,6 +28,8 @@ namespace Orienty_MapManager
 
         int vertexHovered = -1;
         Edge edgeHovered = null;
+        const string PATHMAP = "../../Resources/map.png";
+        const string PATHGRAPH = "../../Resources/graph.json";
 
         ToolTip t = new ToolTip();
 
@@ -453,11 +463,43 @@ namespace Orienty_MapManager
             panelContextVertex.Visible = true;
         }
 
+        private void SaveJPG100(Bitmap bmp, string filename)
+        {
+            EncoderParameters encoderParameters = new EncoderParameters(1);
+            encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
+            bmp.Save(filename, GetEncoder(ImageFormat.Png), encoderParameters);
+        }
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+
+            return null;
+        }
         private void saveButton_Click(object sender, EventArgs e)
         {
-            string json = MapSerializer.SerializeMap(graph);
-            TB_Debug.Text = json;
+            graphJson = MapSerializer.SerializeMap(graph);
+            TB_Debug.Text = graphJson;
             TB_Debug.Visible = true;
+            //save graph
+            using (var stream = new StreamWriter(PATHGRAPH))
+            {
+                stream.Write(graphJson);
+            }
+
+           //save map 
+            var mapImg = canvas.SaveMap();
+
+            SaveJPG100((Bitmap)mapImg, PATHMAP);
+
+            sendServer.Enabled = true;
         }
 
         private void SetBackgroundImage(Image image)
@@ -584,12 +626,33 @@ namespace Orienty_MapManager
             UpdateGraphImage();
         }
 
+        private byte[] ImageToByteArray(Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, imageIn.RawFormat);
+                return ms.ToArray();
+            }
+        }
+
         private void sheet_Resize(object sender, EventArgs e)
         {
             if (canvas != null)
             {
                 canvas.SetSize(sheet.Width, sheet.Height);
             }
+        }
+        private async void SendServer_Click(object sender, EventArgs e)
+        {
+            byte[] file = ImageToByteArray(Image.FromFile(PATHMAP));
+
+            WebClient http = new WebClient();
+            http.UploadFile("http://nigger.by:7770/api/v1/map/map", @PATHMAP);
+
+            http.UploadFile("http://nigger.by:7770/api/v1/map/map", @PATHMAP);
+            //save json
+
+
         }
     }
 }
