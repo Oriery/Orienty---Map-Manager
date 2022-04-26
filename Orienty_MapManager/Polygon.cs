@@ -32,7 +32,7 @@ namespace Orienty_MapManager
             return false;
         }
 
-        public bool IsPointInPolygon(Point test, List<Point> polygon)
+        public static bool IsPointInPolygon(Point test, List<Point> polygon)
         {
 
              int[,] q_patt= { {0,1}, {3,2} };
