@@ -158,6 +158,12 @@ namespace Orienty_MapManager
             graphics.DrawLine(penEdge, v1, v2);
         }
 
+        public void DrawPavLine(Point mouse)
+        {
+            if(Pavilions[Pavilions.Count - 1].points.Count>0)
+                graphics.DrawLine(penPav, Pavilions[Pavilions.Count - 1].points[Pavilions[Pavilions.Count - 1].points.Count - 1], mouse);
+        }
+
         private void DrawPolygonOfWalls(Graphics graphics, Polygon polygon, Pen pen, Color brush)
         {
             for (int i = polygon.isFinished ? 0 : 1; i < polygon.points.Count; i++)

@@ -74,6 +74,18 @@ namespace Orienty_MapManager
         private void draw_Pav_Click(object sender, EventArgs e)
         {
             ResetAllSelections(WhatDoing.DrawingPavilions);
+            
+        }
+
+        private void Mouse_move_draw_Pavs(object sender, MouseEventArgs e)
+        {
+            if(canvas.Pavilions.Count > 0)
+            {
+                canvas.DrawPavLine(e.Location);
+             
+              //  if(canvas.Pavilions[canvas.Pavilions.Count-1].isFinished)
+                  //  sheet.MouseMove -= Mouse_move_draw_Pavs;
+            }
         }
 
         private void B_drawOuterWalls_Click(object sender, EventArgs e)
@@ -284,6 +296,7 @@ namespace Orienty_MapManager
             {
                 if (e.Button == MouseButtons.Left)
                 {
+                    
                     if (Polygon.IsPointInPolygon(e.Location, canvas.outerWall.points)) // check is point inside outerwall
                     {
                         if (GetClickedPolygon(e.Location, canvas.Pavilions, false) == -1) // if not ckieck on exist polygon
@@ -296,10 +309,12 @@ namespace Orienty_MapManager
                             {
                                 canvas.Pavilions.Add(new Polygon());
                             }
-
+                            if(canvas.Pavilions[canvas.Pavilions.Count - 1].points.Count==0)
+                                sheet.MouseMove += Mouse_move_draw_Pavs;
                             if (canvas.Pavilions[canvas.Pavilions.Count - 1].AddPointOfWall(e.Location))
                             {
                                 ResetAllSelections(WhatDoing.DrawingPavilions);
+                                sheet.MouseMove -= Mouse_move_draw_Pavs;
                             }
                         }
                     }

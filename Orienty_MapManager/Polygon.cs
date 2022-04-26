@@ -84,7 +84,7 @@ namespace Orienty_MapManager
 
         private bool IsNearPoints(Point first, Point second)
         {
-            return GetDistanceBetweenPoints(first, second) < 10;
+            return GetDistanceBetweenPoints(first, second) < 20;
         }
 
         public void Reset()
