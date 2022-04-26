@@ -10,6 +10,8 @@ namespace Orienty_MapManager
         public GraphCanvas canvas;
         public Graph graph;
 
+        Image backgrImage = Image.FromFile("../../Resources/grid.png");
+
         int selected1;
 
         Dictionary<WhatDoing, Button> buttonsOfActions;
@@ -29,8 +31,16 @@ namespace Orienty_MapManager
             buttonsOfActions.Add(WhatDoing.Selecting, selectButton);
             buttonsOfActions.Add(WhatDoing.DrawingGraph, drawEdgeButton);
             buttonsOfActions.Add(WhatDoing.Deleting, deleteButton);
-            buttonsOfActions.Add(WhatDoing.DrawingPavilions, null); // TODO добавить кнопку рисования стен павильонов
+            buttonsOfActions.Add(WhatDoing.DrawingPavilions, draw_Pav);
             buttonsOfActions.Add(WhatDoing.DrawingOuterWall, B_drawOuterWalls);
+
+
+            
+            ToolTip t = new ToolTip();
+            t.SetToolTip(B_drawOuterWalls, "Рисовать схему здания");
+            t.SetToolTip(draw_Pav, "Рисовать павильоны");
+
+
 
             ResetAllSelections(WhatDoing.DrawingGraph);
         }
@@ -48,6 +58,11 @@ namespace Orienty_MapManager
         private void deleteButton_Click(object sender, EventArgs e)
         {
             ResetAllSelections(WhatDoing.Deleting);
+        }
+
+        private void draw_Pav_Click(object sender, EventArgs e)
+        {
+            ResetAllSelections(WhatDoing.DrawingPavilions);
         }
 
         private void B_drawOuterWalls_Click(object sender, EventArgs e)
@@ -215,6 +230,8 @@ namespace Orienty_MapManager
                     if (canvas.outerWall.AddPointOfWall(e.Location))
                     {
                         ResetAllSelections();
+                        ToolTip t = new ToolTip();
+                        t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
                     }
                 }
 
@@ -244,6 +261,35 @@ namespace Orienty_MapManager
                 {
                     ResetAllSelections();
                 }
+            }
+
+            if(whatDoing == WhatDoing.DrawingPavilions)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    if(canvas.Pavilions.Count==0)
+                    {
+                        canvas.Pavilions.Add(new Polygon());
+                    }
+                    if(canvas.Pavilions[canvas.Pavilions.Count-1].isFinished  && canvas.Pavilions.Count>0)
+                        canvas.Pavilions.Add(new Polygon());
+
+                    if (canvas.Pavilions[canvas.Pavilions.Count-1].AddPointOfWall(e.Location))
+                    {
+                        ResetAllSelections();
+                       // ToolTip t = new ToolTip();
+                       // t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
+                    }
+                }
+
+                if (e.Button == MouseButtons.Right)
+                {
+                    canvas.outerWall.Reset();// TODO изменить 
+                }
+
+                UpdateGraphImage();
+
+                return;
             }
         }
 
@@ -328,11 +374,19 @@ namespace Orienty_MapManager
             TB_Debug.Visible = true;
         }
 
+        private void FillBackgroundImage()
+        {
+           sheet.BackgroundImage = backgrImage;
+        }
+
         private void UpdateGraphImage(List<PairPoints> extraLines = null)
         {
+            
             canvas.clearSheet();
+            FillBackgroundImage();
             canvas.DrawEverything(graph, vertexHovered, edgeHovered, new List<int>() { selected1 }, extraLines);
             sheet.Image = canvas.GetBitmap();
+
         }
 
         private enum WhatDoing
@@ -418,5 +472,6 @@ namespace Orienty_MapManager
 
             UpdateGraphImage();
         }
+
     }
 }

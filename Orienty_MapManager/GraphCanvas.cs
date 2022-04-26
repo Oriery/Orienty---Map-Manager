@@ -7,6 +7,7 @@ namespace Orienty_MapManager
 {
     public class GraphCanvas
     {
+        Image backgrImage = Image.FromFile("../../Resources/grid.png");
         Bitmap bitmap;
         Graphics graphics;
 
@@ -33,12 +34,22 @@ namespace Orienty_MapManager
         // Walls
         Color wallsColor = Color.FromArgb(180, 180, 180);
         Color buildingBackgroundColor = Color.FromArgb(230, 230, 230);
-        Pen penWalls;
+        Color pavColor = Color.FromArgb(149, 149, 149);
+        Color PavBorderColor = Color.FromArgb(49, 49, 49);
+        Pen penWalls, penPav;
         public Polygon outerWall = new Polygon();
+
+
+        public List<Polygon> Pavilions { get; set; } = new List<Polygon>();
+
+       
 
         public GraphCanvas(int width, int height)
         {
-            bitmap = new Bitmap(width, height);
+           // bitmap = new Bitmap(width, height);
+            bitmap = new Bitmap(Image.FromFile("../../Resources/grid.png"), width, height);
+          //  bitmap.SetResolution(width, height);
+
             graphics = Graphics.FromImage(bitmap);
             clearSheet();
             penVertex = new Pen(Color.Black, 2);
@@ -48,6 +59,7 @@ namespace Orienty_MapManager
             penWalls = new Pen(wallsColor, 5);
             font = new Font("Arial", 10);
             brushJunktion = new SolidBrush(colorEdges);
+            penPav = new Pen(PavBorderColor, 3);
         }
 
         public Bitmap GetBitmap()
@@ -115,23 +127,30 @@ namespace Orienty_MapManager
             graphics.DrawLine(penEdge, v1, v2);
         }
 
-        private void DrawPolygonOfWalls(Polygon polygon)
+        private void DrawPolygonOfWalls(Polygon polygon, Pen pen, Color brush)
         {
             for (int i = polygon.isFinished ? 0 : 1; i < polygon.points.Count; i++)
             {
                 int j = (i - 1 + polygon.points.Count) % polygon.points.Count;
-                graphics.DrawLine(penWalls, polygon.points[i], polygon.points[j]);
+                graphics.DrawLine(pen, polygon.points[i], polygon.points[j]);
             }
 
             if (polygon.isFinished)
             {
-                graphics.FillPolygon(new SolidBrush(buildingBackgroundColor), polygon.points.ToArray());
+                graphics.FillPolygon(new SolidBrush(brush), polygon.points.ToArray());
             }
         }
 
         public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, List<PairPoints> extraLines = null)
         {
-            DrawPolygonOfWalls(outerWall);
+            DrawPolygonOfWalls(outerWall, penWalls, buildingBackgroundColor);
+
+            //draw pavilions
+            foreach(var pav in Pavilions)
+            {
+                DrawPolygonOfWalls(pav, penPav, pavColor);
+            }
+
             DrawALLGraph(graph, vertexHovered, edgeHovered, selectedV);
 
             if (extraLines != null)
@@ -141,6 +160,7 @@ namespace Orienty_MapManager
                     DrawEdge(line.p1, line.p2);
                 }
             }
+            
         }
 
         public int GetRadiusOfVertex(Vertex vertex)
