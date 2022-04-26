@@ -334,6 +334,12 @@ namespace Orienty_MapManager
                             canvas.Pavilions.RemoveAt(selectedP);
                         }
                     }
+                    
+                    if (!canvas.Pavilions[canvas.Pavilions.Count-1].isFinished)
+                    {
+                        canvas.Pavilions.RemoveAt(canvas.Pavilions.Count - 1);
+                        sheet.MouseMove -= Mouse_move_draw_Pavs;
+                    }
                 }
 
                 UpdateGraphImage();
