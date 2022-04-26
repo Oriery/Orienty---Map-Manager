@@ -365,10 +365,13 @@ namespace Orienty_MapManager
 
         private void FinishNewEdge(int v1, int v2)
         {
-            graph.E.Add(new Edge(v1, v2));
-            graph.V[v1].arrIDs.Add(v2);
-            graph.V[v2].arrIDs.Add(v1);
-            selected1 = -1;
+            if (!graph.V[v1].arrIDs.Contains(v2))
+            {
+                graph.E.Add(new Edge(v1, v2));
+                graph.V[v1].arrIDs.Add(v2);
+                graph.V[v2].arrIDs.Add(v1);
+                selected1 = -1;
+            }
             UpdateGraphImage();
         }
 
