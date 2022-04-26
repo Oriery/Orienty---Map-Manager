@@ -21,6 +21,8 @@ namespace Orienty_MapManager
         int vertexHovered = -1;
         Edge edgeHovered = null;
 
+        ToolTip t = new ToolTip();
+
         public Form1()
         {
             InitializeComponent();
@@ -34,13 +36,8 @@ namespace Orienty_MapManager
             buttonsOfActions.Add(WhatDoing.DrawingPavilions, draw_Pav);
             buttonsOfActions.Add(WhatDoing.DrawingOuterWall, B_drawOuterWalls);
 
-
-            
-            ToolTip t = new ToolTip();
             t.SetToolTip(B_drawOuterWalls, "Рисовать схему здания");
             t.SetToolTip(draw_Pav, "Рисовать павильоны");
-
-
 
             ResetAllSelections(WhatDoing.DrawingGraph);
         }
@@ -230,7 +227,6 @@ namespace Orienty_MapManager
                     if (canvas.outerWall.AddPointOfWall(e.Location))
                     {
                         ResetAllSelections();
-                        ToolTip t = new ToolTip();
                         t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
                     }
                 }
@@ -277,8 +273,6 @@ namespace Orienty_MapManager
                     if (canvas.Pavilions[canvas.Pavilions.Count-1].AddPointOfWall(e.Location))
                     {
                         ResetAllSelections();
-                       // ToolTip t = new ToolTip();
-                       // t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
                     }
                 }
 
