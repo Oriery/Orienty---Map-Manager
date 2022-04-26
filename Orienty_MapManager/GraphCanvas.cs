@@ -56,7 +56,7 @@ namespace Orienty_MapManager
             penVertexSelected = new Pen(Color.Red, 2);
             penEdge = new Pen(colorEdges, 2);
             penEdgeHovered = new Pen(colorEdges, 3);
-            penWalls = new Pen(wallsColor, 5);
+            penWalls = new Pen(wallsColor, 3);
             font = new Font("Arial", 10);
             brushJunktion = new SolidBrush(colorEdges);
             penPav = new Pen(PavBorderColor, 3);

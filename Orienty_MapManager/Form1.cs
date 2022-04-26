@@ -71,7 +71,7 @@ namespace Orienty_MapManager
 
             if (!allowedToDrawNewOuterWall)
             {
-                const string message = "Вы действительно хотите перерисовать внешнюю стену?";
+                const string message = "Вы действительно хотите перерисовать схему здания и тем самым удалив все павильоны?";
                 const string caption = "Внешняя стена уже существует!";
                 var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 allowedToDrawNewOuterWall = MBSave == DialogResult.Yes;
@@ -80,10 +80,17 @@ namespace Orienty_MapManager
             if (allowedToDrawNewOuterWall)
             {
                 canvas.outerWall.Reset();
+                foreach(var pav in canvas.Pavilions)
+                {
+                    pav.Reset();
+                }
+                canvas.Pavilions.Clear();
                 ResetAllSelections(WhatDoing.DrawingOuterWall);
+                draw_Pav.Enabled = false;
             } 
             else
             {
+                draw_Pav.Enabled = true;
                 ResetAllSelections();
             }
         }
@@ -267,20 +274,27 @@ namespace Orienty_MapManager
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    
-                    if(canvas.Pavilions.Count==0)
+                    if(Polygon.IsPointInPolygon(e.Location, canvas.outerWall.points)) // check is point inside outerwall
                     {
-                        canvas.Pavilions.Add(new Polygon());
-                    }
-                    if(canvas.Pavilions[canvas.Pavilions.Count-1].isFinished  && canvas.Pavilions.Count>0)
-                        canvas.Pavilions.Add(new Polygon());
+                        if (GetClickedPolygon(e.Location, canvas.Pavilions, false) == -1) // if not ckieck on exist polygon
+                        {
+                            if (canvas.Pavilions.Count == 0)
+                            {
+                                canvas.Pavilions.Add(new Polygon());
+                            }
+                            if (canvas.Pavilions[canvas.Pavilions.Count - 1].isFinished && canvas.Pavilions.Count > 0)
+                                canvas.Pavilions.Add(new Polygon());
 
-                    if (canvas.Pavilions[canvas.Pavilions.Count-1].AddPointOfWall(e.Location))
-                    {
-                        ResetAllSelections();
-                       // ToolTip t = new ToolTip();
-                       // t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
+                            if (canvas.Pavilions[canvas.Pavilions.Count - 1].AddPointOfWall(e.Location))
+                            {
+                                ResetAllSelections();
+                                // ToolTip t = new ToolTip();
+                                // t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
+                            }
+                        }
                     }
+                    
+                   
                 }
 
                 if (e.Button == MouseButtons.Right)
@@ -305,10 +319,15 @@ namespace Orienty_MapManager
         }
 
 
-        private int GetClickedPolygon(Point mouseP, List<Polygon> polygons)
+        private int GetClickedPolygon(Point mouseP, List<Polygon> polygons, bool checkLast = true)
         {
 
-            for (int i = 0; i < polygons.Count; ++i)
+            int last;
+            if(checkLast)
+                last = polygons.Count - 1;
+            else
+                last = polygons.Count - 2;
+            for (int i = 0; i <= last; ++i)
             {
                 if (Polygon.IsPointInPolygon(mouseP, polygons[i].points))
                 {
