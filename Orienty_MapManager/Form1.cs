@@ -15,7 +15,7 @@ namespace Orienty_MapManager
         public GraphCanvas canvas;
         public Graph graph;
 
-        Image backgrImage = Image.FromFile("../../Resources/grid.png");
+        Image backgroundImage = Image.FromFile("../../Resources/grid.png");
 
         int selected1;
 
@@ -27,9 +27,12 @@ namespace Orienty_MapManager
         Edge edgeHovered = null;
         const string PATHMAP = "../../Resources/map.png";
 
+        ToolTip t = new ToolTip();
+
         public Form1()
         {
             InitializeComponent();
+
             canvas = new GraphCanvas(sheet.Width, sheet.Height);
             graph = new Graph();
 
@@ -40,15 +43,12 @@ namespace Orienty_MapManager
             buttonsOfActions.Add(WhatDoing.DrawingPavilions, draw_Pav);
             buttonsOfActions.Add(WhatDoing.DrawingOuterWall, B_drawOuterWalls);
 
-
-            
-            ToolTip t = new ToolTip();
             t.SetToolTip(B_drawOuterWalls, "Рисовать схему здания");
             t.SetToolTip(draw_Pav, "Рисовать павильоны");
 
-
-
             ResetAllSelections(WhatDoing.DrawingGraph);
+
+            SetBackgroundImage(backgroundImage);
         }
 
         private void selectButton_Click(object sender, EventArgs e)
@@ -92,11 +92,9 @@ namespace Orienty_MapManager
                 }
                 canvas.Pavilions.Clear();
                 ResetAllSelections(WhatDoing.DrawingOuterWall);
-                draw_Pav.Enabled = false;
             } 
             else
             {
-                draw_Pav.Enabled = true;
                 ResetAllSelections();
             }
         }
@@ -109,7 +107,7 @@ namespace Orienty_MapManager
             if (MBSave == DialogResult.Yes)
             {
                 graph.Clear();
-                UpdateGraphImage();
+                ResetAllSelections(WhatDoing.DrawingGraph);
             }
         }
 
@@ -144,7 +142,7 @@ namespace Orienty_MapManager
         {
             for (int i = 0; i < graph.V.Count; i++)
             {
-                int rOfVertex = canvas.GetRadiusOfVertex(graph.V[i]);
+                int rOfVertex = canvas.GetRadiusOfVertex(graph.V[i]) + 2;
                 if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) < Math.Pow(rOfVertex, 2))
                 {
                     return graph.V[i].id;
@@ -243,7 +241,6 @@ namespace Orienty_MapManager
                     if (canvas.outerWall.AddPointOfWall(e.Location))
                     {
                         ResetAllSelections();
-                        ToolTip t = new ToolTip();
                         t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
                     }
                 }
@@ -274,13 +271,15 @@ namespace Orienty_MapManager
                 {
                     ResetAllSelections();
                 }
+
+                return;
             }
 
             if(whatDoing == WhatDoing.DrawingPavilions)
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    if(Polygon.IsPointInPolygon(e.Location, canvas.outerWall.points)) // check is point inside outerwall
+                    if (Polygon.IsPointInPolygon(e.Location, canvas.outerWall.points)) // check is point inside outerwall
                     {
                         if (GetClickedPolygon(e.Location, canvas.Pavilions, false) == -1) // if not ckieck on exist polygon
                         {
@@ -288,19 +287,17 @@ namespace Orienty_MapManager
                             {
                                 canvas.Pavilions.Add(new Polygon());
                             }
-                            if (canvas.Pavilions[canvas.Pavilions.Count - 1].isFinished && canvas.Pavilions.Count > 0)
+                            else if (canvas.Pavilions[canvas.Pavilions.Count - 1].isFinished)
+                            {
                                 canvas.Pavilions.Add(new Polygon());
+                            }
 
                             if (canvas.Pavilions[canvas.Pavilions.Count - 1].AddPointOfWall(e.Location))
                             {
-                                ResetAllSelections();
-                                // ToolTip t = new ToolTip();
-                                // t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
+                                ResetAllSelections(WhatDoing.DrawingPavilions);
                             }
                         }
                     }
-                    
-                   
                 }
 
                 if (e.Button == MouseButtons.Right)
@@ -313,9 +310,10 @@ namespace Orienty_MapManager
                         const string caption = "Предупреждение";
                         var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if(MBSave == DialogResult.Yes)
-                           canvas.Pavilions[selectedP].Reset();
+                        {
+                            canvas.Pavilions.RemoveAt(selectedP);
+                        }
                     }
-                   
                 }
 
                 UpdateGraphImage();
@@ -376,10 +374,13 @@ namespace Orienty_MapManager
 
         private void FinishNewEdge(int v1, int v2)
         {
-            graph.E.Add(new Edge(v1, v2));
-            graph.V[v1].arrIDs.Add(v2);
-            graph.V[v2].arrIDs.Add(v1);
-            selected1 = -1;
+            if (!graph.V[v1].arrIDs.Contains(v2))
+            {
+                graph.E.Add(new Edge(v1, v2));
+                graph.V[v1].arrIDs.Add(v2);
+                graph.V[v2].arrIDs.Add(v1);
+                selected1 = -1;
+            }
             UpdateGraphImage();
         }
 
@@ -451,21 +452,15 @@ namespace Orienty_MapManager
             SaveJPG100((Bitmap)mapImg, PATHMAP);
         }
 
-
-
-        private void FillBackgroundImage()
+        private void SetBackgroundImage(Image image)
         {
-           sheet.BackgroundImage = backgrImage;
+           sheet.BackgroundImage = backgroundImage;
         }
 
         private void UpdateGraphImage(List<PairPoints> extraLines = null)
         {
-            
-            canvas.clearSheet();
-            FillBackgroundImage();
             canvas.DrawEverything(graph, vertexHovered, edgeHovered, new List<int>() { selected1 }, extraLines);
             sheet.Image = canvas.GetBitmap();
-
         }
 
         private enum WhatDoing
@@ -561,69 +556,12 @@ namespace Orienty_MapManager
             }
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        private void sheet_Resize(object sender, EventArgs e)
         {
-            byte[] file = ImageToByteArray(Image.FromFile(PATHMAP));
-
-            /*
-            WebRequest request = WebRequest.Create("http://nigger.by:7770/api/v1/map/map");
-            request.Method = "POST"; // для отправки используется метод Post
-                                     // данные для отправки
-                                     // string data = "sName=Hello world!";
-                                     // преобразуем данные в массив байтов
-            byte[] byteArray = file;
-            // устанавливаем тип содержимого - параметр ContentType
-            request.ContentType = "multipart/form-data";
-            // Устанавливаем заголовок Content-Length запроса - свойство ContentLength
-            request.ContentLength = byteArray.Length;
-
-            //записываем данные в поток запроса
-            using (Stream dataStream = request.GetRequestStream())
+            if (canvas != null)
             {
-                dataStream.Write(byteArray, 0, byteArray.Length);
+                canvas.SetSize(sheet.Width, sheet.Height);
             }
-
-            WebResponse response = await request.GetResponseAsync();
-            using (Stream stream = response.GetResponseStream())
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    var str = reader.ReadToEnd();
-                }
-            }
-            response.Close();
-
-            */
-
-            WebClient http = new WebClient();
-            //http.UploadData()
-            http.UploadFile("http://nigger.by:7770/api/v1/map/map", @"../../Resources/map.png");
-
-            /*HttpClient httpClient = new HttpClient();
-            MultipartFormDataContent form = new MultipartFormDataContent();
-
-            form.Add(new ByteArrayContent(file, 0, file.Length), "map", "map.png");
-            HttpResponseMessage response = await httpClient.PostAsync("http://nigger.by:7770/api/v1/map/map", form);
-
-            response.EnsureSuccessStatusCode();
-            httpClient.Dispose();
-            string sd = response.Content.ReadAsStringAsync().Result;
-            */
-
-            /*
-            System.Net.WebRequest reqPOST = System.Net.WebRequest.Create("http://nigger.by:7770/api/v1/map/map");
-            reqPOST.Method = "POST"; // Устанавливаем метод передачи данных в POST
-            reqPOST.Timeout = 120000; // Устанавливаем таймаут соединения
-            reqPOST.ContentType = "application/x-www-form-urlencoded"; // указываем тип контента
-                                                                       // передаем список пар параметров / значений для запрашиваемого скрипта методом POST
-                                                                       // здесь используется кодировка cp1251 для кодирования кирилицы и спец. символов в значениях параметров
-                                                                       // Если скрипт должен принимать данные в utf-8, то нужно выбрать Encodinf.UTF8
-            //byte[] sentData = Encoding.GetEncoding(1251).GetBytes("message=" + System.Net.WebUtility.UrlEncode("отправляемые данные", Encoding.GetEncoding(1251)));
-            reqPOST.ContentLength = file.Length;
-            System.IO.Stream sendStream = reqPOST.GetRequestStream();
-            sendStream.Write(file, 0, file.Length);
-            sendStream.Close();
-            System.Net.WebResponse result = reqPOST.GetResponse();*/
         }
     }
 }

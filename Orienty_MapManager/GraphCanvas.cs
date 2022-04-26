@@ -6,19 +6,21 @@ using System.Windows.Forms;
 namespace Orienty_MapManager
 {
     public class GraphCanvas
-    {
-        Image backgrImage = Image.FromFile("../../Resources/grid.png");
+    { 
         Bitmap bitmap;
         Graphics graphics;
 
         Font font;
-        Brush brushText = Brushes.Black;
 
-        Color colorEdges = Color.FromArgb(0, 100, 100);
+        Color colorEdges = Color.FromArgb(245, 205, 159);
+        Color colorText;
+        Color colorPavilion = Color.FromArgb(115, 176, 139);
+        Color colorExit = Color.FromArgb(117, 124, 168);
 
+        Brush brushText;
         Brush brushPavilion = Brushes.White;
         Brush brushJunktion;
-        Brush brushExit = Brushes.Aquamarine;
+        Brush brushExit;
 
         Pen penVertex;
         Pen penVertexSelected;
@@ -60,20 +62,25 @@ namespace Orienty_MapManager
 
         public GraphCanvas(int width, int height)
         {
-           // bitmap = new Bitmap(width, height);
-            bitmap = new Bitmap(Image.FromFile("../../Resources/grid.png"), width, height);
-          //  bitmap.SetResolution(width, height);
-
-            graphics = Graphics.FromImage(bitmap);
+            SetSize(width, height);
+            
             clearSheet();
+
+            colorText = colorPavilion;
+
             penVertex = new Pen(Color.Black, 2);
             penVertexSelected = new Pen(Color.Red, 2);
             penEdge = new Pen(colorEdges, 2);
             penEdgeHovered = new Pen(colorEdges, 3);
             penWalls = new Pen(wallsColor, 3);
-            font = new Font("Arial", 10);
-            brushJunktion = new SolidBrush(colorEdges);
             penPav = new Pen(PavBorderColor, 3);
+
+            font = new Font("Arial", 14);
+
+            brushJunktion = new SolidBrush(colorEdges);
+            brushText = new SolidBrush(colorText);
+            brushExit = new SolidBrush(colorExit);
+            brushPavilion = new SolidBrush(colorPavilion);
         }
 
         public Bitmap GetBitmap()
@@ -83,14 +90,14 @@ namespace Orienty_MapManager
 
         public void clearSheet()
         {
-            graphics.Clear(Color.White);
+            graphics.Clear(Color.Transparent);
         }
 
         public void drawVertex(Vertex vertex, bool isHovered = false, bool isSelected = false)
         {
             int x = vertex.x;
             int y = vertex.y;
-            int rOfVertex = GetRadiusOfVertex(vertex) + (isHovered ? 2 : 0);
+            int rOfVertex = GetRadiusOfVertex(vertex) + (isHovered ? 1 : 0);
 
             graphics.FillEllipse(GetBrushOfVertex(vertex), 
                 (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
@@ -99,8 +106,12 @@ namespace Orienty_MapManager
 
             if (vertex.type == E_NodeType.Pavilion)
             {
-                point = new PointF(x + rOfVertex + 2, y - font.Height / 2);
-                graphics.DrawString(vertex.name, font, brushText, point);
+                point = new PointF(x, y - rOfVertex + 2);
+
+                StringFormat stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Center;
+                stringFormat.LineAlignment = StringAlignment.Far;
+                graphics.DrawString(vertex.name, font, brushText, point, stringFormat);
             }
         }
 
@@ -114,7 +125,7 @@ namespace Orienty_MapManager
             //рисуем ребра
             foreach (Edge edge in E)
             {
-                DrawEdge(edge.v1, edge.v2, edgeHovered == edge);
+                DrawEdge(edge.v1, edge.v2, edgeHovered == edge || vertexHovered == edge.v1 || vertexHovered == edge.v2);
             }
 
             //рисуем вершины
@@ -158,6 +169,9 @@ namespace Orienty_MapManager
         public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, List<PairPoints> extraLines = null)
         {
             DrawPolygonOfWalls(graphics,outerWall, penWalls, buildingBackgroundColor);
+            clearSheet();
+
+            DrawPolygonOfWalls(outerWall, penWalls, buildingBackgroundColor);
 
             //draw pavilions
             foreach(var pav in Pavilions)
@@ -174,7 +188,6 @@ namespace Orienty_MapManager
                     DrawEdge(line.p1, line.p2);
                 }
             }
-            
         }
 
         public int GetRadiusOfVertex(Vertex vertex)
@@ -205,6 +218,12 @@ namespace Orienty_MapManager
                 default:
                     return brushPavilion;
             }
+        }
+
+        public void SetSize(int width, int height)
+        {
+            bitmap = new Bitmap(width, height);
+            graphics = Graphics.FromImage(bitmap);
         }
     }
 
