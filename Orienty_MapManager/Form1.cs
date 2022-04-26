@@ -30,6 +30,7 @@ namespace Orienty_MapManager
         Edge edgeHovered = null;
         const string PATHMAP = "../../Resources/map.png";
         const string PATHGRAPH = "../../Resources/graph.json";
+        const string PATHBUILD = "../../Resources/";
 
         ToolTip t = new ToolTip();
 
@@ -453,8 +454,30 @@ namespace Orienty_MapManager
             {
                 stream.Write(graphJson);
             }
+            //save build 
+            saveFileDialog1.Filter = "Json Files (json)|*.json";
+            saveFileDialog1.Title = "Сохранить файл здания";
+            saveFileDialog1.FileName = "build.json";
 
-           //save map 
+            if (saveFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                var pathInput = saveFileDialog1.FileName;
+
+                MapSerializer.SerializeBuild(pathInput, canvas.outerWall);
+
+            }
+            saveFileDialog1.Title = "Сохранить файл павильонов";
+            saveFileDialog1.FileName = "pavilions.json";
+            //save pavilions
+            if (saveFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                var pathInput = saveFileDialog1.FileName;
+
+                MapSerializer.SerializePavs(pathInput, canvas.Pavilions);
+
+            }
+
+            //save map 
             var mapImg = canvas.SaveMap();
 
             SaveJPG100((Bitmap)mapImg, PATHMAP);
@@ -584,6 +607,29 @@ namespace Orienty_MapManager
             //save json
 
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "Json Files (json)|*.json";
+            openFileDialog1.Title = "Открыть файл здания";
+            openFileDialog1.FileName = "build.json";
+            if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                var pathInput = openFileDialog1.FileName;
+
+                canvas.outerWall = MapSerializer.DeSerializeBuild(pathInput);
+
+            }
+            openFileDialog1.Title = "Открыть файл павильонов";
+            openFileDialog1.FileName = "pavilions.json";
+            if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                var pathInput = openFileDialog1.FileName;
+
+                canvas.Pavilions = MapSerializer.DeSerializePavs(pathInput);
+
+            }
         }
     }
 }

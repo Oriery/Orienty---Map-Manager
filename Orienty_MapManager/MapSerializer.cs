@@ -5,11 +5,79 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Orienty_MapManager
 { 
     static class MapSerializer
     {
+        static JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+        public static void SerializeBuild(string path, Polygon build)
+        {
+            string jsonBuild =  JsonSerializer.Serialize<Polygon>(build, options);
+
+            using (var stream = new StreamWriter(path))
+            {
+                stream.Write(jsonBuild);
+            }
+
+        }
+
+        public static void SerializePavs(string path, List<Polygon> pavilions)
+        {
+            string jsonPavs = JsonSerializer.Serialize<List<Polygon>>(pavilions, options);
+
+            using (var stream = new StreamWriter(path))
+            {
+                stream.Write(jsonPavs);
+            }
+        }
+
+        public static Polygon DeSerializeBuild(string path)
+        {
+            string jsonBuild;
+
+            using (var stream = new StreamReader(path))
+            {
+                jsonBuild = stream.ReadToEnd();
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<Polygon>(jsonBuild, options);
+            }
+            catch
+            {
+                MessageBox.Show("файлы поверждены, загрузка готовой схемы невозможна");
+                return  null;
+            }
+            
+        }
+
+        public static List<Polygon> DeSerializePavs(string path)
+        {
+            string jsonPavs;
+
+            using (var stream = new StreamReader(path))
+            {
+                jsonPavs = stream.ReadToEnd();
+            }
+            try
+            {
+                return JsonSerializer.Deserialize<List<Polygon>>(jsonPavs, options);
+            }
+            catch
+            {
+                MessageBox.Show("файлы поверждены, загрузка готовой схемы невозможна");
+                return null;
+            }
+
+        }
+
         public static string SerializeMap(Graph graph)
         {
             MapContainer mapContainer = new MapContainer();

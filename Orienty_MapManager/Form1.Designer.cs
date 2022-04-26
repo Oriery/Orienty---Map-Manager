@@ -46,6 +46,9 @@
             this.RB_Exit = new System.Windows.Forms.RadioButton();
             this.TB_Name = new System.Windows.Forms.TextBox();
             this.sheet = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panelLeft.SuspendLayout();
             this.mainPanel.SuspendLayout();
             this.panelContextVertex.SuspendLayout();
@@ -79,6 +82,7 @@
             this.panelLeft.AutoSize = true;
             this.panelLeft.BackColor = System.Drawing.SystemColors.Control;
             this.panelLeft.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLeft.Controls.Add(this.button1);
             this.panelLeft.Controls.Add(this.sendServer);
             this.panelLeft.Controls.Add(this.draw_Pav);
             this.panelLeft.Controls.Add(this.B_drawOuterWalls);
@@ -275,6 +279,20 @@
             this.sheet.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseMove);
             this.sheet.Resize += new System.EventHandler(this.sheet_Resize);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(10, 591);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(123, 46);
+            this.button1.TabIndex = 17;
+            this.button1.Text = "Экспортровать схему";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -319,6 +337,9 @@
         private System.Windows.Forms.TextBox TB_Name;
         private System.Windows.Forms.Button draw_Pav;
         private System.Windows.Forms.Button sendServer;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

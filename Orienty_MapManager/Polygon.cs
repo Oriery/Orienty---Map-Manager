@@ -9,8 +9,8 @@ namespace Orienty_MapManager
 {
     public class Polygon
     {
-        public List<Point> points = new List<Point>();
-        public bool isFinished = false;
+        public List<Point> points { get; set; } = new List<Point>();
+        public bool isFinished { get; set; } = false;
 
         /// <summary>
         /// 

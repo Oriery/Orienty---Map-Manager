@@ -39,10 +39,12 @@ namespace Orienty_MapManager
         Color pavColor = Color.FromArgb(149, 149, 149);
         Color PavBorderColor = Color.FromArgb(49, 49, 49);
         Pen penWalls, penPav;
+        
+        
         public Polygon outerWall = new Polygon();
-
-
         public List<Polygon> Pavilions { get; set; } = new List<Polygon>();
+
+
 
         public Image SaveMap()
         {

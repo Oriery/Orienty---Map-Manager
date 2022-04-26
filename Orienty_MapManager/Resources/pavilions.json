@@ -1,0 +1,77 @@
+[
+  {
+    "points": [
+      {
+        "IsEmpty": false,
+        "X": 196,
+        "Y": 99
+      },
+      {
+        "IsEmpty": false,
+        "X": 166,
+        "Y": 241
+      },
+      {
+        "IsEmpty": false,
+        "X": 335,
+        "Y": 223
+      },
+      {
+        "IsEmpty": false,
+        "X": 348,
+        "Y": 118
+      }
+    ],
+    "isFinished": true
+  },
+  {
+    "points": [
+      {
+        "IsEmpty": false,
+        "X": 486,
+        "Y": 420
+      },
+      {
+        "IsEmpty": false,
+        "X": 430,
+        "Y": 430
+      },
+      {
+        "IsEmpty": false,
+        "X": 450,
+        "Y": 456
+      },
+      {
+        "IsEmpty": false,
+        "X": 483,
+        "Y": 463
+      }
+    ],
+    "isFinished": true
+  },
+  {
+    "points": [
+      {
+        "IsEmpty": false,
+        "X": 611,
+        "Y": 135
+      },
+      {
+        "IsEmpty": false,
+        "X": 565,
+        "Y": 173
+      },
+      {
+        "IsEmpty": false,
+        "X": 609,
+        "Y": 185
+      },
+      {
+        "IsEmpty": false,
+        "X": 639,
+        "Y": 142
+      }
+    ],
+    "isFinished": true
+  }
+]
