@@ -267,6 +267,7 @@ namespace Orienty_MapManager
             {
                 if (e.Button == MouseButtons.Left)
                 {
+                    
                     if(canvas.Pavilions.Count==0)
                     {
                         canvas.Pavilions.Add(new Polygon());
@@ -284,13 +285,38 @@ namespace Orienty_MapManager
 
                 if (e.Button == MouseButtons.Right)
                 {
-                    canvas.outerWall.Reset();// TODO изменить 
+                    
+                    int selectedP = GetClickedPolygon(e.Location, canvas.Pavilions);
+                    if(selectedP != -1)
+                    {
+                        const string message = "Вы действительно хотите удалить павильон?";
+                        const string caption = "Предупреждение";
+                        var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if(MBSave == DialogResult.Yes)
+                           canvas.Pavilions[selectedP].Reset();
+                    }
+                   
                 }
 
                 UpdateGraphImage();
 
                 return;
             }
+        }
+
+
+        private int GetClickedPolygon(Point mouseP, List<Polygon> polygons)
+        {
+
+            for (int i = 0; i < polygons.Count; ++i)
+            {
+                if (Polygon.IsPointInPolygon(mouseP, polygons[i].points))
+                {
+                    return i;
+                }
+            }
+
+            return-1; //not selected polygon
         }
 
         private void DeleteClicked(MouseEventArgs e)
