@@ -83,11 +83,9 @@ namespace Orienty_MapManager
                 }
                 canvas.Pavilions.Clear();
                 ResetAllSelections(WhatDoing.DrawingOuterWall);
-                draw_Pav.Enabled = false;
             } 
             else
             {
-                draw_Pav.Enabled = true;
                 ResetAllSelections();
             }
         }
@@ -100,7 +98,7 @@ namespace Orienty_MapManager
             if (MBSave == DialogResult.Yes)
             {
                 graph.Clear();
-                UpdateGraphImage();
+                ResetAllSelections(WhatDoing.DrawingGraph);
             }
         }
 
@@ -264,6 +262,8 @@ namespace Orienty_MapManager
                 {
                     ResetAllSelections();
                 }
+
+                return;
             }
 
             if(whatDoing == WhatDoing.DrawingPavilions)
@@ -278,16 +278,14 @@ namespace Orienty_MapManager
                             {
                                 canvas.Pavilions.Add(new Polygon());
                             }
-                            if (canvas.Pavilions[canvas.Pavilions.Count - 1].isFinished && canvas.Pavilions.Count > 0)
+                            else if (canvas.Pavilions[canvas.Pavilions.Count - 1].isFinished)
+                            {
                                 canvas.Pavilions.Add(new Polygon());
+                            }
 
                             if (canvas.Pavilions[canvas.Pavilions.Count - 1].AddPointOfWall(e.Location))
                             {
-                                ResetAllSelections();
-                                if (canvas.Pavilions[canvas.Pavilions.Count - 1].AddPointOfWall(e.Location))
-                                {
-                                    ResetAllSelections();
-                                }
+                                ResetAllSelections(WhatDoing.DrawingPavilions);
                             }
                         }
                     }
@@ -303,9 +301,10 @@ namespace Orienty_MapManager
                         const string caption = "Предупреждение";
                         var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if(MBSave == DialogResult.Yes)
-                           canvas.Pavilions[selectedP].Reset();
+                        {
+                            canvas.Pavilions.RemoveAt(selectedP);
+                        }
                     }
-                   
                 }
 
                 UpdateGraphImage();

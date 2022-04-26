@@ -76,7 +76,7 @@ namespace Orienty_MapManager
         {
             int x = vertex.x;
             int y = vertex.y;
-            int rOfVertex = GetRadiusOfVertex(vertex) + (isHovered ? 2 : 0);
+            int rOfVertex = GetRadiusOfVertex(vertex) + (isHovered ? 1 : 0);
 
             graphics.FillEllipse(GetBrushOfVertex(vertex), 
                 (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
