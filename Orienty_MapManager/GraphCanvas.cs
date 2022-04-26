@@ -100,7 +100,7 @@ namespace Orienty_MapManager
             //рисуем ребра
             foreach (Edge edge in E)
             {
-                DrawEdge(edge.v1, edge.v2, edgeHovered == edge);
+                DrawEdge(edge.v1, edge.v2, edgeHovered == edge || vertexHovered == edge.v1 || vertexHovered == edge.v2);
             }
 
             //рисуем вершины

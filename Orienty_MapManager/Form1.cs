@@ -133,7 +133,7 @@ namespace Orienty_MapManager
         {
             for (int i = 0; i < graph.V.Count; i++)
             {
-                int rOfVertex = canvas.GetRadiusOfVertex(graph.V[i]);
+                int rOfVertex = canvas.GetRadiusOfVertex(graph.V[i]) + 2;
                 if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) < Math.Pow(rOfVertex, 2))
                 {
                     return graph.V[i].id;
