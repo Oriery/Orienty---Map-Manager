@@ -60,8 +60,9 @@ namespace Orienty_MapManager
     }
     public class Beacon
     {
-        public string uuid { get; set; }
+        public string mac { get; set; }
         public int x, y, z;
+        public int tx_power { get; set; }
 
         public Coord coord { get => new Coord(x, y, z); }
 
@@ -70,13 +71,14 @@ namespace Orienty_MapManager
         /// </summary>
         public int node { get; set; }
 
-        public Beacon(string uuid, int x, int y, int z, int node)
+        public Beacon(string uuid, int x, int y, int z, int node, int tx_power = -69)
         {
-            this.uuid = uuid;
+            this.mac = uuid;
             this.x = x;
             this.y = y;
             this.z = z;
             this.node = node;
+            this.tx_power = tx_power;
         }
     }
 

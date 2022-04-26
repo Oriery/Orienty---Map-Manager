@@ -87,11 +87,11 @@ namespace Orienty_MapManager
             {
                 if (v.type == E_NodeType.Pavilion)
                 {
-                    mapContainer.idNamePairs.Add(new IdNamePair(v.id, v.name));
+                    mapContainer.nodeInfos.Add(new IdNamePair(v.id, v.name));
                 }
 
                 // TODO сейчас сериализуются ненастоящие маячки
-                mapContainer.beacons.Add(new Beacon("4hgjrb-264rtb-524bdg-245gbt-tr565tb", v.x + 5, v.y - 2, 0, v.id)); 
+                mapContainer.beacons.Add(new Beacon("00:00:00:00:00:00", v.x + 5, v.y - 2, 0, v.id)); 
             }
             var options = new JsonSerializerOptions
             {
@@ -105,12 +105,12 @@ namespace Orienty_MapManager
             public MapContainer()
             {
                 nodes = new List<Vertex>();
-                idNamePairs = new List<IdNamePair>();
+                nodeInfos = new List<IdNamePair>();
                 beacons = new List<Beacon>();
             }
 
             public List<Vertex> nodes { get; set; }
-            public List<IdNamePair> idNamePairs { get; set; }
+            public List<IdNamePair> nodeInfos { get; set; }
             public List<Beacon> beacons { get; set; }
         }
 

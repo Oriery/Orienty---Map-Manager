@@ -95,20 +95,16 @@ namespace Orienty_MapManager
             graphics.Clear(Color.Transparent);
         }
 
-        public void drawVertex(Vertex vertex, bool isHovered = false, bool isSelected = false)
+        public void DrawVertex(Vertex vertex, bool isHovered = false, bool isSelected = false)
         {
             int x = vertex.x;
             int y = vertex.y;
-            int rOfVertex = GetRadiusOfVertex(vertex) + (isHovered ? 1 : 0);
-
-            graphics.FillEllipse(GetBrushOfVertex(vertex), 
-                (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
-
-            graphics.DrawEllipse(isSelected ? penVertexSelected : penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+            
+            DrawVertex(x, y, vertex.type, isHovered, isSelected);
 
             if (vertex.type == E_NodeType.Pavilion)
             {
-                point = new PointF(x, y - rOfVertex + 2);
+                point = new PointF(x, y - GetRadiusOfVertex(vertex.type) + 2);
 
                 StringFormat stringFormat = new StringFormat();
                 stringFormat.Alignment = StringAlignment.Center;
@@ -117,7 +113,15 @@ namespace Orienty_MapManager
             }
         }
 
-        
+        public void DrawVertex(int x, int y, E_NodeType nodeType = E_NodeType.Junktion, bool isHovered = false, bool isSelected = false)
+        {
+            int rOfVertex = GetRadiusOfVertex(nodeType) + (isHovered ? 1 : 0);
+
+            graphics.FillEllipse(GetBrushOfVertex(nodeType),
+                (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+
+            graphics.DrawEllipse(isSelected ? penVertexSelected : penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
+        }
 
         private void DrawALLGraph(Graph graph, int vertexHovered = -1, Edge edgeHovered = null, List<int> selectedV = null)
         { 
@@ -134,13 +138,13 @@ namespace Orienty_MapManager
             if (selectedV == null) {
                 for (int i = 0; i < V.Count; i++)
                 {
-                    drawVertex(V[i], i == vertexHovered);
+                    DrawVertex(V[i], i == vertexHovered);
                 }
             } else
             {
                 for (int i = 0; i < V.Count; i++)
                 {
-                    drawVertex(V[i], i == vertexHovered, selectedV.Contains(i));
+                    DrawVertex(V[i], i == vertexHovered, selectedV.Contains(i));
                 }
             }
 
@@ -168,7 +172,7 @@ namespace Orienty_MapManager
             }
         }
 
-        public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, List<PairPoints> extraLines = null)
+        public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, PairPoints extraLine = null, bool drawExtraVertex = false)
         {
            // DrawPolygonOfWalls(graphics,outerWall, penWalls, buildingBackgroundColor);
             clearSheet();
@@ -181,18 +185,19 @@ namespace Orienty_MapManager
 
             DrawALLGraph(graph, vertexHovered, edgeHovered, selectedV);
 
-            if (extraLines != null)
+            if (extraLine != null)
             {
-                foreach (var line in extraLines)
+                DrawEdge(extraLine.p1, extraLine.p2);
+                if (drawExtraVertex)
                 {
-                    DrawEdge(line.p1, line.p2);
+                    DrawVertex(extraLine.p2.X, extraLine.p2.Y, E_NodeType.Junktion);
                 }
             }
         }
 
-        public int GetRadiusOfVertex(Vertex vertex)
+        public int GetRadiusOfVertex(E_NodeType nodeType)
         {
-            switch (vertex.type)
+            switch (nodeType)
             {
                 case E_NodeType.Junktion:
                     return rOfJunktion;
@@ -205,9 +210,9 @@ namespace Orienty_MapManager
             }
         }
 
-        public Brush GetBrushOfVertex(Vertex vertex)
+        public Brush GetBrushOfVertex(E_NodeType nodeType)
         {
-            switch (vertex.type)
+            switch (nodeType)
             {
                 case E_NodeType.Junktion:
                     return brushJunktion;
