@@ -168,13 +168,11 @@ namespace Orienty_MapManager
 
         public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, List<PairPoints> extraLines = null)
         {
-            DrawPolygonOfWalls(graphics,outerWall, penWalls, buildingBackgroundColor);
+           // DrawPolygonOfWalls(graphics,outerWall, penWalls, buildingBackgroundColor);
             clearSheet();
-
-            DrawPolygonOfWalls(outerWall, penWalls, buildingBackgroundColor);
-
+            DrawPolygonOfWalls(graphics, outerWall, penWalls, buildingBackgroundColor);
             //draw pavilions
-            foreach(var pav in Pavilions)
+            foreach (var pav in Pavilions)
             {
                 DrawPolygonOfWalls(graphics,pav, penPav, pavColor);
             }

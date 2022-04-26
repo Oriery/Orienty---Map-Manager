@@ -25,8 +25,11 @@ namespace Orienty_MapManager
                 // TODO сейчас сериализуются ненастоящие маячки
                 mapContainer.beacons.Add(new Beacon("4hgjrb-264rtb-524bdg-245gbt-tr565tb", v.x + 5, v.y - 2, 0, v.id)); 
             }
-
-            return JsonSerializer.Serialize<MapContainer>(mapContainer);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            return JsonSerializer.Serialize<MapContainer>(mapContainer, options);
         }
 
         private class MapContainer
