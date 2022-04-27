@@ -89,11 +89,11 @@ namespace Orienty_MapManager
         {
             if(canvas.Pavilions.Count > 0)
             {
-                Point currectPoint = Polygon.GetCorrectPoint(e.Location, canvas.outerWall, 
-                    canvas.Pavilions[canvas.Pavilions.Count - 1].points[canvas.Pavilions[canvas.Pavilions.Count - 1].points.Count - 1]);
-                //canvas.DrawPavLine(e.Location);
+                /*Point currectPoint = Polygon.GetCorrectPoint(e.Location, canvas.outerWall, 
+                    canvas.Pavilions[canvas.Pavilions.Count - 1].points[canvas.Pavilions[canvas.Pavilions.Count - 1].points.Count - 1]);*/
+                canvas.DrawPavLine(e.Location);
                 
-                canvas.DrawPavLine(currectPoint);
+                //canvas.DrawPavLine(currectPoint);
                 //  if(canvas.Pavilions[canvas.Pavilions.Count-1].isFinished)
                 //  sheet.MouseMove -= Mouse_move_draw_Pavs;
             }
