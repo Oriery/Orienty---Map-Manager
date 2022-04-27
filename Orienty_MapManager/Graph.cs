@@ -15,9 +15,13 @@ namespace Orienty_MapManager
     public class Vertex
     {
         private int _id;
-        public int id { get => _id; }
+        public int id { get => _id; set => _id = value; }
         public int x, y, z;
-        public Coord coord { get => new Coord(x, y, z); }
+        public Coord coord { get => new Coord(x, y, z); set {
+                x = value.x;
+                y = value.y;
+                z = value.z;
+            } }
 
         public string name;
         public E_NodeType type { get; set; }
@@ -36,6 +40,8 @@ namespace Orienty_MapManager
 
             _id = Program.form.graph.GetFreeIdOfVertex();
         }
+
+        public Vertex() {}
 
         public void DecID()
         {
@@ -64,21 +70,29 @@ namespace Orienty_MapManager
         public int x, y, z;
         public int tx_power { get; set; }
 
-        public Coord coord { get => new Coord(x, y, z); }
+        public Coord coord { get => new Coord(x, y, z); set
+            {
+                x = value.x;
+                y = value.y;
+                z = value.z;
+            }
+        }
 
         /// <summary>
         /// Ближайшая нода
         /// </summary>
-        public int node { get => Program.form.graph.GetNearestVertex(x, y, z); }
+        public int node { get => Program.form.graph.GetNearestVertex(x, y, z); set { } }
 
         public Beacon(int x, int y, int z)
         {
-            this.mac = "00:00:00:00:00:00";
+            mac = "00:00:00:00:00:00";
             this.x = x;
             this.y = y;
             this.z = z;
             tx_power = -69;
         }
+
+        public Beacon() { }
 
         public Point GetPoint()
         {

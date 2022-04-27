@@ -37,7 +37,7 @@ namespace Orienty_MapManager
             }
         }
 
-        public static Polygon DeSerializeBuild(string path)
+        public static Polygon DeserializeBuild(string path)
         {
             string jsonBuild;
 
@@ -58,7 +58,7 @@ namespace Orienty_MapManager
             
         }
 
-        public static List<Polygon> DeSerializePavs(string path)
+        public static List<Polygon> DeserializePavs(string path)
         {
             string jsonPavs;
 
@@ -78,38 +78,47 @@ namespace Orienty_MapManager
 
         }
 
-        public static Graph DeSerializeMap(string path)
+        public static Graph DeserializeMap(string path)
         {
-            /* MapContainer mapContainer = new MapContainer();
-             mapContainer.nodes = graph.V;
-             mapContainer.beacons = graph.beacons;
-
-             foreach (var v in mapContainer.nodes)
-             {
-                 if (v.type == E_NodeType.Pavilion)
-                 {
-                     mapContainer.nodeInfos.Add(new IdNamePair(v.id, v.name));
-                 }
-             }
-
-             var options = new JsonSerializerOptions
-             {
-                 WriteIndented = true
-             };*/
             string jsonGraph;
             using (var stream = new StreamReader(path))
             {
                 jsonGraph = stream.ReadToEnd();
             }
+
+            MapContainer mapContainer;
             try
             {
-                return JsonSerializer.Deserialize<Graph> (jsonGraph, options);
+                mapContainer = JsonSerializer.Deserialize<MapContainer>(jsonGraph, options);
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("файлы поверждены, загрузка готовой схемы невозможна");
-                return null;
+                MessageBox.Show("файлы поврерждены, загрузка готовой схемы невозможна\n" + ex.Message);
+                return new Graph();
             }
+
+            Graph graph = new Graph();
+            graph.V = mapContainer.nodes;
+            graph.beacons = mapContainer.beacons;
+
+            foreach (var item in mapContainer.nodeInfos)
+            {
+                graph.V[item.id].name = item.name;
+            }
+
+            // Создаём рёбра
+            foreach (Vertex v1 in graph.V)
+            {
+                foreach (int v2 in v1.arrIDs)
+                {
+                    if (v2 > v1.id)
+                    {
+                        graph.E.Add(new Edge(v1.id, v2));
+                    }
+                }
+            }
+
+            return graph;
         }
 
         public static string SerializeMap(Graph graph)
@@ -140,6 +149,13 @@ namespace Orienty_MapManager
                 nodes = new List<Vertex>();
                 nodeInfos = new List<IdNamePair>();
                 beacons = new List<Beacon>();
+            }
+
+            public MapContainer(List<Vertex> nodes, List<IdNamePair> nodeInfos, List<Beacon> beacons)
+            {
+                this.nodes = nodes;
+                this.nodeInfos = nodeInfos;
+                this.beacons = beacons;
             }
 
             public List<Vertex> nodes { get; set; }

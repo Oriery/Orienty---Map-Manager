@@ -588,10 +588,6 @@ namespace Orienty_MapManager
 
             return null;
         }
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            
-        }
 
         private void SetBackgroundImage(Image image)
         {
@@ -607,7 +603,6 @@ namespace Orienty_MapManager
             else if (whatDoing == WhatDoing.DrawingGraph)
             {
                 canvas.DrawEverything(graph, vertexHovered, edgeHovered, null, vertexSelected, null, extraLine, drawExtraVertex);
-
             }
             else if (whatDoing == WhatDoing.DrawingBeacons)
             {
@@ -764,16 +759,8 @@ namespace Orienty_MapManager
             if (canvas != null)
             {
                 canvas.SetSize(sheet.Width, sheet.Height);
+                //UpdateGraphImage(); // совершенно не понимаю, почему с этой строкой перестаёт изменться размер канваса при ресайзе формы
             }
-        }
-        private void SendServer_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private void TB_Mac_TextChanged(object sender, EventArgs e)
@@ -803,19 +790,21 @@ namespace Orienty_MapManager
             {
                 var pathInput = openFileDialog1.FileName;
 
-                canvas.outerWall = MapSerializer.DeSerializeBuild(pathInput);
+                canvas.outerWall = MapSerializer.DeserializeBuild(pathInput);
 
             }
+
             openFileDialog1.Title = "Открыть файл павильонов";
             openFileDialog1.FileName = "pavilions.json";
             if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
             {
                 var pathInput = openFileDialog1.FileName;
 
-                canvas.Pavilions = MapSerializer.DeSerializePavs(pathInput);
+                canvas.Pavilions = MapSerializer.DeserializePavs(pathInput);
 
             }
-            // graph = MapSerializer.DeSerializeMap(PATHGRAPH);
+
+            graph = MapSerializer.DeserializeMap(PATHGRAPH);
         }
 
         private void SendSrv_Click(object sender, EventArgs e)
@@ -832,7 +821,7 @@ namespace Orienty_MapManager
 
         private void SetBackgrBtn_Click(object sender, EventArgs e)
         {
-
+            // TODO
         }
 
         private void SaveBtn_Click(object sender, EventArgs e)

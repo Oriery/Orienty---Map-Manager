@@ -347,34 +347,38 @@
             this.SendSrv,
             this.SetBackgrBtn});
             this.FileBtn.Name = "FileBtn";
-            this.FileBtn.Size = new System.Drawing.Size(90, 36);
+            this.FileBtn.Size = new System.Drawing.Size(90, 38);
             this.FileBtn.Text = "Файл";
             // 
             // OpenBtn
             // 
             this.OpenBtn.Name = "OpenBtn";
-            this.OpenBtn.Size = new System.Drawing.Size(382, 44);
+            this.OpenBtn.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.OpenBtn.Size = new System.Drawing.Size(465, 44);
             this.OpenBtn.Text = "Открыть...";
             this.OpenBtn.Click += new System.EventHandler(this.OpenBtn_Click);
             // 
             // SaveBtn
             // 
             this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(382, 44);
+            this.SaveBtn.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.SaveBtn.Size = new System.Drawing.Size(465, 44);
             this.SaveBtn.Text = "Сохранить...";
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
             // SendSrv
             // 
             this.SendSrv.Name = "SendSrv";
-            this.SendSrv.Size = new System.Drawing.Size(382, 44);
+            this.SendSrv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
+            this.SendSrv.Size = new System.Drawing.Size(465, 44);
             this.SendSrv.Text = "Отправить на сервер";
             this.SendSrv.Click += new System.EventHandler(this.SendSrv_Click);
             // 
             // SetBackgrBtn
             // 
             this.SetBackgrBtn.Name = "SetBackgrBtn";
-            this.SetBackgrBtn.Size = new System.Drawing.Size(382, 44);
+            this.SetBackgrBtn.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.SetBackgrBtn.Size = new System.Drawing.Size(465, 44);
             this.SetBackgrBtn.Text = "Установить фон";
             this.SetBackgrBtn.Click += new System.EventHandler(this.SetBackgrBtn_Click);
             // 
