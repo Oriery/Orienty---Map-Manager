@@ -177,6 +177,18 @@
   <ItemGroup>
     <None Include="Resources\grid.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\send.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.3\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.3\build\System.Text.Json.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

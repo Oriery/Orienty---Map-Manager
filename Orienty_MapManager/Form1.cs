@@ -120,7 +120,7 @@ namespace Orienty_MapManager
 
             if (!allowedToDrawNewOuterWall)
             {
-                const string message = "Вы действительно хотите перерисовать схему здания и тем самым удалив все павильоны?";
+                const string message = "Вы действительно хотите перерисовать схему здания?";
                 const string caption = "Внешняя стена уже существует!";
                 var MBSave = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 allowedToDrawNewOuterWall = MBSave == DialogResult.Yes;
@@ -590,43 +590,7 @@ namespace Orienty_MapManager
         }
         private void saveButton_Click(object sender, EventArgs e)
         {
-            graphJson = MapSerializer.SerializeMap(graph);
-            TB_Debug.Text = graphJson;
-            TB_Debug.Visible = true;
-            //save graph
-            using (var stream = new StreamWriter(PATHGRAPH))
-            {
-                stream.Write(graphJson);
-            }
-            //save build 
-            saveFileDialog1.Filter = "Json Files (json)|*.json";
-            saveFileDialog1.Title = "Сохранить файл здания";
-            saveFileDialog1.FileName = "build.json";
-
-            if (saveFileDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                var pathInput = saveFileDialog1.FileName;
-
-                MapSerializer.SerializeBuild(pathInput, canvas.outerWall);
-
-            }
-            saveFileDialog1.Title = "Сохранить файл павильонов";
-            saveFileDialog1.FileName = "pavilions.json";
-            //save pavilions
-            if (saveFileDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                var pathInput = saveFileDialog1.FileName;
-
-                MapSerializer.SerializePavs(pathInput, canvas.Pavilions);
-
-            }
-
-            //save map 
-            var mapImg = canvas.SaveMap();
-
-            SaveJPG100((Bitmap)mapImg, PATHMAP);
-
-            sendServer.Enabled = true;
+            
         }
 
         private void SetBackgroundImage(Image image)
@@ -804,17 +768,33 @@ namespace Orienty_MapManager
         }
         private void SendServer_Click(object sender, EventArgs e)
         {
-            byte[] file = ImageToByteArray(Image.FromFile(PATHMAP));
-
-            WebClient http = new WebClient();
-            http.UploadFile("http://nigger.by:7770/api/v1/map/map", @PATHMAP);
-
-            //save json
-
-            http.UploadFile("http://nigger.by:7770/api/v1/beacons", @PATHGRAPH);
+           
         }
 
         private void button1_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void TB_Mac_TextChanged(object sender, EventArgs e)
+        {
+            beaconSelected.mac = TB_Mac.Text;
+        }
+
+        private void NUD_txPower_ValueChanged(object sender, EventArgs e)
+        {
+            beaconSelected.tx_power = (int)NUD_txPower.Value;
+        }
+
+        private void TB_Mac_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                ResetAllSelections();
+            }
+        }
+
+        private void OpenBtn_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "Json Files (json)|*.json";
             openFileDialog1.Title = "Открыть файл здания";
@@ -835,25 +815,65 @@ namespace Orienty_MapManager
                 canvas.Pavilions = MapSerializer.DeSerializePavs(pathInput);
 
             }
-           // graph = MapSerializer.DeSerializeMap(PATHGRAPH);
+            // graph = MapSerializer.DeSerializeMap(PATHGRAPH);
         }
 
-        private void TB_Mac_TextChanged(object sender, EventArgs e)
+        private void SendSrv_Click(object sender, EventArgs e)
         {
-            beaconSelected.mac = TB_Mac.Text;
+            byte[] file = ImageToByteArray(Image.FromFile(PATHMAP));
+
+            WebClient http = new WebClient();
+            http.UploadFile("http://nigger.by:7770/api/v1/map/map", @PATHMAP);
+
+            //save json
+
+            http.UploadFile("http://nigger.by:7770/api/v1/beacons", @PATHGRAPH);
         }
 
-        private void NUD_txPower_ValueChanged(object sender, EventArgs e)
+        private void SetBackgrBtn_Click(object sender, EventArgs e)
         {
-            beaconSelected.tx_power = (int)NUD_txPower.Value;
+
         }
 
-        private void TB_Mac_KeyDown(object sender, KeyEventArgs e)
+        private void SaveBtn_Click(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            graphJson = MapSerializer.SerializeMap(graph);
+            TB_Debug.Text = graphJson;
+            TB_Debug.Visible = true;
+            //save graph
+            using (var stream = new StreamWriter(PATHGRAPH))
             {
-                ResetAllSelections();
+                stream.Write(graphJson);
             }
+            //save build 
+            saveFileDialog1.Filter = "Json Files (json)|*.json";
+            saveFileDialog1.Title = "Сохранить файл здания";
+            saveFileDialog1.FileName = "build.json";
+
+            if (saveFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                var pathInput = saveFileDialog1.FileName;
+
+                MapSerializer.SerializeBuild(pathInput, canvas.outerWall);
+
+            }
+            saveFileDialog1.Title = "Сохранить файл павильонов";
+            saveFileDialog1.FileName = "pavilions.json";
+            //save pavilions
+            if (saveFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                var pathInput = saveFileDialog1.FileName;
+
+                MapSerializer.SerializePavs(pathInput, canvas.Pavilions);
+
+            }
+
+            //save map 
+            var mapImg = canvas.SaveMap();
+
+            SaveJPG100((Bitmap)mapImg, PATHMAP);
+
+           
         }
     }
 }
