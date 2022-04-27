@@ -90,7 +90,7 @@
             // 
             this.B_DrawBeacons.Image = ((System.Drawing.Image)(resources.GetObject("B_DrawBeacons.Image")));
             this.B_DrawBeacons.Location = new System.Drawing.Point(9, 356);
-            this.B_DrawBeacons.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.B_DrawBeacons.Margin = new System.Windows.Forms.Padding(6);
             this.B_DrawBeacons.Name = "B_DrawBeacons";
             this.B_DrawBeacons.Size = new System.Drawing.Size(100, 100);
             this.B_DrawBeacons.TabIndex = 18;
@@ -101,7 +101,7 @@
             // 
             this.draw_Pav.Image = ((System.Drawing.Image)(resources.GetObject("draw_Pav.Image")));
             this.draw_Pav.Location = new System.Drawing.Point(9, 581);
-            this.draw_Pav.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.draw_Pav.Margin = new System.Windows.Forms.Padding(6);
             this.draw_Pav.Name = "draw_Pav";
             this.draw_Pav.Size = new System.Drawing.Size(100, 100);
             this.draw_Pav.TabIndex = 15;
@@ -112,7 +112,7 @@
             // 
             this.B_drawOuterWalls.Image = ((System.Drawing.Image)(resources.GetObject("B_drawOuterWalls.Image")));
             this.B_drawOuterWalls.Location = new System.Drawing.Point(9, 469);
-            this.B_drawOuterWalls.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.B_drawOuterWalls.Margin = new System.Windows.Forms.Padding(6);
             this.B_drawOuterWalls.Name = "B_drawOuterWalls";
             this.B_drawOuterWalls.Size = new System.Drawing.Size(100, 100);
             this.B_drawOuterWalls.TabIndex = 14;
@@ -123,7 +123,7 @@
             // 
             this.drawEdgeButton.Image = ((System.Drawing.Image)(resources.GetObject("drawEdgeButton.Image")));
             this.drawEdgeButton.Location = new System.Drawing.Point(9, 245);
-            this.drawEdgeButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.drawEdgeButton.Margin = new System.Windows.Forms.Padding(6);
             this.drawEdgeButton.Name = "drawEdgeButton";
             this.drawEdgeButton.Size = new System.Drawing.Size(100, 100);
             this.drawEdgeButton.TabIndex = 2;
@@ -134,7 +134,7 @@
             // 
             this.deleteButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteButton.Image")));
             this.deleteButton.Location = new System.Drawing.Point(9, 133);
-            this.deleteButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.deleteButton.Margin = new System.Windows.Forms.Padding(6);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(100, 100);
             this.deleteButton.TabIndex = 3;
@@ -145,7 +145,7 @@
             // 
             this.deleteALLButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteALLButton.Image")));
             this.deleteALLButton.Location = new System.Drawing.Point(9, 694);
-            this.deleteALLButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.deleteALLButton.Margin = new System.Windows.Forms.Padding(6);
             this.deleteALLButton.Name = "deleteALLButton";
             this.deleteALLButton.Size = new System.Drawing.Size(100, 100);
             this.deleteALLButton.TabIndex = 5;
@@ -156,7 +156,7 @@
             // 
             this.selectButton.Image = ((System.Drawing.Image)(resources.GetObject("selectButton.Image")));
             this.selectButton.Location = new System.Drawing.Point(9, 20);
-            this.selectButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.selectButton.Margin = new System.Windows.Forms.Padding(6);
             this.selectButton.Name = "selectButton";
             this.selectButton.Size = new System.Drawing.Size(100, 100);
             this.selectButton.TabIndex = 9;
@@ -319,6 +319,7 @@
             this.sheet.TabIndex = 0;
             this.sheet.TabStop = false;
             this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
+            this.sheet.MouseLeave += new System.EventHandler(this.sheet_MouseLeave);
             this.sheet.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseMove);
             this.sheet.Resize += new System.EventHandler(this.sheet_Resize);
             // 
@@ -347,7 +348,7 @@
             this.SendSrv,
             this.SetBackgrBtn});
             this.FileBtn.Name = "FileBtn";
-            this.FileBtn.Size = new System.Drawing.Size(90, 38);
+            this.FileBtn.Size = new System.Drawing.Size(90, 36);
             this.FileBtn.Text = "Файл";
             // 
             // OpenBtn
@@ -391,7 +392,7 @@
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.panelLeft);
             this.Controls.Add(this.menuStrip1);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.MinimumSize = new System.Drawing.Size(996, 1015);
             this.Name = "Form1";
             this.Text = "Orienty: Map Manager";

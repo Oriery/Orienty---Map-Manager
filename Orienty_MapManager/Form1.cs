@@ -4,8 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Orienty_MapManager
@@ -31,11 +29,12 @@ namespace Orienty_MapManager
         Beacon beaconHovered = null;
         int vertexSelected = -1;
         Beacon beaconSelected = null;
+        Point posOfVertexBeforeMoving;
+        bool movingVertex = false;
 
 
         const string PATHMAP = "../../Resources/map/map.png";
         const string PATHGRAPH = "../../Resources/json/graph.json";
-        const string PATHBUILD = "../../Resources/json/";
 
         ToolTip t = new ToolTip();
 
@@ -163,6 +162,7 @@ namespace Orienty_MapManager
 
             vertexSelected = -1;
             beaconSelected = null;
+            movingVertex = false;
 
             foreach (Button button in buttonsOfActions.Values)
             {
@@ -181,6 +181,18 @@ namespace Orienty_MapManager
             }
 
             UpdateGraphImage();
+        }
+
+        private void AbortMovingVertex()
+        {
+            if (movingVertex)
+            {
+                movingVertex = false;
+                graph.V[vertexSelected].x = posOfVertexBeforeMoving.X;
+                graph.V[vertexSelected].y = posOfVertexBeforeMoving.Y;
+            }
+
+            ResetAllSelections();
         }
 
         private int GetIdOfUnderlyingVertex(Point point)
@@ -330,10 +342,29 @@ namespace Orienty_MapManager
             {
                 if (vertexHovered != -1) // клик по вершине
                 {
-                    if (e.Button == MouseButtons.Right)
+                    if (!movingVertex) // ещё не тащим вершину
                     {
                         vertexSelected = vertexHovered;
-                        ShowContextPanelVertex(vertexHovered);
+
+                        if (e.Button == MouseButtons.Right)
+                        {
+                            ShowContextPanelVertex(vertexHovered);
+                        }
+                        else if (e.Button == MouseButtons.Left)
+                        {
+                            posOfVertexBeforeMoving = graph.V[vertexSelected].GetPoint();
+                            movingVertex = true;
+                        }
+                    } else // уже тащим вершину
+                    {
+                        if (e.Button == MouseButtons.Right) // Отменить перетаскивание
+                        {
+                            AbortMovingVertex();
+                        }
+                        else if (e.Button == MouseButtons.Left) // Подтвердить перетаскивание
+                        {
+                            ResetAllSelections();
+                        }
                     }
 
                     UpdateGraphImage();
@@ -665,6 +696,12 @@ namespace Orienty_MapManager
                 return;
             }
 
+            if (movingVertex)
+            {
+                graph.V[vertexSelected].x = e.Location.X;
+                graph.V[vertexSelected].y = e.Location.Y;
+            }
+
             UpdateGraphImage();
         }
         private void UpdateHoveredElements(MouseEventArgs e)
@@ -783,6 +820,8 @@ namespace Orienty_MapManager
 
         private void OpenBtn_Click(object sender, EventArgs e)
         {
+            deleteALLButton_Click(sender, e);
+
             openFileDialog1.Filter = "Json Files (json)|*.json";
             openFileDialog1.Title = "Открыть файл здания";
             openFileDialog1.FileName = "build.json";
@@ -861,6 +900,15 @@ namespace Orienty_MapManager
             SaveJPG100((Bitmap)mapImg, PATHMAP);
 
            
+        }
+
+        private void sheet_MouseLeave(object sender, EventArgs e)
+        {
+            if (movingVertex)
+            {
+                AbortMovingVertex();
+                UpdateGraphImage();
+            }
         }
     }
 }
