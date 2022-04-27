@@ -183,6 +183,17 @@ namespace Orienty_MapManager
             return true;
         }
 
+        public bool DeleteBeacon(Beacon beacon)
+        {
+            if (beacon == null)
+            {
+                return false;
+            }
+
+            beacons.Remove(beacon);
+            return true;
+        }
+
         public bool AddEdge(int v1, int v2)
         {
             if (!V[v1].arrIDs.Contains(v2))

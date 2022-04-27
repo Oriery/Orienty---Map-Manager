@@ -277,9 +277,9 @@ namespace Orienty_MapManager
                 return;
             }
 
-                    if (whatDoing == WhatDoing.Deleting)
+            if (whatDoing == WhatDoing.Deleting)
             {
-                DeleteClicked(e);
+                DeleteClicked();
 
                 return;
             }
@@ -411,7 +411,7 @@ namespace Orienty_MapManager
             return-1; //not selected polygon
         }
 
-        private void DeleteClicked(MouseEventArgs e)
+        private void DeleteClicked()
         {
             bool haveDeleted = false;
 
@@ -420,6 +420,10 @@ namespace Orienty_MapManager
             if (!haveDeleted)
             {
                 haveDeleted = graph.DeleteEdge(edgeHovered); // клик по ребру
+            }
+            if (!haveDeleted)
+            {
+                haveDeleted = graph.DeleteBeacon(beaconHovered); // клик по маячкку
             }
 
             if (haveDeleted)
