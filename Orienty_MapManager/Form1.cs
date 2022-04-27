@@ -29,8 +29,9 @@ namespace Orienty_MapManager
         Beacon beaconHovered = null;
         int vertexSelected = -1;
         Beacon beaconSelected = null;
-        Point posOfVertexBeforeMoving;
+        Point posBeforeMoving;
         bool movingVertex = false;
+        bool movingBeacon = false;
 
 
         const string PATHMAP = "../../Resources/map/map.png";
@@ -163,6 +164,7 @@ namespace Orienty_MapManager
             vertexSelected = -1;
             beaconSelected = null;
             movingVertex = false;
+            movingBeacon = false;
 
             foreach (Button button in buttonsOfActions.Values)
             {
@@ -183,13 +185,19 @@ namespace Orienty_MapManager
             UpdateGraphImage();
         }
 
-        private void AbortMovingVertex()
+        private void AbortMoving()
         {
             if (movingVertex)
             {
                 movingVertex = false;
-                graph.V[vertexSelected].x = posOfVertexBeforeMoving.X;
-                graph.V[vertexSelected].y = posOfVertexBeforeMoving.Y;
+                graph.V[vertexSelected].x = posBeforeMoving.X;
+                graph.V[vertexSelected].y = posBeforeMoving.Y;
+            }
+            else if (movingBeacon)
+            {
+                movingBeacon = false;
+                beaconSelected.x = posBeforeMoving.X;
+                beaconSelected.y = posBeforeMoving.Y;
             }
 
             ResetAllSelections();
@@ -352,14 +360,14 @@ namespace Orienty_MapManager
                         }
                         else if (e.Button == MouseButtons.Left)
                         {
-                            posOfVertexBeforeMoving = graph.V[vertexSelected].GetPoint();
+                            posBeforeMoving = graph.V[vertexSelected].GetPoint();
                             movingVertex = true;
                         }
                     } else // уже тащим вершину
                     {
                         if (e.Button == MouseButtons.Right) // Отменить перетаскивание
                         {
-                            AbortMovingVertex();
+                            AbortMoving();
                         }
                         else if (e.Button == MouseButtons.Left) // Подтвердить перетаскивание
                         {
@@ -371,10 +379,30 @@ namespace Orienty_MapManager
                 }
                 else if (beaconHovered != null) // клик по маячку
                 {
-                    if (e.Button == MouseButtons.Right)
+                    if (!movingBeacon) // ещё не тащим маячок
                     {
                         beaconSelected = beaconHovered;
-                        ShowContextPanelBeacon(beaconSelected);
+
+                        if (e.Button == MouseButtons.Right)
+                        {
+                            ShowContextPanelBeacon(beaconSelected);
+                        }
+                        else if (e.Button == MouseButtons.Left)
+                        {
+                            posBeforeMoving = beaconSelected.GetPoint();
+                            movingBeacon = true;
+                        }
+                    }
+                    else // уже тащим маячок
+                    {
+                        if (e.Button == MouseButtons.Right) // Отменить перетаскивание
+                        {
+                            AbortMoving();
+                        }
+                        else if (e.Button == MouseButtons.Left) // Подтвердить перетаскивание
+                        {
+                            ResetAllSelections();
+                        }
                     }
 
                     UpdateGraphImage();
@@ -701,6 +729,11 @@ namespace Orienty_MapManager
                 graph.V[vertexSelected].x = e.Location.X;
                 graph.V[vertexSelected].y = e.Location.Y;
             }
+            else if (movingBeacon)
+            {
+                beaconSelected.x = e.Location.X;
+                beaconSelected.y = e.Location.Y;
+            }
 
             UpdateGraphImage();
         }
@@ -904,9 +937,9 @@ namespace Orienty_MapManager
 
         private void sheet_MouseLeave(object sender, EventArgs e)
         {
-            if (movingVertex)
+            if (movingVertex || movingBeacon)
             {
-                AbortMovingVertex();
+                AbortMoving();
                 UpdateGraphImage();
             }
         }
