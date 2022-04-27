@@ -20,7 +20,7 @@ namespace Orienty_MapManager
         {
             if (points.Count > 0)
             {
-                if (IsNearPoints(mousePositon, points[0])) //end painting wall
+                if (IsNearPoints(mousePositon, points[0],20)) //end painting wall
                 {
                     isFinished = true;
                     return true;
@@ -71,6 +71,29 @@ namespace Orienty_MapManager
 
             return w != 0;
 
+        }
+
+
+        public static void ChnageToNearPoint (ref Point mouse, List<Polygon> pavs)
+        {
+            Point nearest = new Point() { X = mouse.X, Y = mouse.Y };
+            int distance;
+            int mindistance= int.MaxValue;
+            for(int i=0;i<pavs.Count;++i)
+            {
+                foreach(var point in pavs[i].points)
+                { 
+                    distance = GetDistanceBetweenPoints(mouse, point);
+                    if(distance<15 && mindistance>distance)
+                    {
+                        mindistance = distance;
+                        nearest.X = point.X;
+                        nearest.Y = point.Y;
+                    }
+                }
+            }
+            mouse.X = nearest.X;
+            mouse.Y = nearest.Y;
         }
 
         public static Point Intersection(Point A, Point B, Point C, Point D)
@@ -135,7 +158,7 @@ namespace Orienty_MapManager
             return mouse;
         }
 
-        private int GetDistanceBetweenPoints(Point first, Point second)
+        private static int GetDistanceBetweenPoints(Point first, Point second)
         {
             int result = (second.X - first.X) * (second.X - first.X);
             result += (second.Y - first.Y) * (second.Y - first.Y);
@@ -144,9 +167,9 @@ namespace Orienty_MapManager
             return result;
         }
 
-        private bool IsNearPoints(Point first, Point second)
+        private static bool IsNearPoints(Point first, Point second, int dist)
         {
-            return GetDistanceBetweenPoints(first, second) < 20;
+            return GetDistanceBetweenPoints(first, second) < dist;
         }
 
         public void Reset()
