@@ -248,8 +248,11 @@ namespace Orienty_MapManager
 
         public void SetSize(int width, int height)
         {
-            bitmap = new Bitmap(width, height);
-            graphics = Graphics.FromImage(bitmap);
+            if (width > 0 && height > 0)
+            {
+                bitmap = new Bitmap(width, height);
+                graphics = Graphics.FromImage(bitmap);
+            }
         }
     }
 
