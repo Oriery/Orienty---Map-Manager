@@ -81,7 +81,7 @@ namespace Orienty_MapManager
         {
             if(canvas.Pavilions.Count > 0)
             {
-                canvas.DrawPavLine(e.Location);
+                /*canvas.DrawPavLine(e.Location);*/
              
               //  if(canvas.Pavilions[canvas.Pavilions.Count-1].isFinished)
                   //  sheet.MouseMove -= Mouse_move_draw_Pavs;
@@ -701,6 +701,7 @@ namespace Orienty_MapManager
 
         private void button1_Click(object sender, EventArgs e)
         {
+            /*
             openFileDialog1.Filter = "Json Files (json)|*.json";
             openFileDialog1.Title = "Открыть файл здания";
             openFileDialog1.FileName = "build.json";
@@ -720,6 +721,7 @@ namespace Orienty_MapManager
                 canvas.Pavilions = MapSerializer.DeSerializePavs(pathInput);
 
             }
+            */
         }
     }
 }
