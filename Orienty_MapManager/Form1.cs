@@ -129,11 +129,11 @@ namespace Orienty_MapManager
             if (allowedToDrawNewOuterWall)
             {
                 canvas.outerWall.Reset();
-                foreach(var pav in canvas.Pavilions)
+               /* foreach(var pav in canvas.Pavilions)
                 {
                     pav.Reset();
                 }
-                canvas.Pavilions.Clear();
+                canvas.Pavilions.Clear();*/
                 ResetAllSelections(WhatDoing.DrawingOuterWall);
             } 
             else

@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.TB_Debug = new System.Windows.Forms.TextBox();
             this.panelLeft = new System.Windows.Forms.Panel();
-            this.B_DrawBeacons = new System.Windows.Forms.Button();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.panelContextBeacon = new System.Windows.Forms.Panel();
             this.NUD_txPower = new System.Windows.Forms.NumericUpDown();
@@ -47,17 +47,18 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.FileBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.SendSrv = new System.Windows.Forms.ToolStripMenuItem();
+            this.SetBackgrBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.sheet = new System.Windows.Forms.PictureBox();
+            this.B_DrawBeacons = new System.Windows.Forms.Button();
             this.draw_Pav = new System.Windows.Forms.Button();
             this.B_drawOuterWalls = new System.Windows.Forms.Button();
             this.drawEdgeButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.deleteALLButton = new System.Windows.Forms.Button();
             this.selectButton = new System.Windows.Forms.Button();
-            this.OpenBtn = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveBtn = new System.Windows.Forms.ToolStripMenuItem();
-            this.SendSrv = new System.Windows.Forms.ToolStripMenuItem();
-            this.SetBackgrBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLeft.SuspendLayout();
             this.mainPanel.SuspendLayout();
             this.panelContextBeacon.SuspendLayout();
@@ -94,18 +95,8 @@
             this.panelLeft.Location = new System.Drawing.Point(0, 28);
             this.panelLeft.Margin = new System.Windows.Forms.Padding(2);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(114, 706);
+            this.panelLeft.Size = new System.Drawing.Size(79, 706);
             this.panelLeft.TabIndex = 16;
-            // 
-            // B_DrawBeacons
-            // 
-            this.B_DrawBeacons.Location = new System.Drawing.Point(23, 228);
-            this.B_DrawBeacons.Margin = new System.Windows.Forms.Padding(4);
-            this.B_DrawBeacons.Name = "B_DrawBeacons";
-            this.B_DrawBeacons.Size = new System.Drawing.Size(67, 64);
-            this.B_DrawBeacons.TabIndex = 18;
-            this.B_DrawBeacons.UseVisualStyleBackColor = true;
-            this.B_DrawBeacons.Click += new System.EventHandler(this.B_DrawBeacons_Click);
             // 
             // mainPanel
             // 
@@ -114,10 +105,10 @@
             this.mainPanel.Controls.Add(this.panelContextVertex);
             this.mainPanel.Controls.Add(this.sheet);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPanel.Location = new System.Drawing.Point(114, 28);
+            this.mainPanel.Location = new System.Drawing.Point(79, 28);
             this.mainPanel.Margin = new System.Windows.Forms.Padding(2);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(1073, 706);
+            this.mainPanel.Size = new System.Drawing.Size(1108, 706);
             this.mainPanel.TabIndex = 17;
             // 
             // panelContextBeacon
@@ -292,6 +283,34 @@
             this.FileBtn.Size = new System.Drawing.Size(59, 24);
             this.FileBtn.Text = "Файл";
             // 
+            // OpenBtn
+            // 
+            this.OpenBtn.Name = "OpenBtn";
+            this.OpenBtn.Size = new System.Drawing.Size(240, 26);
+            this.OpenBtn.Text = "Открыть...";
+            this.OpenBtn.Click += new System.EventHandler(this.OpenBtn_Click);
+            // 
+            // SaveBtn
+            // 
+            this.SaveBtn.Name = "SaveBtn";
+            this.SaveBtn.Size = new System.Drawing.Size(240, 26);
+            this.SaveBtn.Text = "Сохранить...";
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
+            // SendSrv
+            // 
+            this.SendSrv.Name = "SendSrv";
+            this.SendSrv.Size = new System.Drawing.Size(240, 26);
+            this.SendSrv.Text = "Отправить на сервер";
+            this.SendSrv.Click += new System.EventHandler(this.SendSrv_Click);
+            // 
+            // SetBackgrBtn
+            // 
+            this.SetBackgrBtn.Name = "SetBackgrBtn";
+            this.SetBackgrBtn.Size = new System.Drawing.Size(240, 26);
+            this.SetBackgrBtn.Text = "Установить фон";
+            this.SetBackgrBtn.Click += new System.EventHandler(this.SetBackgrBtn_Click);
+            // 
             // sheet
             // 
             this.sheet.BackColor = System.Drawing.SystemColors.Control;
@@ -300,17 +319,28 @@
             this.sheet.Location = new System.Drawing.Point(0, 0);
             this.sheet.Margin = new System.Windows.Forms.Padding(0);
             this.sheet.Name = "sheet";
-            this.sheet.Size = new System.Drawing.Size(1073, 706);
+            this.sheet.Size = new System.Drawing.Size(1108, 706);
             this.sheet.TabIndex = 0;
             this.sheet.TabStop = false;
             this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
             this.sheet.MouseMove += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseMove);
             this.sheet.Resize += new System.EventHandler(this.sheet_Resize);
             // 
+            // B_DrawBeacons
+            // 
+            this.B_DrawBeacons.Image = ((System.Drawing.Image)(resources.GetObject("B_DrawBeacons.Image")));
+            this.B_DrawBeacons.Location = new System.Drawing.Point(6, 228);
+            this.B_DrawBeacons.Margin = new System.Windows.Forms.Padding(4);
+            this.B_DrawBeacons.Name = "B_DrawBeacons";
+            this.B_DrawBeacons.Size = new System.Drawing.Size(67, 64);
+            this.B_DrawBeacons.TabIndex = 18;
+            this.B_DrawBeacons.UseVisualStyleBackColor = true;
+            this.B_DrawBeacons.Click += new System.EventHandler(this.B_DrawBeacons_Click);
+            // 
             // draw_Pav
             // 
-            this.draw_Pav.Image = global::Orienty_MapManager.Properties.Resources.store;
-            this.draw_Pav.Location = new System.Drawing.Point(23, 372);
+            this.draw_Pav.Image = ((System.Drawing.Image)(resources.GetObject("draw_Pav.Image")));
+            this.draw_Pav.Location = new System.Drawing.Point(6, 372);
             this.draw_Pav.Margin = new System.Windows.Forms.Padding(4);
             this.draw_Pav.Name = "draw_Pav";
             this.draw_Pav.Size = new System.Drawing.Size(67, 64);
@@ -320,8 +350,8 @@
             // 
             // B_drawOuterWalls
             // 
-            this.B_drawOuterWalls.Image = global::Orienty_MapManager.Properties.Resources.build;
-            this.B_drawOuterWalls.Location = new System.Drawing.Point(23, 300);
+            this.B_drawOuterWalls.Image = ((System.Drawing.Image)(resources.GetObject("B_drawOuterWalls.Image")));
+            this.B_drawOuterWalls.Location = new System.Drawing.Point(6, 300);
             this.B_drawOuterWalls.Margin = new System.Windows.Forms.Padding(4);
             this.B_drawOuterWalls.Name = "B_drawOuterWalls";
             this.B_drawOuterWalls.Size = new System.Drawing.Size(67, 64);
@@ -331,8 +361,8 @@
             // 
             // drawEdgeButton
             // 
-            this.drawEdgeButton.Image = global::Orienty_MapManager.Properties.Resources.edge;
-            this.drawEdgeButton.Location = new System.Drawing.Point(23, 157);
+            this.drawEdgeButton.Image = ((System.Drawing.Image)(resources.GetObject("drawEdgeButton.Image")));
+            this.drawEdgeButton.Location = new System.Drawing.Point(6, 157);
             this.drawEdgeButton.Margin = new System.Windows.Forms.Padding(4);
             this.drawEdgeButton.Name = "drawEdgeButton";
             this.drawEdgeButton.Size = new System.Drawing.Size(67, 64);
@@ -342,8 +372,8 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Image = global::Orienty_MapManager.Properties.Resources.delete;
-            this.deleteButton.Location = new System.Drawing.Point(23, 85);
+            this.deleteButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteButton.Image")));
+            this.deleteButton.Location = new System.Drawing.Point(6, 85);
             this.deleteButton.Margin = new System.Windows.Forms.Padding(4);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(67, 64);
@@ -353,8 +383,8 @@
             // 
             // deleteALLButton
             // 
-            this.deleteALLButton.Image = global::Orienty_MapManager.Properties.Resources.deleteAll;
-            this.deleteALLButton.Location = new System.Drawing.Point(41, 444);
+            this.deleteALLButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteALLButton.Image")));
+            this.deleteALLButton.Location = new System.Drawing.Point(6, 444);
             this.deleteALLButton.Margin = new System.Windows.Forms.Padding(4);
             this.deleteALLButton.Name = "deleteALLButton";
             this.deleteALLButton.Size = new System.Drawing.Size(67, 64);
@@ -364,46 +394,14 @@
             // 
             // selectButton
             // 
-            this.selectButton.Image = global::Orienty_MapManager.Properties.Resources.cursor;
-            this.selectButton.Location = new System.Drawing.Point(23, 13);
+            this.selectButton.Image = ((System.Drawing.Image)(resources.GetObject("selectButton.Image")));
+            this.selectButton.Location = new System.Drawing.Point(6, 13);
             this.selectButton.Margin = new System.Windows.Forms.Padding(4);
             this.selectButton.Name = "selectButton";
             this.selectButton.Size = new System.Drawing.Size(67, 64);
             this.selectButton.TabIndex = 9;
             this.selectButton.UseVisualStyleBackColor = true;
             this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
-            // 
-            // OpenBtn
-            // 
-            this.OpenBtn.Image = global::Orienty_MapManager.Properties.Resources.open;
-            this.OpenBtn.Name = "OpenBtn";
-            this.OpenBtn.Size = new System.Drawing.Size(240, 26);
-            this.OpenBtn.Text = "Открыть...";
-            this.OpenBtn.Click += new System.EventHandler(this.OpenBtn_Click);
-            // 
-            // SaveBtn
-            // 
-            this.SaveBtn.Image = global::Orienty_MapManager.Properties.Resources.save;
-            this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(240, 26);
-            this.SaveBtn.Text = "Сохранить...";
-            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
-            // 
-            // SendSrv
-            // 
-            this.SendSrv.Image = global::Orienty_MapManager.Properties.Resources.send;
-            this.SendSrv.Name = "SendSrv";
-            this.SendSrv.Size = new System.Drawing.Size(240, 26);
-            this.SendSrv.Text = "Отправить на сервер";
-            this.SendSrv.Click += new System.EventHandler(this.SendSrv_Click);
-            // 
-            // SetBackgrBtn
-            // 
-            this.SetBackgrBtn.Image = global::Orienty_MapManager.Properties.Resources.image;
-            this.SetBackgrBtn.Name = "SetBackgrBtn";
-            this.SetBackgrBtn.Size = new System.Drawing.Size(240, 26);
-            this.SetBackgrBtn.Text = "Установить фон";
-            this.SetBackgrBtn.Click += new System.EventHandler(this.SetBackgrBtn_Click);
             // 
             // Form1
             // 
