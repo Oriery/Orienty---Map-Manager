@@ -840,7 +840,7 @@ namespace Orienty_MapManager
 
         private void NUD_txPower_ValueChanged(object sender, EventArgs e)
         {
-            beaconSelected.tx_power = (int)NUD_txPower.Value;
+            beaconSelected.tx_power = (int)NUD_txPower.Value;  
         }
 
         private void TB_Mac_KeyDown(object sender, KeyEventArgs e)
@@ -853,7 +853,7 @@ namespace Orienty_MapManager
 
         private void OpenBtn_Click(object sender, EventArgs e)
         {
-            deleteALLButton_Click(sender, e);
+            //deleteALLButton_Click(sender, e);
 
             openFileDialog1.Filter = "Json Files (json)|*.json";
             openFileDialog1.Title = "Открыть файл здания";
@@ -864,19 +864,23 @@ namespace Orienty_MapManager
 
                 canvas.outerWall = MapSerializer.DeserializeBuild(pathInput);
 
+
+                openFileDialog1.Title = "Открыть файл павильонов";
+                openFileDialog1.FileName = "pavilions.json";
+                if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
+                {
+                    pathInput = openFileDialog1.FileName;
+
+                    canvas.Pavilions = MapSerializer.DeserializePavs(pathInput);
+
+                    graph = MapSerializer.DeserializeMap(PATHGRAPH);
+
+                }
+
+                
             }
 
-            openFileDialog1.Title = "Открыть файл павильонов";
-            openFileDialog1.FileName = "pavilions.json";
-            if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                var pathInput = openFileDialog1.FileName;
-
-                canvas.Pavilions = MapSerializer.DeserializePavs(pathInput);
-
-            }
-
-            graph = MapSerializer.DeserializeMap(PATHGRAPH);
+            
         }
 
         private void SendSrv_Click(object sender, EventArgs e)
@@ -893,7 +897,18 @@ namespace Orienty_MapManager
 
         private void SetBackgrBtn_Click(object sender, EventArgs e)
         {
-            // TODO
+            openFileDialog1.Filter = "JPEG images|*.jpg; *.jpeg; *.jpe; *.jif; *.jfif; *.jfi|PNG images|*.png|Bitmap images|*.bmp|GIF images|*.gif|TIFF images|*.tiff; *.tif|All files|*.*";
+            openFileDialog1.Title = "Загрузить фон";
+            openFileDialog1.FileName = "background.jpg";
+            if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                var pathInput = openFileDialog1.FileName;
+
+                backgroundImage = Image.FromFile(pathInput);
+                SetBackgroundImage(backgroundImage);
+                this.AutoSize = true;
+                this.Size = new Size(backgroundImage.Width+64, backgroundImage.Height+63);
+            }
         }
 
         private void SaveBtn_Click(object sender, EventArgs e)
