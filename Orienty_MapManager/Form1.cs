@@ -273,7 +273,7 @@ namespace Orienty_MapManager
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (vertexHovered != -1) // Рисуем ребро
+                    if (vertexHovered != -1) 
                     {
                         if (vertexSelected == -1) // Новое ребро
                         {

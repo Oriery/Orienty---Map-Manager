@@ -14,9 +14,9 @@ namespace Orienty_MapManager
 
         Color colorEdges = Color.FromArgb(245, 205, 159);
         Color colorText;
-        Color colorPavilion = Color.FromArgb(115, 176, 139);
-        Color colorExit = Color.FromArgb(117, 124, 168);
-        Color colorBeacons = Color.FromArgb(37, 56, 112);
+        Color colorPavilion = Color.FromArgb(117, 124, 168);
+        Color colorExit = Color.FromArgb(115, 176, 139);
+        Color colorBeacons = Color.FromArgb(178, 225, 187);
 
         Brush brushText;
         Brush brushPavilion = Brushes.White;
@@ -38,8 +38,8 @@ namespace Orienty_MapManager
 
         // Walls
         Color wallsColor = Color.FromArgb(180, 180, 180);
-        Color buildingBackgroundColor = Color.FromArgb(230, 230, 230);
-        Color pavColor = Color.FromArgb(149, 149, 149);
+        Color buildingBackgroundColor = Color.FromArgb(97, 105, 129);
+        Color pavColor = Color.FromArgb(191, 163, 137);
         Color PavBorderColor = Color.FromArgb(49, 49, 49);
         Pen penWalls, penPav;
         
