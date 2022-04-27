@@ -3,37 +3,33 @@
     {
       "id": 0,
       "coord": {
-        "x": 196,
-        "y": 313,
+        "x": 130,
+        "y": 270,
         "z": 0
       },
       "type": 0,
       "arrIDs": [
-        1,
-        3,
-        4
+        3
       ]
     },
     {
       "id": 1,
       "coord": {
-        "x": 368,
-        "y": 226,
+        "x": 444,
+        "y": 200,
         "z": 0
       },
       "type": 0,
       "arrIDs": [
-        0,
         2,
-        6,
-        7
+        3
       ]
     },
     {
       "id": 2,
       "coord": {
-        "x": 473,
-        "y": 397,
+        "x": 415,
+        "y": 473,
         "z": 0
       },
       "type": 0,
@@ -45,162 +41,59 @@
     {
       "id": 3,
       "coord": {
-        "x": 280,
-        "y": 351,
-        "z": 0
-      },
-      "type": 1,
-      "arrIDs": [
-        2,
-        0
-      ]
-    },
-    {
-      "id": 4,
-      "coord": {
-        "x": 263,
-        "y": 198,
+        "x": 270,
+        "y": 238,
         "z": 0
       },
       "type": 0,
       "arrIDs": [
         0,
-        5,
-        6
-      ]
-    },
-    {
-      "id": 5,
-      "coord": {
-        "x": 304,
-        "y": 258,
-        "z": 0
-      },
-      "type": 1,
-      "arrIDs": [
-        4,
-        6
-      ]
-    },
-    {
-      "id": 6,
-      "coord": {
-        "x": 316,
-        "y": 159,
-        "z": 0
-      },
-      "type": 0,
-      "arrIDs": [
-        5,
         1,
-        7,
-        4
-      ]
-    },
-    {
-      "id": 7,
-      "coord": {
-        "x": 345,
-        "y": 82,
-        "z": 0
-      },
-      "type": 0,
-      "arrIDs": [
-        1,
-        6
+        2
       ]
     }
   ],
-  "idNamePairs": [
-    {
-      "id": 3,
-      "name": "Vector"
-    },
-    {
-      "id": 5,
-      "name": "McDonalds"
-    }
-  ],
+  "nodeInfos": [],
   "beacons": [
     {
-      "mac": "4hgjrb-264rtb-524bdg-245gbt-tr565tb",
+      "mac": "00:00:00:00:00:00",
       "tx_power": -69,
       "coord": {
-        "x": 201,
-        "y": 311,
+        "x": 135,
+        "y": 268,
         "z": 0
       },
       "node": 0
     },
     {
-      "mac": "4hgjrb-264rtb-524bdg-245gbt-tr565tb",
+      "mac": "00:00:00:00:00:00",
       "tx_power": -69,
       "coord": {
-        "x": 373,
-        "y": 224,
+        "x": 449,
+        "y": 198,
         "z": 0
       },
       "node": 1
     },
     {
-      "mac": "4hgjrb-264rtb-524bdg-245gbt-tr565tb",
+      "mac": "00:00:00:00:00:00",
       "tx_power": -69,
       "coord": {
-        "x": 478,
-        "y": 395,
+        "x": 420,
+        "y": 471,
         "z": 0
       },
       "node": 2
     },
     {
-      "mac": "4hgjrb-264rtb-524bdg-245gbt-tr565tb",
+      "mac": "00:00:00:00:00:00",
       "tx_power": -69,
       "coord": {
-        "x": 285,
-        "y": 349,
+        "x": 275,
+        "y": 236,
         "z": 0
       },
       "node": 3
-    },
-    {
-      "mac": "4hgjrb-264rtb-524bdg-245gbt-tr565tb",
-      "tx_power": -69,
-      "coord": {
-        "x": 268,
-        "y": 196,
-        "z": 0
-      },
-      "node": 4
-    },
-    {
-      "mac": "4hgjrb-264rtb-524bdg-245gbt-tr565tb",
-      "tx_power": -69,
-      "coord": {
-        "x": 309,
-        "y": 256,
-        "z": 0
-      },
-      "node": 5
-    },
-    {
-      "mac": "4hgjrb-264rtb-524bdg-245gbt-tr565tb",
-      "tx_power": -69,
-      "coord": {
-        "x": 321,
-        "y": 157,
-        "z": 0
-      },
-      "node": 6
-    },
-    {
-      "mac": "4hgjrb-264rtb-524bdg-245gbt-tr565tb",
-      "tx_power": -69,
-      "coord": {
-        "x": 350,
-        "y": 80,
-        "z": 0
-      },
-      "node": 7
     }
   ]
 }

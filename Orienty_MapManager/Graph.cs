@@ -149,6 +149,19 @@ namespace Orienty_MapManager
             return true;
         }
 
+        public int InsertVertexIntoEdge(int x, int y, int z, Edge edge)
+        {
+            int v1 = edge.v1;
+            int v2 = edge.v2;
+
+            DeleteEdge(edge);
+            int idVertex = AddVertex(x, y, z);
+            AddEdge(v1, idVertex);
+            AddEdge(v2, idVertex);
+
+            return idVertex;
+        }
+
         public bool DeleteEdge(Edge edge)
         {
             if (edge == null)
@@ -161,6 +174,26 @@ namespace Orienty_MapManager
 
             E.Remove(edge);
             return true;
+        }
+
+        public bool AddEdge(int v1, int v2)
+        {
+            if (!V[v1].arrIDs.Contains(v2))
+            {
+                E.Add(new Edge(v1, v2));
+                V[v1].arrIDs.Add(v2);
+                V[v2].arrIDs.Add(v1);
+                return true;
+            }
+
+            return false;
+        }
+
+        public int AddVertex(int x, int y, int z)
+        {
+            Vertex vertex = new Vertex(x, y, z);
+            V.Add(vertex);
+            return vertex.id;
         }
     }
 }

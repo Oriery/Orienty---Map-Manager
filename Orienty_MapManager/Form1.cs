@@ -387,21 +387,20 @@ namespace Orienty_MapManager
 
         private int CreateNewVertex(int x, int y, int z)
         {
-            Vertex vertex;
+            int id;
             if (edgeHovered != null)
             {
                 Point a1 = graph.V[edgeHovered.v1].GetPoint();
                 Point a2 = graph.V[edgeHovered.v2].GetPoint();
                 Point pointOnEdge = GetPointOnLineNearestToPoint(a1, a2, new Point(x, y));
-                vertex = new Vertex(pointOnEdge.X, pointOnEdge.Y, z);
+                id = graph.InsertVertexIntoEdge(pointOnEdge.X, pointOnEdge.Y, z, edgeHovered);
             }
             else
             {
-                vertex = new Vertex(x, y, z);
+                id = graph.AddVertex(x, y, z);
             }
 
-            graph.V.Add(vertex);
-            return vertex.id;
+            return id;
         }
 
         private Point GetPointOnLineNearestToPoint(Point a1, Point a2, Point b)
@@ -440,14 +439,11 @@ namespace Orienty_MapManager
 
         private void FinishNewEdge(int v1, int v2)
         {
-            if (!graph.V[v1].arrIDs.Contains(v2))
+            if (graph.AddEdge(v1, v2))
             {
-                graph.E.Add(new Edge(v1, v2));
-                graph.V[v1].arrIDs.Add(v2);
-                graph.V[v2].arrIDs.Add(v1);
                 selected1 = -1;
+                UpdateGraphImage();
             }
-            UpdateGraphImage();
         }
 
         private void ShowContextPanelVertex(int idOfVertex)
