@@ -88,9 +88,9 @@ namespace Orienty_MapManager
 
     public class Graph
     {
-        public List<Vertex> V;
-        public List<Edge> E;
-        public List<Beacon> beacons;
+        public List<Vertex> V { get; set; }
+        public List<Edge> E { get; set; }
+        public List<Beacon> beacons { get; set; }
 
         public Graph()
         {

@@ -31,9 +31,9 @@ namespace Orienty_MapManager
         Beacon beaconSelected = null;
 
 
-        const string PATHMAP = "../../Resources/map.png";
-        const string PATHGRAPH = "../../Resources/graph.json";
-        const string PATHBUILD = "../../Resources/";
+        const string PATHMAP = "../../Resources/map/map.png";
+        const string PATHGRAPH = "../../Resources/json/graph.json";
+        const string PATHBUILD = "../../Resources/json/";
 
         ToolTip t = new ToolTip();
 
@@ -89,11 +89,11 @@ namespace Orienty_MapManager
         {
             if(canvas.Pavilions.Count > 0)
             {
-                Point currectPoint = Polygon.GetCorrectPoint(e.Location, canvas.outerWall, 
-                    canvas.Pavilions[canvas.Pavilions.Count - 1].points[canvas.Pavilions[canvas.Pavilions.Count - 1].points.Count - 1]);
-                //canvas.DrawPavLine(e.Location);
+               // Point currectPoint = Polygon.GetCorrectPoint(e.Location, canvas.outerWall, 
+                //    canvas.Pavilions[canvas.Pavilions.Count - 1].points[canvas.Pavilions[canvas.Pavilions.Count - 1].points.Count - 1]);
+                canvas.DrawPavLine(e.Location);
                 
-                canvas.DrawPavLine(currectPoint);
+               // canvas.DrawPavLine(currectPoint);
                 //  if(canvas.Pavilions[canvas.Pavilions.Count-1].isFinished)
                 //  sheet.MouseMove -= Mouse_move_draw_Pavs;
             }
@@ -780,17 +780,16 @@ namespace Orienty_MapManager
                 canvas.SetSize(sheet.Width, sheet.Height);
             }
         }
-        private async void SendServer_Click(object sender, EventArgs e)
+        private void SendServer_Click(object sender, EventArgs e)
         {
             byte[] file = ImageToByteArray(Image.FromFile(PATHMAP));
 
             WebClient http = new WebClient();
             http.UploadFile("http://nigger.by:7770/api/v1/map/map", @PATHMAP);
 
-            http.UploadFile("http://nigger.by:7770/api/v1/map/map", @PATHMAP);
             //save json
 
-
+            http.UploadFile("http://nigger.by:7770/api/v1/beacons", @PATHGRAPH);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -814,6 +813,7 @@ namespace Orienty_MapManager
                 canvas.Pavilions = MapSerializer.DeSerializePavs(pathInput);
 
             }
+           // graph = MapSerializer.DeSerializeMap(PATHGRAPH);
         }
 
         private void TB_Mac_TextChanged(object sender, EventArgs e)

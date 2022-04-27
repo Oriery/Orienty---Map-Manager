@@ -78,6 +78,40 @@ namespace Orienty_MapManager
 
         }
 
+        public static Graph DeSerializeMap(string path)
+        {
+            /* MapContainer mapContainer = new MapContainer();
+             mapContainer.nodes = graph.V;
+             mapContainer.beacons = graph.beacons;
+
+             foreach (var v in mapContainer.nodes)
+             {
+                 if (v.type == E_NodeType.Pavilion)
+                 {
+                     mapContainer.nodeInfos.Add(new IdNamePair(v.id, v.name));
+                 }
+             }
+
+             var options = new JsonSerializerOptions
+             {
+                 WriteIndented = true
+             };*/
+            string jsonGraph;
+            using (var stream = new StreamReader(path))
+            {
+                jsonGraph = stream.ReadToEnd();
+            }
+            try
+            {
+                return JsonSerializer.Deserialize<Graph> (jsonGraph, options);
+            }
+            catch
+            {
+                MessageBox.Show("файлы поверждены, загрузка готовой схемы невозможна");
+                return null;
+            }
+        }
+
         public static string SerializeMap(Graph graph)
         {
             MapContainer mapContainer = new MapContainer();
