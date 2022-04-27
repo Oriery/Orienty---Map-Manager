@@ -79,6 +79,11 @@ namespace Orienty_MapManager
             this.z = z;
             tx_power = -69;
         }
+
+        public Point GetPoint()
+        {
+            return new Point(x, y);
+        }
     }
 
     public class Graph

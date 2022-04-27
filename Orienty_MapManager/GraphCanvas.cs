@@ -127,7 +127,7 @@ namespace Orienty_MapManager
             graphics.DrawEllipse(isSelected ? penVertexSelected : penVertex, (x - rOfVertex), (y - rOfVertex), 2 * rOfVertex, 2 * rOfVertex);
         }
 
-        void DrawBeacon(int x, int y, E_NodeType nodeType = E_NodeType.Junktion, bool isHovered = false, bool isSelected = false)
+        void DrawBeacon(int x, int y, bool isHovered = false, bool isSelected = false)
         {
             int radius = rOfBeacon + (isHovered ? 1 : 0);
             graphics.FillEllipse(brushBeacons,
@@ -136,7 +136,7 @@ namespace Orienty_MapManager
             graphics.DrawEllipse(isSelected ? penVertexSelected : penVertex, (x - radius), (y - radius), 2 * radius, 2 * radius);
         }
 
-        private void DrawALLGraph(Graph graph, int vertexHovered = -1, Edge edgeHovered = null, List<int> selectedV = null)
+        private void DrawALLGraph(Graph graph, int vertexHovered = -1, Edge edgeHovered = null, Beacon beaconHovered = null, int selectedV = -1, Beacon selectedBeacon = null)
         { 
             List<Vertex> V = graph.V;
             List<Edge> E = graph.E;
@@ -148,23 +148,15 @@ namespace Orienty_MapManager
             }
 
             //рисуем вершины
-            if (selectedV == null) {
-                for (int i = 0; i < V.Count; i++)
-                {
-                    DrawVertex(V[i], i == vertexHovered);
-                }
-            } else
+            for (int i = 0; i < V.Count; i++)
             {
-                for (int i = 0; i < V.Count; i++)
-                {
-                    DrawVertex(V[i], i == vertexHovered, selectedV.Contains(i));
-                }
+                DrawVertex(V[i], i == vertexHovered, selectedV == i);
             }
 
             // рисуем мачки
             foreach (Beacon beacon in graph.beacons)
             {
-                DrawBeacon(beacon.x, beacon.y);
+                DrawBeacon(beacon.x, beacon.y, beaconHovered == beacon, selectedBeacon == beacon);
             }
 
             void DrawEdge(int v1, int v2, bool hovered)
@@ -198,7 +190,7 @@ namespace Orienty_MapManager
             }
         }
 
-        public void DrawEverything(Graph graph, int vertexHovered, Edge edgeHovered, List<int> selectedV = null, PairPoints extraLine = null, bool drawExtraVertex = false)
+        public void DrawEverything(Graph graph, int vertexHovered = -1, Edge edgeHovered = null, Beacon beaconHovered = null, int selectedV = -1, Beacon selectedBeacon = null, PairPoints extraLine = null, bool drawExtraVertex = false)
         {
             clearSheet();
 
@@ -211,7 +203,7 @@ namespace Orienty_MapManager
                 DrawPolygonOfWalls(graphics,pav, penPav, pavColor);
             }
 
-            DrawALLGraph(graph, vertexHovered, edgeHovered, selectedV);
+            DrawALLGraph(graph, vertexHovered, edgeHovered, beaconHovered, selectedV, selectedBeacon);
 
             // Draw ghost edge and vertex
             if (extraLine != null)

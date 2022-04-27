@@ -144,6 +144,7 @@ namespace Orienty_MapManager
             buttonsOfActions.TryGetValue(whatDoing, out buttonOfAction);
 
             vertexSelected = -1;
+            beaconSelected = null;
 
             foreach (Button button in buttonsOfActions.Values)
             {
@@ -154,6 +155,7 @@ namespace Orienty_MapManager
             }
 
             panelContextVertex.Visible = false;
+            panelContextBeacon.Visible = false;
 
             if (!canvas.outerWall.isFinished)
             {
@@ -178,7 +180,13 @@ namespace Orienty_MapManager
 
         private Beacon GetUnderlyingBeacon(Point point)
         {
-            // TODO
+            foreach (var beacon in graph.beacons)
+            {
+                if (IsPointOverCircle(point, beacon.GetPoint(), canvas.rOfBeacon))
+                {
+                    return beacon;
+                }
+            }
             return null;
         }
 
@@ -305,6 +313,16 @@ namespace Orienty_MapManager
                     {
                         vertexSelected = vertexHovered;
                         ShowContextPanelVertex(vertexHovered);
+                    }
+
+                    UpdateGraphImage();
+                }
+                else if (beaconHovered != null) // клик по маячку
+                {
+                    if (e.Button == MouseButtons.Right)
+                    {
+                        beaconSelected = beaconHovered;
+                        ShowContextPanelBeacon(beaconSelected);
                     }
 
                     UpdateGraphImage();
@@ -506,6 +524,25 @@ namespace Orienty_MapManager
             panelContextVertex.Visible = true;
         }
 
+        private void ShowContextPanelBeacon(Beacon beacon)
+        {
+            panelContextBeacon.Visible = false;
+
+            Point pos = beacon.GetPoint() + new Size(-canvas.rOfPavilion, canvas.rOfPavilion * 2 / 3);
+            pos.X = Math.Min(pos.X, mainPanel.Width - panelContextBeacon.Width);
+            pos.X = Math.Max(pos.X, 0);
+            if (pos.Y + panelContextBeacon.Height > mainPanel.Height)
+            {
+                pos.Y = beacon.GetPoint().Y - canvas.rOfPavilion * 2 / 3 - panelContextBeacon.Height;
+            }
+            panelContextBeacon.Location = pos;
+
+            NUD_txPower.Value = beacon.tx_power;
+            TB_Mac.Text = beacon.mac;
+
+            panelContextBeacon.Visible = true;
+        }
+
         private void SaveJPG100(Bitmap bmp, string filename)
         {
             EncoderParameters encoderParameters = new EncoderParameters(1);
@@ -574,7 +611,24 @@ namespace Orienty_MapManager
 
         private void UpdateGraphImage(PairPoints extraLine = null, bool drawExtraVertex = false)
         {
-            canvas.DrawEverything(graph, vertexHovered, edgeHovered, new List<int>() { vertexSelected }, extraLine, drawExtraVertex);
+            if (whatDoing == WhatDoing.Selecting || whatDoing == WhatDoing.Deleting)
+            {
+                canvas.DrawEverything(graph, vertexHovered, edgeHovered, beaconHovered, vertexSelected, beaconSelected);
+            }
+            else if (whatDoing == WhatDoing.DrawingGraph)
+            {
+                canvas.DrawEverything(graph, vertexHovered, edgeHovered, null, vertexSelected, null, extraLine, drawExtraVertex);
+
+            }
+            else if (whatDoing == WhatDoing.DrawingBeacons)
+            {
+                canvas.DrawEverything(graph, -1, null, beaconHovered, -1, beaconSelected);
+            }
+            else
+            {
+                canvas.DrawEverything(graph);
+            }
+
             sheet.Image = canvas.GetBitmap();
         }
 
@@ -631,10 +685,25 @@ namespace Orienty_MapManager
         }
         private void UpdateHoveredElements(MouseEventArgs e)
         {
-            vertexHovered = GetIdOfUnderlyingVertex(e.Location);
-            if (vertexHovered == -1)
+            bool foundHovered;
+
+            beaconHovered = GetUnderlyingBeacon(e.Location);
+            foundHovered = beaconHovered != null;
+
+            if (!foundHovered)
+            {
+                vertexHovered = GetIdOfUnderlyingVertex(e.Location);
+                foundHovered = vertexHovered != -1;
+            }
+            else
+            {
+                vertexHovered = -1;
+            }
+
+            if (!foundHovered)
             {
                 edgeHovered = GetUnderlyingEdge(e);
+                foundHovered = edgeHovered != null;
             }
             else
             {
@@ -741,6 +810,24 @@ namespace Orienty_MapManager
 
                 canvas.Pavilions = MapSerializer.DeSerializePavs(pathInput);
 
+            }
+        }
+
+        private void TB_Mac_TextChanged(object sender, EventArgs e)
+        {
+            beaconSelected.mac = TB_Mac.Text;
+        }
+
+        private void NUD_txPower_ValueChanged(object sender, EventArgs e)
+        {
+            beaconSelected.tx_power = (int)NUD_txPower.Value;
+        }
+
+        private void TB_Mac_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                ResetAllSelections();
             }
         }
     }
