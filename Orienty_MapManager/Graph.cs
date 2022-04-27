@@ -69,16 +69,15 @@ namespace Orienty_MapManager
         /// <summary>
         /// Ближайшая нода
         /// </summary>
-        public int node { get; set; }
+        public int node { get => Program.form.graph.GetNearestVertex(x, y, z); }
 
-        public Beacon(string uuid, int x, int y, int z, int node, int tx_power = -69)
+        public Beacon(int x, int y, int z)
         {
-            this.mac = uuid;
+            this.mac = "00:00:00:00:00:00";
             this.x = x;
             this.y = y;
             this.z = z;
-            this.node = node;
-            this.tx_power = tx_power;
+            tx_power = -69;
         }
     }
 
@@ -86,11 +85,13 @@ namespace Orienty_MapManager
     {
         public List<Vertex> V;
         public List<Edge> E;
+        public List<Beacon> beacons;
 
         public Graph()
         {
             V = new List<Vertex>();
             E = new List<Edge>();
+            beacons = new List<Beacon>();
         }
 
         public int GetFreeIdOfVertex()
@@ -102,6 +103,7 @@ namespace Orienty_MapManager
         {
             V.Clear();
             E.Clear();
+            beacons.Clear();
         }
 
         public bool DeleteVertex(int Id)
@@ -194,6 +196,38 @@ namespace Orienty_MapManager
             Vertex vertex = new Vertex(x, y, z);
             V.Add(vertex);
             return vertex.id;
+        }
+
+        public int GetNearestVertex(int x, int y, int z)
+        {
+            if (V.Count == 0)
+            {
+                return -1;
+            }
+
+            Point point = new Point(x, y);
+            float minDist = int.MaxValue;
+            int id = -1;
+
+            foreach (Vertex v in V)
+            {
+                if (v.z == z)
+                {
+                    float dist = GetDistanceSquaredBetweenPoints(v.GetPoint(), point);
+                    if (dist < minDist)
+                    {
+                        minDist = dist;
+                        id = v.id;
+                    }
+                }
+            }
+
+            return id;
+
+            float GetDistanceSquaredBetweenPoints(Point p1, Point p2)
+            {
+                return (float)(Math.Pow((p2.X - p1.X), 2) + Math.Pow((p2.Y - p1.Y), 2));
+            }
         }
     }
 }

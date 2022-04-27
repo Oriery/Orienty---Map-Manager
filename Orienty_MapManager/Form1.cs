@@ -47,6 +47,7 @@ namespace Orienty_MapManager
             buttonsOfActions.Add(WhatDoing.Deleting, deleteButton);
             buttonsOfActions.Add(WhatDoing.DrawingPavilions, draw_Pav);
             buttonsOfActions.Add(WhatDoing.DrawingOuterWall, B_drawOuterWalls);
+            buttonsOfActions.Add(WhatDoing.DrawingBeacons, B_DrawBeacons);
 
             t.SetToolTip(B_drawOuterWalls, "Рисовать схему здания");
             t.SetToolTip(draw_Pav, "Рисовать павильоны");
@@ -74,7 +75,11 @@ namespace Orienty_MapManager
         private void draw_Pav_Click(object sender, EventArgs e)
         {
             ResetAllSelections(WhatDoing.DrawingPavilions);
-            
+        }
+
+        private void B_DrawBeacons_Click(object sender, EventArgs e)
+        {
+            ResetAllSelections(WhatDoing.DrawingBeacons);
         }
 
         private void Mouse_move_draw_Pavs(object sender, MouseEventArgs e)
@@ -160,15 +165,17 @@ namespace Orienty_MapManager
             for (int i = 0; i < graph.V.Count; i++)
             {
                 int rOfVertex = canvas.GetRadiusOfVertex(graph.V[i].type) * 2;
-                if (Math.Pow((graph.V[i].x - e.X), 2) + Math.Pow((graph.V[i].y - e.Y), 2) < Math.Pow(rOfVertex, 2))
+                if (IsPointOverCircle(e.Location, graph.V[i].GetPoint(), rOfVertex))
                 {
                     return graph.V[i].id;
                 }
             }
-
-            // TODO если друг на друга накладываются, то вибирать ближайший
-
             return -1;
+        }
+
+        private bool IsPointOverCircle(Point point, Point centre, int radius)
+        {
+            return Math.Pow((centre.X - point.X), 2) + Math.Pow((centre.Y - point.Y), 2) < Math.Pow(radius, 2);
         }
 
         private Edge GetUnderlyingEdge(MouseEventArgs e)
@@ -244,7 +251,16 @@ namespace Orienty_MapManager
                 return;
             }
 
-            if (whatDoing == WhatDoing.Deleting)
+            if (whatDoing == WhatDoing.DrawingBeacons)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    graph.beacons.Add(new Beacon(e.X, e.Y, 0));
+                }
+                return;
+            }
+
+                    if (whatDoing == WhatDoing.Deleting)
             {
                 DeleteClicked(e);
 
@@ -257,7 +273,7 @@ namespace Orienty_MapManager
                 {
                     if (canvas.outerWall.AddPointOfWall(e.Location))
                     {
-                        ResetAllSelections();
+                        ResetAllSelections(WhatDoing.DrawingPavilions);
                         t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
                     }
                 }
@@ -559,7 +575,8 @@ namespace Orienty_MapManager
             Deleting,
             Selecting,
             DrawingPavilions,
-            DrawingOuterWall
+            DrawingOuterWall,
+            DrawingBeacons
         }
 
         private void sheet_MouseMove(object sender, MouseEventArgs e)

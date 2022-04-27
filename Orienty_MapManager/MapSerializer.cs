@@ -82,6 +82,7 @@ namespace Orienty_MapManager
         {
             MapContainer mapContainer = new MapContainer();
             mapContainer.nodes = graph.V;
+            mapContainer.beacons = graph.beacons;
 
             foreach ( var v in mapContainer.nodes )
             {
@@ -89,15 +90,13 @@ namespace Orienty_MapManager
                 {
                     mapContainer.nodeInfos.Add(new IdNamePair(v.id, v.name));
                 }
-
-                // TODO сейчас сериализуются ненастоящие маячки
-                mapContainer.beacons.Add(new Beacon("00:00:00:00:00:00", v.x + 5, v.y - 2, 0, v.id)); 
             }
+
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true
             };
-            return JsonSerializer.Serialize<MapContainer>(mapContainer, options);
+            return JsonSerializer.Serialize(mapContainer, options);
         }
 
         private class MapContainer
