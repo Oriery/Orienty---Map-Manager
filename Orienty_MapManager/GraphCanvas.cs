@@ -38,7 +38,7 @@ namespace Orienty_MapManager
 
         // Walls
         Color wallsColor = Color.FromArgb(180, 180, 180);
-        Color buildingBackgroundColor = Color.FromArgb(97, 105, 129);
+        Color buildingBackgroundColor = Color.FromArgb(193,97, 105, 129);
         Color pavColor = Color.FromArgb(191, 163, 137);
         Color PavBorderColor = Color.FromArgb(49, 49, 49);
         Pen penWalls, penPav;

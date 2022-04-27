@@ -361,7 +361,7 @@
             this.SendSrv,
             this.SetBackgrBtn});
             this.FileBtn.Name = "FileBtn";
-            this.FileBtn.Size = new System.Drawing.Size(59, 26);
+            this.FileBtn.Size = new System.Drawing.Size(59, 24);
             this.FileBtn.Text = "Файл";
             // 
             // OpenBtn
@@ -408,6 +408,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(670, 667);
             this.Name = "Form1";
             this.Text = "Orienty: Map Manager";
