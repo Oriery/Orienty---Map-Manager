@@ -74,11 +74,21 @@ namespace Orienty_MapManager
         }
 
 
-        public static void ChnageToNearPoint (ref Point mouse, List<Polygon> pavs)
+        public static void ChnageToNearPoint (ref Point mouse, List<Polygon> pavs, Polygon build)
         {
             Point nearest = new Point() { X = mouse.X, Y = mouse.Y };
             int distance;
             int mindistance= int.MaxValue;
+            foreach(var pBuild in build.points)
+            {
+                distance = GetDistanceBetweenPoints(mouse, pBuild);
+                if (distance < 15 && mindistance > distance)
+                {
+                    mindistance = distance;
+                    nearest.X = pBuild.X;
+                    nearest.Y = pBuild.Y;
+                }
+            }
             for(int i=0;i<pavs.Count;++i)
             {
                 foreach(var point in pavs[i].points)

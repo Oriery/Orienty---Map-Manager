@@ -15,6 +15,8 @@ namespace Orienty_MapManager
         public GraphCanvas canvas;
         public Graph graph;
 
+
+        Point currPoint;
         string graphJson; //json for graph
 
 
@@ -85,15 +87,26 @@ namespace Orienty_MapManager
             ResetAllSelections(WhatDoing.DrawingBeacons);
         }
 
+        private void Mouse_move_draw_Build (object sender, MouseEventArgs e)
+        {
+            canvas.DrawBuildLine(currPoint);
+        }
+
         private void Mouse_move_draw_Pavs(object sender, MouseEventArgs e)
         {
-            if(canvas.Pavilions.Count > 0)
+            
+            if (canvas.Pavilions.Count > 0)
             {
                 // Point currectPoint = Polygon.GetCorrectPoint(e.Location, canvas.outerWall, 
                 //    canvas.Pavilions[canvas.Pavilions.Count - 1].points[canvas.Pavilions[canvas.Pavilions.Count - 1].points.Count - 1]);
-                Point currPoint = e.Location;
-                Polygon.ChnageToNearPoint(ref currPoint, canvas.Pavilions);
-                canvas.DrawPavLine(currPoint);
+                
+               
+                if(canvas.Pavilions.Count > 0)
+                {
+                    Polygon.ChnageToNearPoint(ref currPoint, canvas.Pavilions, canvas.outerWall);
+                    canvas.DrawPavLine(currPoint);
+                }
+                
                 
                // canvas.DrawPavLine(currectPoint);
                 //  if(canvas.Pavilions[canvas.Pavilions.Count-1].isFinished)
@@ -293,8 +306,11 @@ namespace Orienty_MapManager
             {
                 if (e.Button == MouseButtons.Left)
                 {
+                    if (canvas.outerWall.points.Count == 0)
+                        sheet.MouseMove += Mouse_move_draw_Build;
                     if (canvas.outerWall.AddPointOfWall(e.Location))
                     {
+                        sheet.MouseMove -= Mouse_move_draw_Build;
                         ResetAllSelections(WhatDoing.DrawingPavilions);
                         t.SetToolTip(B_drawOuterWalls, "Перерисовать схему здания");
                     }
@@ -359,7 +375,7 @@ namespace Orienty_MapManager
                             }
                             if(canvas.Pavilions[canvas.Pavilions.Count - 1].points.Count==0)
                                 sheet.MouseMove += Mouse_move_draw_Pavs;
-                            if (canvas.Pavilions[canvas.Pavilions.Count - 1].AddPointOfWall(e.Location))
+                            if (canvas.Pavilions[canvas.Pavilions.Count - 1].AddPointOfWall(currPoint))
                             {
                                 ResetAllSelections(WhatDoing.DrawingPavilions);
                                 sheet.MouseMove -= Mouse_move_draw_Pavs;
@@ -654,7 +670,7 @@ namespace Orienty_MapManager
         private void sheet_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveredElements(e);
-
+            currPoint = e.Location;
             if (whatDoing == WhatDoing.DrawingGraph && (vertexSelected != -1 || edgeHovered != null))
             {
                 Point pointMouse;
