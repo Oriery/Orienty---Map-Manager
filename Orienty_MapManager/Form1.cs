@@ -838,8 +838,6 @@ namespace Orienty_MapManager
         private void SaveBtn_Click(object sender, EventArgs e)
         {
             graphJson = MapSerializer.SerializeMap(graph);
-            TB_Debug.Text = graphJson;
-            TB_Debug.Visible = true;
             //save graph
             using (var stream = new StreamWriter(PATHGRAPH))
             {
