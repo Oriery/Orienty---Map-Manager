@@ -39,6 +39,8 @@ namespace Orienty_MapManager
 
         ToolTip t = new ToolTip();
 
+        List<TimerForAnimatingVertex> timers = new List<TimerForAnimatingVertex>();
+
         public Form1()
         {
             InitializeComponent();
@@ -190,8 +192,7 @@ namespace Orienty_MapManager
             if (movingVertex)
             {
                 movingVertex = false;
-                graph.V[vertexSelected].x = posBeforeMoving.X;
-                graph.V[vertexSelected].y = posBeforeMoving.Y;
+                StartAnimationForVertex(vertexSelected);
             }
             else if (movingBeacon)
             {
@@ -371,7 +372,7 @@ namespace Orienty_MapManager
                         }
                         else if (e.Button == MouseButtons.Left) // Подтвердить перетаскивание
                         {
-                            ResetAllSelections();
+                            ApplyMoving();
                         }
                     }
 
@@ -471,6 +472,10 @@ namespace Orienty_MapManager
             }
         }
 
+        private void ApplyMoving()
+        {
+            ResetAllSelections();
+        }
 
         private int GetClickedPolygon(Point mouseP, List<Polygon> polygons, bool checkLast = true)
         {
@@ -955,7 +960,62 @@ namespace Orienty_MapManager
             if (movingVertex || movingBeacon)
             {
                 AbortMoving();
-                UpdateGraphImage();
+            }
+        }
+
+        private void StartAnimationForVertex(int v)
+        {
+            timers.Add(new TimerForAnimatingVertex(graph.V[v].GetPoint(), 
+                posBeforeMoving, 
+                graph.V[v], 150, this));
+        }
+
+        class TimerForAnimatingVertex : Timer
+        {
+            Point from, to;
+            float a = 0;
+            Vertex vertex;
+            float da;
+            Form1 form1;
+
+            public TimerForAnimatingVertex(Point from, Point to, Vertex vertex, float timeInMillisec, Form1 form1)
+            {
+                this.from = from;
+                this.to = to;
+                this.vertex = vertex;
+                this.form1 = form1;
+
+                Interval = 20;
+                da =  Interval / timeInMillisec;
+
+                Tick += DoTick;
+                Start();
+            }
+
+            private void DoTick(object sender, EventArgs e)
+            {
+                float b = -1 * (a - 1) * (a - 1) + 1;
+                Point temp = Lerp(b, from, to);
+                vertex.x = temp.X;
+                vertex.y = temp.Y;
+
+                if (a >= 1)
+                {
+                    Stop();
+                    form1.timers.Remove(this);
+                }
+
+                a += da;
+
+                form1.UpdateGraphImage();
+            }
+
+            private Point Lerp(float alpha, Point a, Point b)
+            {
+                int dx = b.X - a.X;
+                int dy = b.Y - a.Y;
+
+                return new Point(a.X + (int)(dx * alpha), a.Y + (int)(dy * alpha));
             }
         }
     }
