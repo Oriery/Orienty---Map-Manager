@@ -15,6 +15,7 @@ namespace Orienty_MapManager
         Vertex vertex;
         float da;
         Form1 form1;
+        const float c1 = 1.1f, c2 = 1.3f, c3 = 1.0f, c4 = 1.0f;
 
         public TimerForAnimatingVertex(Point from, Point to, Vertex vertex, float timeInMillisec, Form1 form1)
         {
@@ -32,7 +33,7 @@ namespace Orienty_MapManager
 
         private void DoTick(object sender, EventArgs e)
         {
-            float b = -1 * (a - 1) * (a - 1) + 1;
+            float b = (float)(c1 * (-Math.Pow(c2 * a - c3, 2) + c4));
             Point temp = Lerp(b, from, to);
             vertex.x = temp.X;
             vertex.y = temp.Y;
@@ -41,6 +42,8 @@ namespace Orienty_MapManager
             {
                 Stop();
                 form1.timers.Remove(this);
+                vertex.x = to.X;
+                vertex.y = to.Y;
             }
 
             a += da;
