@@ -32,6 +32,8 @@ namespace Orienty_MapManager
         Point posBeforeMoving;
         bool movingVertex = false;
         bool movingBeacon = false;
+        bool movingWithMouse; // false means moving by scrolling mouse wheel
+        const float movingWithMouseWheelFactor = 0.05f;
 
 
         const string PATHMAP = "../../Resources/map/map.png";
@@ -59,9 +61,30 @@ namespace Orienty_MapManager
             t.SetToolTip(B_drawOuterWalls, "Рисовать схему здания");
             t.SetToolTip(draw_Pav, "Рисовать павильоны");
 
+            this.MouseWheel += onMouseWheel;
+
             ResetAllSelections(WhatDoing.DrawingGraph);
 
             SetBackgroundImage(backgroundImage);
+        }
+
+        private void onMouseWheel(object sender, MouseEventArgs e)
+        {
+            if (movingVertex)
+            {
+                movingWithMouse = false;
+
+                if (Control.ModifierKeys == Keys.Shift)
+                {
+                    graph.V[vertexSelected].x += (int)(e.Delta * movingWithMouseWheelFactor);
+                }
+                else
+                {
+                    graph.V[vertexSelected].y += (int)(e.Delta * movingWithMouseWheelFactor);
+                }
+
+                UpdateGraphImage();
+            }
         }
 
         private void selectButton_Click(object sender, EventArgs e)
@@ -349,6 +372,12 @@ namespace Orienty_MapManager
 
             if (whatDoing == WhatDoing.Selecting)
             {
+                // В первую очередь: если двигаем вершину и нажимаем ПКМ, то отменяем перемещение
+                if (movingVertex && e.Button == MouseButtons.Right)
+                {
+                    AbortMoving();
+                }
+
                 if (vertexHovered != -1) // клик по вершине
                 {
                     if (!movingVertex) // ещё не тащим вершину
@@ -361,8 +390,7 @@ namespace Orienty_MapManager
                         }
                         else if (e.Button == MouseButtons.Left)
                         {
-                            posBeforeMoving = graph.V[vertexSelected].GetPoint();
-                            movingVertex = true;
+                            StartMovingVertex(vertexSelected);
                         }
                     } else // уже тащим вершину
                     {
@@ -470,6 +498,13 @@ namespace Orienty_MapManager
 
                 return;
             }
+        }
+
+        private void StartMovingVertex(int v)
+        {
+            posBeforeMoving = graph.V[vertexSelected].GetPoint();
+            movingVertex = true;
+            movingWithMouse = true;
         }
 
         private void ApplyMoving()
@@ -729,7 +764,7 @@ namespace Orienty_MapManager
                 return;
             }
 
-            if (movingVertex)
+            if (movingVertex && movingWithMouse)
             {
                 graph.V[vertexSelected].x = e.Location.X;
                 graph.V[vertexSelected].y = e.Location.Y;
