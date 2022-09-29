@@ -20,12 +20,25 @@ namespace Orienty_MapManager
         SecondOrderDynamics secondOrderDynamics;
         Stopwatch stopWatch = new Stopwatch();
 
-
-        public static List<TimerForAnimatingVertex> timers = new List<TimerForAnimatingVertex>();
-
         public static void StartAnimationForVertex(Point from, Point to, Vertex vertex, Form1 form1)
         {
-            timers.Add(new TimerForAnimatingVertex(from, to, vertex, form1));
+            if (vertex == null) return;
+
+            StopAnimationForVertex(vertex);
+
+            vertex.animation = new TimerForAnimatingVertex(from, to, vertex, form1);
+        }
+
+        public static void StopAnimationForVertex(Vertex vertex)
+        {
+            if (vertex == null) return;
+
+            if (vertex.animation != null)
+            {
+                vertex.animation.Stop();
+                vertex.animation.Dispose();
+                vertex.animation = null;
+            }
         }
 
         private TimerForAnimatingVertex(Point from, Point to, Vertex vertex, Form1 form1)
@@ -46,6 +59,8 @@ namespace Orienty_MapManager
 
         private void DoTick(object sender, EventArgs e)
         {
+            if (vertex == null || vertex.animation != this) Dispose();
+
             stopWatch.Stop();
             var DeltaTime = stopWatch.ElapsedMilliseconds;
             stopWatch.Restart();
@@ -57,7 +72,6 @@ namespace Orienty_MapManager
             if (a >= 1)
             {
                 Stop();
-                timers.Remove(this);
                 vertex.x = (int)to.X;
                 vertex.y = (int)to.Y;
             }

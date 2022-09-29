@@ -500,6 +500,7 @@ namespace Orienty_MapManager
 
         private void StartMovingVertex(int v)
         {
+            TimerForAnimatingVertex.StopAnimationForVertex(graph.V[v]);
             posBeforeMoving = graph.V[vertexSelected].GetPoint();
             movingVertex = true;
             movingWithMouse = true;
