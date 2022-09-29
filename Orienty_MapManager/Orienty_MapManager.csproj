@@ -104,6 +104,7 @@
     <Compile Include="Polygon.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecondOrderDynamics.cs" />
     <Compile Include="StateManager.cs" />
     <Compile Include="TimerForAnimatingVertex.cs">
       <SubType>Component</SubType>

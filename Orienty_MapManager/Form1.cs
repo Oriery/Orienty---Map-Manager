@@ -41,8 +41,6 @@ namespace Orienty_MapManager
 
         ToolTip t = new ToolTip();
 
-        public List<TimerForAnimatingVertex> timers = new List<TimerForAnimatingVertex>();
-
         public Form1()
         {
             InitializeComponent();
@@ -1000,9 +998,9 @@ namespace Orienty_MapManager
 
         private void StartAnimationForVertex(int v)
         {
-            timers.Add(new TimerForAnimatingVertex(graph.V[v].GetPoint(), 
-                posBeforeMoving, 
-                graph.V[v], 150, this));
+            TimerForAnimatingVertex.StartAnimationForVertex(graph.V[v].GetPoint(),
+                posBeforeMoving,
+                graph.V[v], this);
         }
     }
 }
