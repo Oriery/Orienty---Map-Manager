@@ -50,7 +50,7 @@ namespace Orienty_MapManager
 
             Interval = 16;
 
-            secondOrderDynamics = new SecondOrderDynamics(2f, 0.5f, 2f, this.to, this.from);
+            secondOrderDynamics = new SecondOrderDynamics(2f, 0.5f, 0f, this.to, this.from);
 
             Tick += DoTick;
             stopWatch.Start();
